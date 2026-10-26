@@ -1,0 +1,36 @@
+{
+  "id": "a0522103-fac4-4877-8369-e70fb484aaaa",
+  "reference": "XD-UDWTN8",
+  "state": "PENDING_REVIEW",
+  "status": "IN_REVIEW",
+  "chargeStatus": "UNKNOWN",
+  "failureReason": null,
+  "steps": {
+    "processing": true,
+    "sent": true,
+    "received": false
+  },
+  "nextAction": null,
+  "amountRwf": 12000,
+  "feeRwf": 380,
+  "totalRwf": 12380,
+  "cardCurrency": "CAD",
+  "totalCardMinor": 1180,
+  "totalCardDisplay": "CAD 11.80",
+  "fxRate": "1050",
+  "fxRateDisplay": "1 CAD = 1,050 RWF",
+  "payee": {
+    "registeredName": "SANDBOX Basket Weavers 222",
+    "maskedIdentifier": "078* *** 222"
+  },
+  "card": {
+    "brand": "VISA",
+    "last4": "4242"
+  },
+  "note": "2 baskets",
+  "simulated": true,
+  "createdAt": "2026-10-26T12:57:06.998Z",
+  "updatedAt": "2026-10-26T12:57:07.270Z",
+  "completedAt": null,
+  "receipt": null
+}

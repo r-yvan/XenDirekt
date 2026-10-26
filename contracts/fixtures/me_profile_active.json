@@ -1,0 +1,17 @@
+{
+  "id": "10a62db7-177c-42c9-b690-0f651df5a827",
+  "fullName": "Ana Silva",
+  "email": "f@example.com",
+  "phone": null,
+  "countryOfResidence": "PT",
+  "dateOfBirth": "1988-02-29",
+  "preferredLanguage": "en",
+  "status": "ACTIVE",
+  "profileComplete": true,
+  "pinSet": false,
+  "biometricKeyRegistered": false,
+  "kycLevel": "NONE",
+  "acceptedTermsVersion": "2026-10-01",
+  "acceptedPrivacyVersion": "2026-10-01",
+  "createdAt": "2026-10-26T12:57:01.485Z"
+}

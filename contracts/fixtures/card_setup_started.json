@@ -1,0 +1,7 @@
+{
+  "setupId": "4b4f229e-ff3c-479f-b460-85c90336119f",
+  "hostedUrl": "http://localhost:3000/dev/mock-provider/card-setup/mock_setup_5fd58a62-f89a-4b1f-a8ad-0a980f6a5180",
+  "returnUrlPrefix": "xendirekt-app://card-setup/return",
+  "expiresAt": "2026-10-26T13:12:10.178Z",
+  "simulated": true
+}

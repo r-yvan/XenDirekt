@@ -1,0 +1,36 @@
+{
+  "id": "7aea98c5-aba1-4f61-8d0b-18c46dfea5ee",
+  "reference": "XD-FTHTHX",
+  "state": "AUTH_FAILED",
+  "status": "FAILED",
+  "chargeStatus": "NOT_CHARGED",
+  "failureReason": "CARD_DECLINED",
+  "steps": {
+    "processing": false,
+    "sent": false,
+    "received": false
+  },
+  "nextAction": null,
+  "amountRwf": 12000,
+  "feeRwf": 380,
+  "totalRwf": 12380,
+  "cardCurrency": "CAD",
+  "totalCardMinor": 1180,
+  "totalCardDisplay": "CAD 11.80",
+  "fxRate": "1050",
+  "fxRateDisplay": "1 CAD = 1,050 RWF",
+  "payee": {
+    "registeredName": "SANDBOX Moto Ride 456",
+    "maskedIdentifier": "078* *** 456"
+  },
+  "card": {
+    "brand": "VISA",
+    "last4": "0002"
+  },
+  "note": "2 baskets",
+  "simulated": true,
+  "createdAt": "2026-10-26T12:57:05.173Z",
+  "updatedAt": "2026-10-26T12:57:05.188Z",
+  "completedAt": null,
+  "receipt": null
+}

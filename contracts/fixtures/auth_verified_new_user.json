@@ -1,0 +1,24 @@
+{
+  "accessToken": "<accessToken>",
+  "accessTokenExpiresIn": 900,
+  "refreshToken": "<refreshToken>",
+  "sessionId": "a33d65d5-aa0c-4e05-9af1-1c9462862fe0",
+  "isNewUser": true,
+  "user": {
+    "id": "7fae7b25-5e29-433c-844f-b1d15895d07d",
+    "fullName": null,
+    "email": "oliver@example.com",
+    "phone": null,
+    "countryOfResidence": null,
+    "dateOfBirth": null,
+    "preferredLanguage": "en",
+    "status": "PENDING_PROFILE",
+    "profileComplete": false,
+    "pinSet": false,
+    "biometricKeyRegistered": false,
+    "kycLevel": "NONE",
+    "acceptedTermsVersion": null,
+    "acceptedPrivacyVersion": null,
+    "createdAt": "2026-10-26T12:57:01.110Z"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "error": {
+    "code": "VALIDATION_FAILED",
+    "message": "The request is invalid.",
+    "details": {
+      "fields": [
+        "challengeId: challengeId must be a UUID",
+        "otp: otp must be 6 digits",
+        "deviceId: deviceId must be longer than or equal to 16 characters",
+        "deviceId: deviceId must be a string"
+      ]
+    },
+    "requestId": "corr-test-0001"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "payeeId": "af5c9489-727c-4c3d-b6a9-d70d6db1c83a",
+  "network": "MTN",
+  "identifierType": "PHONE",
+  "displayIdentifier": "078 812 3456",
+  "maskedIdentifier": "078* *** 456",
+  "registeredName": "SANDBOX Moto Ride 456",
+  "verifiedAt": "2026-10-26T12:57:11.335Z",
+  "simulated": true
+}

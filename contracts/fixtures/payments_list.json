@@ -1,0 +1,77 @@
+{
+  "payments": [
+    {
+      "id": "c21f72e5-02ff-486c-8324-26040aa3d0c6",
+      "reference": "XD-RPBW5S",
+      "state": "QUOTED",
+      "status": "PROCESSING",
+      "chargeStatus": "NOT_CHARGED",
+      "failureReason": null,
+      "steps": {
+        "processing": false,
+        "sent": false,
+        "received": false
+      },
+      "nextAction": null,
+      "amountRwf": 1002,
+      "feeRwf": 216,
+      "totalRwf": 1218,
+      "cardCurrency": "CAD",
+      "totalCardMinor": 116,
+      "totalCardDisplay": "CAD 1.16",
+      "fxRate": "1050",
+      "fxRateDisplay": "1 CAD = 1,050 RWF",
+      "payee": {
+        "registeredName": "SANDBOX Moto Ride 456",
+        "maskedIdentifier": "078* *** 456"
+      },
+      "card": {
+        "brand": "VISA",
+        "last4": "4242"
+      },
+      "note": "2 baskets",
+      "simulated": true,
+      "createdAt": "2026-10-26T12:57:09.064Z",
+      "updatedAt": "2026-10-26T12:57:09.064Z",
+      "completedAt": null,
+      "receipt": null
+    },
+    {
+      "id": "24b2364c-7843-4df1-993f-c31ee8ba3bdf",
+      "reference": "XD-E2FKBG",
+      "state": "QUOTED",
+      "status": "PROCESSING",
+      "chargeStatus": "NOT_CHARGED",
+      "failureReason": null,
+      "steps": {
+        "processing": false,
+        "sent": false,
+        "received": false
+      },
+      "nextAction": null,
+      "amountRwf": 1001,
+      "feeRwf": 216,
+      "totalRwf": 1217,
+      "cardCurrency": "CAD",
+      "totalCardMinor": 116,
+      "totalCardDisplay": "CAD 1.16",
+      "fxRate": "1050",
+      "fxRateDisplay": "1 CAD = 1,050 RWF",
+      "payee": {
+        "registeredName": "SANDBOX Moto Ride 456",
+        "maskedIdentifier": "078* *** 456"
+      },
+      "card": {
+        "brand": "VISA",
+        "last4": "4242"
+      },
+      "note": "2 baskets",
+      "simulated": true,
+      "createdAt": "2026-10-26T12:57:08.993Z",
+      "updatedAt": "2026-10-26T12:57:08.993Z",
+      "completedAt": null,
+      "receipt": null
+    }
+  ],
+  "nextCursor": "eyJjIjoiMjAyNi0xMC0yNlQxMjo1NzowOC45OTNaIiwiaSI6IjI0YjIzNjRjLTc4NDMtNGRmMS05OTNmLWMzMWVlOGJhM2JkZiJ9"
+}

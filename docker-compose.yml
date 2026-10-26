@@ -1,0 +1,92 @@
+# Local development dependencies for XenDirekt. NOT a production deployment.
+#
+#   docker compose up -d postgres redis mailpit     # dependencies only, run the API with npm
+#   docker compose --profile app up -d              # also run API + worker containers
+#
+# Host ports avoid clashing with a locally installed PostgreSQL (5432).
+# All credentials below are local development placeholders.
+
+name: xendirekt
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: xendirekt
+      POSTGRES_PASSWORD: xendirekt
+      POSTGRES_DB: xendirekt_dev
+      POSTGRES_INITDB_ARGS: --locale-provider=builtin --builtin-locale=C.UTF-8 --encoding=UTF8
+    ports:
+      - "55432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./api/scripts/docker-init-test-db.sql:/docker-entrypoint-initdb.d/10-test-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U xendirekt -d xendirekt_dev"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Catches email (OTP codes, receipts) and dev-bridged SMS. Web UI: http://localhost:8025
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  api:
+    profiles: ["app"]
+    build: ./api
+    env_file: ./api/.env
+    environment:
+      DATABASE_URL: postgresql://xendirekt:xendirekt@postgres:5432/xendirekt_dev
+      REDIS_URL: redis://redis:6379
+      SMTP_HOST: mailpit
+      WORKER_MODE: separate
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+  worker:
+    profiles: ["app"]
+    build: ./api
+    command: ["node", "dist/worker.js"]
+    env_file: ./api/.env
+    environment:
+      DATABASE_URL: postgresql://xendirekt:xendirekt@postgres:5432/xendirekt_dev
+      REDIS_URL: redis://redis:6379
+      SMTP_HOST: mailpit
+      WORKER_MODE: separate
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  migrate:
+    profiles: ["app"]
+    build: ./api
+    command: ["node", "dist/database/cli/migrate.js", "latest"]
+    environment:
+      DATABASE_URL: postgresql://xendirekt:xendirekt@postgres:5432/xendirekt_dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres-data:

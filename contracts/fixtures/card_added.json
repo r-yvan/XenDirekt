@@ -1,0 +1,12 @@
+{
+  "id": "6aae5967-ccf8-4f31-8e83-02be7b36ac3f",
+  "brand": "VISA",
+  "last4": "4242",
+  "expiryMonth": 12,
+  "expiryYear": 2029,
+  "issuingCountry": "CA",
+  "cardCurrency": "CAD",
+  "isDefault": true,
+  "status": "ACTIVE",
+  "simulated": true
+}

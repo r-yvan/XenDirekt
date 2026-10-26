@@ -1,0 +1,48 @@
+{
+  "id": "8f487d0e-e579-4488-9c47-4105cc73449b",
+  "reference": "XD-K7SQ8M",
+  "state": "COMPLETED",
+  "status": "COMPLETED",
+  "chargeStatus": "CHARGED",
+  "failureReason": null,
+  "steps": {
+    "processing": true,
+    "sent": true,
+    "received": true
+  },
+  "nextAction": null,
+  "amountRwf": 12000,
+  "feeRwf": 380,
+  "totalRwf": 12380,
+  "cardCurrency": "CAD",
+  "totalCardMinor": 1180,
+  "totalCardDisplay": "CAD 11.80",
+  "fxRate": "1050",
+  "fxRateDisplay": "1 CAD = 1,050 RWF",
+  "payee": {
+    "registeredName": "SANDBOX Moto Ride 456",
+    "maskedIdentifier": "078* *** 456"
+  },
+  "card": {
+    "brand": "VISA",
+    "last4": "4242"
+  },
+  "note": "2 baskets",
+  "simulated": true,
+  "createdAt": "2026-10-26T12:57:04.318Z",
+  "updatedAt": "2026-10-26T12:57:04.460Z",
+  "completedAt": "2026-10-26T12:57:10.101Z",
+  "receipt": {
+    "reference": "XD-K7SQ8M",
+    "kigaliDateTime": "2026-10-26T14:57:10+02:00",
+    "merchantName": "SANDBOX Moto Ride 456",
+    "merchantIdentifier": "078* *** 456",
+    "amountRwf": 12000,
+    "feeRwf": 380,
+    "fxRateDisplay": "1 CAD = 1,050 RWF",
+    "totalCardDisplay": "CAD 11.80",
+    "card": "VISA •••• 4242",
+    "status": "COMPLETED",
+    "simulated": true
+  }
+}

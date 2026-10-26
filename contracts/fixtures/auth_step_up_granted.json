@@ -1,0 +1,6 @@
+{
+  "stepUpToken": "<stepUpToken>",
+  "purpose": "DELETE_ACCOUNT",
+  "method": "DEVICE_KEY",
+  "expiresAt": "2026-10-26T12:59:02.445Z"
+}

@@ -1,0 +1,36 @@
+{
+  "id": "1a3495fc-d380-4b5c-8abc-edc9cfaccc95",
+  "reference": "XD-KM5EDF",
+  "state": "VOIDED",
+  "status": "FAILED",
+  "chargeStatus": "NOT_CHARGED",
+  "failureReason": "PAYOUT_FAILED",
+  "steps": {
+    "processing": true,
+    "sent": false,
+    "received": false
+  },
+  "nextAction": null,
+  "amountRwf": 12000,
+  "feeRwf": 380,
+  "totalRwf": 12380,
+  "cardCurrency": "CAD",
+  "totalCardMinor": 1180,
+  "totalCardDisplay": "CAD 11.80",
+  "fxRate": "1050",
+  "fxRateDisplay": "1 CAD = 1,050 RWF",
+  "payee": {
+    "registeredName": "SANDBOX Fruit Stand 111",
+    "maskedIdentifier": "078* *** 111"
+  },
+  "card": {
+    "brand": "VISA",
+    "last4": "4242"
+  },
+  "note": "2 baskets",
+  "simulated": true,
+  "createdAt": "2026-10-26T12:57:06.164Z",
+  "updatedAt": "2026-10-26T12:57:06.234Z",
+  "completedAt": null,
+  "receipt": null
+}

@@ -1,0 +1,7 @@
+{
+  "challengeId": "6c76be7c-b203-4264-90b8-bda05aace661",
+  "nonce": "<nonce>",
+  "purpose": "DELETE_ACCOUNT",
+  "expiresAt": "2026-10-26T12:59:02.445Z",
+  "signingMessage": "xendirekt-step-up:v1:6c76be7c-b203-4264-90b8-bda05aace661:XAhrqK1azZM4HLhMsKgbdOEsRJM81Y01:DELETE_ACCOUNT"
+}

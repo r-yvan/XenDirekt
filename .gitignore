@@ -1,0 +1,48 @@
+# --- XenDirekt monorepo ---
+
+# Secrets and local environment files (only *.example files are committed)
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+!**/debug.keystore
+
+# Reference document containing third-party personal data (see docs/open-questions.md OQ-34).
+reference-docs/refunds-v2.pdf
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Node (api)
+node_modules/
+api/dist/
+api/coverage/
+api/openapi.json
+*.log
+npm-debug.log*
+
+# Flutter (android-ios)
+android-ios/.dart_tool/
+android-ios/build/
+android-ios/.flutter-plugins
+android-ios/.flutter-plugins-dependencies
+android-ios/coverage/
+android-ios/android/.gradle/
+android-ios/android/local.properties
+android-ios/android/key.properties
+android-ios/ios/Pods/
+android-ios/ios/.symlinks/
+android-ios/ios/Flutter/Generated.xcconfig
+android-ios/ios/Flutter/flutter_export_environment.sh
