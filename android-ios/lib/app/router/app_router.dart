@@ -82,7 +82,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.verifyOtp,
-        builder: (_, state) => OtpScreen(args: state.extra! as OtpRouteArgs),
+        // No pending challenge (e.g. the app was restarted on this screen):
+        // start sign-in again instead of crashing.
+        redirect: (_, _) =>
+            ref.read(pendingOtpProvider) == null ? Routes.welcome : null,
+        builder: (_, _) {
+          final args = ref.read(pendingOtpProvider);
+          return args == null ? const WelcomeScreen() : OtpScreen(args: args);
+        },
       ),
       GoRoute(
         path: Routes.completeProfile,

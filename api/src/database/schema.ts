@@ -501,6 +501,121 @@ export interface RiskFlagsTable {
   created_at: CreatedAt;
 }
 
+export interface NotificationsTable {
+  id: Generated<string>;
+  user_id: string | null;
+  payment_id: string | null;
+  audience: 'TOURIST' | 'MERCHANT';
+  channel: 'IN_APP' | 'PUSH' | 'SMS' | 'EMAIL';
+  template: string;
+  locale: Generated<string>;
+  title: string | null;
+  body: string | null;
+  deep_link: string | null;
+  dedupe_key: string;
+  status: Generated<'PENDING' | 'SENT' | 'FAILED' | 'SUPPRESSED'>;
+  status_reason: string | null;
+  attempts: Generated<number>;
+  provider_message_id: string | null;
+  read_at: NullableTimestamp;
+  sent_at: NullableTimestamp;
+  created_at: CreatedAt;
+  updated_at: Updatable;
+}
+
+export interface PushTokensTable {
+  id: Generated<string>;
+  user_id: string;
+  session_id: string;
+  platform: 'ios' | 'android';
+  token_encrypted: string;
+  token_hash: string;
+  created_at: CreatedAt;
+  revoked_at: NullableTimestamp;
+}
+
+export type TicketCategory =
+  | 'SELLER_NOT_PAID'
+  | 'WRONG_AMOUNT'
+  | 'CHARGED_BUT_FAILED'
+  | 'CHARGED_TWICE'
+  | 'WRONG_SELLER'
+  | 'REFUND_REQUEST'
+  | 'APP_PROBLEM'
+  | 'OTHER';
+export type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+
+export interface TicketsTable {
+  id: Generated<string>;
+  reference: string;
+  user_id: string;
+  payment_id: string | null;
+  category: TicketCategory;
+  message: string | null;
+  payment_state_snapshot: string | null;
+  status: Generated<TicketStatus>;
+  assignee_id: string | null;
+  resolution_note: string | null;
+  created_at: CreatedAt;
+  updated_at: Updatable;
+  resolved_at: NullableTimestamp;
+}
+
+export interface ReconciliationRunsTable {
+  id: Generated<string>;
+  business_date: string;
+  provider: string;
+  source: 'STATUS_API' | 'SETTLEMENT_FILE';
+  file_name: string | null;
+  file_sha256: string | null;
+  status: 'RUNNING' | 'COMPLETED' | 'FAILED';
+  totals: ColumnType<Record<string, number>, string | undefined, string>;
+  error: string | null;
+  triggered_by: string;
+  started_at: CreatedAt;
+  completed_at: NullableTimestamp;
+}
+
+export type MatchState =
+  | 'MATCHED'
+  | 'MISSING_AT_PROVIDER'
+  | 'MISSING_INTERNAL'
+  | 'AMOUNT_MISMATCH'
+  | 'STATUS_MISMATCH'
+  | 'CURRENCY_MISMATCH'
+  | 'REVERSAL';
+
+export interface ReconciliationItemsTable {
+  id: Generated<string>;
+  run_id: string;
+  payment_id: string | null;
+  operation_type: string | null;
+  internal_reference: string | null;
+  provider_reference: string | null;
+  match_state: MatchState;
+  internal_amount: BigIntColumn | null;
+  provider_amount: BigIntColumn | null;
+  currency: string | null;
+  internal_status: string | null;
+  provider_status: string | null;
+  details: ColumnType<Record<string, unknown>, string | undefined, string>;
+  resolution_status: Generated<'UNRESOLVED' | 'RESOLVED' | 'NOT_APPLICABLE'>;
+  resolved_by: string | null;
+  resolved_at: NullableTimestamp;
+  resolution_note: string | null;
+  created_at: CreatedAt;
+}
+
+export interface AnalyticsEventsTable {
+  id: Generated<string>;
+  event_name: string;
+  user_id: string | null;
+  properties: ColumnType<Record<string, unknown>, string | undefined, string>;
+  occurred_at: Timestamp;
+  received_at: CreatedAt;
+  source: 'APP' | 'SERVER';
+}
+
 export interface DB {
   audit_logs: AuditLogsTable;
   outbox_events: OutboxEventsTable;
@@ -528,4 +643,10 @@ export interface DB {
   payment_adjustments: PaymentAdjustmentsTable;
   inbound_provider_events: InboundProviderEventsTable;
   risk_flags: RiskFlagsTable;
+  notifications: NotificationsTable;
+  push_tokens: PushTokensTable;
+  tickets: TicketsTable;
+  reconciliation_runs: ReconciliationRunsTable;
+  reconciliation_items: ReconciliationItemsTable;
+  analytics_events: AnalyticsEventsTable;
 }

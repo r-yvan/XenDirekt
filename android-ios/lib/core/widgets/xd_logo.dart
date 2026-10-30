@@ -19,14 +19,19 @@ class XdLogo extends StatelessWidget {
       image: true,
       child: SizedBox.square(
         dimension: size,
-        child: const CustomPaint(painter: _XdLogoPainter()),
+        child: CustomPaint(
+          // The receive chevron is white on dark, near-black on light.
+          painter: _XdLogoPainter(receive: context.xd.textPrimary),
+        ),
       ),
     );
   }
 }
 
 class _XdLogoPainter extends CustomPainter {
-  const _XdLogoPainter();
+  const _XdLogoPainter({required this.receive});
+
+  final Color receive;
 
   // Outline traced from the 480×480 brand mark in the PRD, normalised to 0..1.
   static const _send = [
@@ -57,9 +62,10 @@ class _XdLogoPainter extends CustomPainter {
 
     canvas
       ..drawPath(pathFor(_send), Paint()..color = AppColors.brandOrange)
-      ..drawPath(pathFor(_receive), Paint()..color = AppColors.brandWhite);
+      ..drawPath(pathFor(_receive), Paint()..color = receive);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _XdLogoPainter oldDelegate) =>
+      oldDelegate.receive != receive;
 }

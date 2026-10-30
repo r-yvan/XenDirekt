@@ -28,6 +28,11 @@ describe('cards, payees and quotes (e2e, mock provider)', () => {
       const page = await e2e.http.get(new URL(setup.body.hostedUrl).pathname).expect(200);
       expect(page.text).toContain('SANDBOX');
       expect(page.text).not.toMatch(/name="(pan|cardNumber|cvv)"/i);
+      // Over plain-HTTP development, upgrade-insecure-requests made the WebView post the
+      // form to https:// and fail the TLS handshake (found on the emulator).
+      const csp = String(page.headers['content-security-policy']);
+      expect(csp).toContain("form-action 'self'");
+      expect(csp).not.toContain('upgrade-insecure-requests');
 
       const added = await addCard(e2e, tourist);
       expect(added.status).toBe(201);
@@ -43,7 +48,7 @@ describe('cards, payees and quotes (e2e, mock provider)', () => {
 
       const row = await e2e.db.selectFrom('cards').selectAll().executeTakeFirstOrThrow();
       expect(row.provider_token_encrypted).toMatch(/^v1\.k1\./);
-      expect(JSON.stringify(row)).not.toContain('mock_tok_');
+      expect(JSON.stringify(row)).not.toContain('mock_tok');
 
       const list = await e2e.http.get('/v1/cards').set(tourist.auth).expect(200);
       recordContract('cards_list', list.body);

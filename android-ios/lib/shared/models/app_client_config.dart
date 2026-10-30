@@ -48,6 +48,9 @@ class AppClientConfig {
   final String privacyUrl;
   final String? bannerKind;
 
+  /// Operations paused new payments (provider outage runbook).
+  bool get paymentsPaused => bannerKind == 'PAYMENTS_PAUSED';
+
   /// Simulated money: every screen shows the sandbox banner.
   bool get isSandbox => providerMode == 'SANDBOX';
 }

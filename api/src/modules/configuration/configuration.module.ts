@@ -1,10 +1,11 @@
 import { Global, Module } from '@nestjs/common';
+import { AdminConfigController } from './admin-config.controller';
 import { ClientConfigController } from './client-config.controller';
 import { ConfigurationService } from './configuration.service';
 
 @Global()
 @Module({
-  controllers: [ClientConfigController],
+  controllers: [ClientConfigController, AdminConfigController],
   providers: [ConfigurationService],
   exports: [ConfigurationService],
 })

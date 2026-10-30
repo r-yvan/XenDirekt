@@ -1,6 +1,6 @@
 {
-  "id": "1a3495fc-d380-4b5c-8abc-edc9cfaccc95",
-  "reference": "XD-KM5EDF",
+  "id": "1bc9b1dd-a0f5-4c33-ba3e-86fdc2f6cf42",
+  "reference": "XD-5UF86Y",
   "state": "VOIDED",
   "status": "FAILED",
   "chargeStatus": "NOT_CHARGED",
@@ -29,8 +29,8 @@
   },
   "note": "2 baskets",
   "simulated": true,
-  "createdAt": "2026-10-26T12:57:06.164Z",
-  "updatedAt": "2026-10-26T12:57:06.234Z",
+  "createdAt": "2026-10-27T15:18:51.137Z",
+  "updatedAt": "2026-10-27T15:18:51.225Z",
   "completedAt": null,
   "receipt": null
 }

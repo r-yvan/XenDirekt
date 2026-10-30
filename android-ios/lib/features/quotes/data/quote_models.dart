@@ -12,6 +12,7 @@ class Quote {
     required this.cardCurrency,
     required this.totalCardDisplay,
     required this.fxRateDisplay,
+    required this.payeeId,
     required this.payeeName,
     required this.payeeMasked,
     required this.cardId,
@@ -32,6 +33,7 @@ class Quote {
       cardCurrency: readString(json, 'cardCurrency'),
       totalCardDisplay: readString(json, 'totalCardDisplay'),
       fxRateDisplay: readString(json, 'fxRateDisplay'),
+      payeeId: readString(payee, 'payeeId'),
       payeeName: readString(payee, 'registeredName'),
       payeeMasked: readString(payee, 'maskedIdentifier'),
       cardId: readString(card, 'id'),
@@ -53,6 +55,7 @@ class Quote {
   final String cardCurrency;
   final String totalCardDisplay;
   final String fxRateDisplay;
+  final String payeeId;
   final String payeeName;
   final String payeeMasked;
   final String cardId;

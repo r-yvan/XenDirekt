@@ -1,6 +1,6 @@
 {
-  "id": "7aea98c5-aba1-4f61-8d0b-18c46dfea5ee",
-  "reference": "XD-FTHTHX",
+  "id": "ba6e17a6-3858-46f5-8310-d14cea2e1060",
+  "reference": "XD-3RXJTH",
   "state": "AUTH_FAILED",
   "status": "FAILED",
   "chargeStatus": "NOT_CHARGED",
@@ -29,8 +29,8 @@
   },
   "note": "2 baskets",
   "simulated": true,
-  "createdAt": "2026-10-26T12:57:05.173Z",
-  "updatedAt": "2026-10-26T12:57:05.188Z",
+  "createdAt": "2026-10-27T15:18:50.189Z",
+  "updatedAt": "2026-10-27T15:18:50.215Z",
   "completedAt": null,
   "receipt": null
 }

@@ -45,6 +45,9 @@ export class QuotesService {
       this.configuration.get('LIMITS'),
       this.configuration.get('FX_RATES'),
     ]);
+    if (limits.value.paymentsPaused) {
+      throw new AppError('PAYMENTS_PAUSED');
+    }
     for (const config of [fees, limits, fx]) {
       this.configuration.assertUsable(config);
     }

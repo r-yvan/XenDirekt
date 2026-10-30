@@ -34,6 +34,7 @@ String messageForFailure(AppLocalizations l10n, Object error) {
     'CONFIGURATION_NOT_APPROVED' ||
     'FEATURE_DISABLED' => l10n.errorCapabilityNotConfigured,
     'PROVIDER_UNAVAILABLE' => l10n.errorProviderUnavailable,
+    'PAYMENTS_PAUSED' => l10n.errorPaymentsPaused,
     _ => l10n.errorGeneric,
   };
 }

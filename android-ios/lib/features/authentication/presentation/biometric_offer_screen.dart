@@ -8,7 +8,9 @@ import '../../../app/router/routes.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../core/errors/api_failure.dart';
 import '../../../core/errors/error_messages.dart';
+import '../../../core/widgets/primary_button.dart';
 import '../application/biometric_enrolment.dart';
+import 'auth_layout.dart';
 
 /// Offered once, right after the PIN (FR-ONB-04: same step).
 class BiometricOfferScreen extends ConsumerStatefulWidget {
@@ -54,45 +56,29 @@ class _BiometricOfferScreenState extends ConsumerState<BiometricOfferScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Spacer(),
-              const Icon(
-                Icons.fingerprint,
-                size: 72,
-                color: AppColors.brandOrange,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                l10n.enableBiometricsTitle,
-                style: Theme.of(context).textTheme.headlineSmall,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                l10n.enableBiometricsBody,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.textSecondary),
-              ),
-              const Spacer(),
-              FilledButton(
-                onPressed: _busy ? null : _enable,
-                child: Text(l10n.enableBiometrics),
-              ),
-              const SizedBox(height: 12),
-              TextButton(
-                onPressed: _busy ? null : _finish,
-                child: Text(l10n.notNow),
-              ),
-            ],
-          ),
+    return AuthLayout(
+      centered: true,
+      icon: Icons.fingerprint_rounded,
+      title: l10n.enableBiometricsTitle,
+      subtitle: l10n.enableBiometricsBody,
+      actions: [
+        PrimaryButton(
+          label: l10n.enableBiometrics,
+          icon: Icons.fingerprint_rounded,
+          loading: _busy,
+          onPressed: _busy ? null : _enable,
         ),
-      ),
+        const SizedBox(height: 8),
+        TextButton(
+          onPressed: _busy ? null : _finish,
+          style: TextButton.styleFrom(
+            foregroundColor: context.xd.textSecondary,
+            minimumSize: const Size.fromHeight(48),
+          ),
+          child: Text(l10n.notNow),
+        ),
+      ],
+      child: const SizedBox.shrink(),
     );
   }
 }

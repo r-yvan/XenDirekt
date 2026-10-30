@@ -13,6 +13,7 @@ import '../../../core/errors/error_messages.dart';
 import '../../../core/widgets/digit_code_field.dart';
 import '../application/session_controller.dart';
 import '../data/auth_models.dart';
+import 'auth_layout.dart';
 
 /// 6-digit code that submits itself on the last digit (FR-ONB-02).
 class OtpScreen extends ConsumerStatefulWidget {
@@ -109,50 +110,78 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                l10n.otpTitle,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                l10n.otpSentTo(_challenge.destinationMasked),
-                style: const TextStyle(color: AppColors.textSecondary),
-              ),
-              const SizedBox(height: 32),
-              AutofillGroup(
-                child: DigitCodeField(
-                  length: _challenge.codeLength,
-                  controller: _codeController,
-                  autofillOneTimeCode: true,
-                  enabled: !_busy,
-                  semanticLabel: l10n.otpFieldLabel,
-                  errorText: _error,
-                  onCompleted: _verify,
-                ),
-              ),
-              const SizedBox(height: 24),
-              if (_busy) const Center(child: CircularProgressIndicator()),
-              Center(
-                child: TextButton(
-                  onPressed: _resendIn == 0 && !_busy ? _resend : null,
-                  child: Text(
-                    _resendIn == 0
-                        ? l10n.otpResend
-                        : l10n.otpResendIn(_resendIn),
-                  ),
-                ),
-              ),
-            ],
+    final theme = Theme.of(context).textTheme;
+    final isEmail = widget.args.channel == 'EMAIL';
+    return AuthLayout(
+      showBack: true,
+      step: 1,
+      icon: isEmail ? Icons.mark_email_read_outlined : Icons.sms_outlined,
+      title: l10n.otpTitle,
+      subtitle: l10n.otpSentTo(_challenge.destinationMasked),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AutofillGroup(
+            child: DigitCodeField(
+              length: _challenge.codeLength,
+              controller: _codeController,
+              autofillOneTimeCode: true,
+              enabled: !_busy,
+              semanticLabel: l10n.otpFieldLabel,
+              errorText: _error,
+              onCompleted: _verify,
+            ),
           ),
-        ),
+          const SizedBox(height: 28),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            child: _busy
+                ? const Center(
+                    key: ValueKey('busy'),
+                    child: SizedBox.square(
+                      dimension: 26,
+                      child: CircularProgressIndicator(strokeWidth: 2.4),
+                    ),
+                  )
+                : Center(
+                    key: const ValueKey('resend'),
+                    child: _resendIn == 0
+                        ? TextButton.icon(
+                            onPressed: _resend,
+                            icon: const Icon(Icons.refresh_rounded, size: 18),
+                            label: Text(l10n.otpResend),
+                          )
+                        : Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: context.xd.surface1,
+                              borderRadius: BorderRadius.circular(999),
+                              border: Border.all(color: context.xd.hairline),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.schedule_rounded,
+                                  size: 16,
+                                  color: context.xd.textTertiary,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  l10n.otpResendIn(_resendIn),
+                                  style: theme.labelMedium?.copyWith(
+                                    color: context.xd.textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                  ),
+          ),
+        ],
       ),
     );
   }

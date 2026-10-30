@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 /// Build-time configuration, injected with `--dart-define` (see .env.example).
 /// Nothing secret belongs here: anything in the app binary can be extracted.
 /// The payment provider's API key lives only on the XenDirekt backend.
@@ -9,11 +11,15 @@ class AppConfig {
   });
 
   factory AppConfig.fromEnvironment() {
-    const apiBaseUrl = String.fromEnvironment(
-      'API_BASE_URL',
-      // Android emulator alias for the developer machine.
-      defaultValue: 'http://10.0.2.2:3000',
-    );
+    const definedApiBaseUrl = String.fromEnvironment('API_BASE_URL');
+    final apiBaseUrl = definedApiBaseUrl.isNotEmpty
+        ? definedApiBaseUrl
+        : kIsWeb
+        // Web preview: the API on the same host that served the page, so one
+        // build works from localhost and from a phone on the LAN.
+        ? '${Uri.base.scheme}://${Uri.base.host}:3000'
+        // Android emulator alias for the developer machine.
+        : 'http://10.0.2.2:3000';
     const environment = String.fromEnvironment(
       'APP_ENV',
       defaultValue: 'local',

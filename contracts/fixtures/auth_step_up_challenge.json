@@ -1,7 +1,7 @@
 {
-  "challengeId": "6c76be7c-b203-4264-90b8-bda05aace661",
+  "challengeId": "b49c252c-e654-4f85-a9c9-a005dc12ae19",
   "nonce": "<nonce>",
   "purpose": "DELETE_ACCOUNT",
-  "expiresAt": "2026-10-26T12:59:02.445Z",
-  "signingMessage": "xendirekt-step-up:v1:6c76be7c-b203-4264-90b8-bda05aace661:XAhrqK1azZM4HLhMsKgbdOEsRJM81Y01:DELETE_ACCOUNT"
+  "expiresAt": "2026-10-27T15:20:38.932Z",
+  "signingMessage": "xendirekt-step-up:v1:b49c252c-e654-4f85-a9c9-a005dc12ae19:M5_9vonuN9DxqTjj5pYd8wlOXqn8O6Gr:DELETE_ACCOUNT"
 }

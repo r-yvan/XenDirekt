@@ -5,6 +5,7 @@
   "continueLabel": "Continue",
   "retry": "Try again",
   "cancel": "Cancel",
+  "hostedPageInNewTab": "The page opened in a new tab. Finish there, then come back and tap Continue.",
   "done": "Done",
   "undo": "Undo",
   "close": "Close",
@@ -12,6 +13,7 @@
   "sandboxBanner": "Sandbox: no real money moves",
   "offlineBanner": "You're offline. We'll reconnect automatically.",
   "providerOutageBanner": "Payments are slower than usual right now. You will never be charged twice.",
+  "paymentsPausedBanner": "Payments are paused for a moment. Nothing you paid is affected.",
   "tabPay": "Pay",
   "tabHistory": "History",
   "tabProfile": "Profile",
@@ -91,13 +93,14 @@
   "errorAmountRange": "The amount is outside the allowed range.",
   "errorLimitExceeded": "This payment is above your limit. Verify your identity to raise it.",
   "errorCardDeclined": "Your bank declined this payment. Try another card or contact your bank.",
-  "errorThreeDsAbandoned": "Payment not completed. You were not charged.",
-  "errorPayoutFailed": "The seller's MoMo couldn't receive this payment. You have not been charged.",
+  "errorThreeDsAbandoned": "Your bank's security check wasn't completed, so the payment was stopped.",
+  "errorPayoutFailed": "The seller's MoMo account couldn't receive this payment, so we stopped it.",
   "errorPendingReview": "Your payment is being checked. We'll notify you within 30 minutes.",
   "errorCardNotEligible": "This card can't be used with XenDirekt.",
   "errorCardLimit": "You can save up to 3 cards.",
   "errorCapabilityNotConfigured": "This isn't available yet.",
   "errorProviderUnavailable": "Our payment partner isn't responding. Please try again shortly.",
+  "errorPaymentsPaused": "Payments are paused for a moment. You have not been charged. Please try again shortly.",
   "errorInsecureConnection": "We couldn't open a secure connection. Check your network.",
   "chooseCountry": "Choose your country",
   "searchCountry": "Search",
@@ -138,5 +141,217 @@
       }
     }
   },
-  "errorCardSetupFailed": "Your bank couldn't verify this card. Try another card."
+  "errorCardSetupFailed": "Your bank couldn't verify this card. Try another card.",
+  "momoNumberLabel": "Seller's MTN MoMo number",
+  "momoNumberHint": "078 123 4567",
+  "mtnMomo": "MTN MoMo",
+  "lookingUp": "Finding the account…",
+  "checkNameHint": "Check the name with the seller before you pay.",
+  "amountLabel": "Amount in RWF",
+  "sellerReceives": "Seller receives",
+  "xendirektFee": "XenDirekt fee",
+  "youPay": "You pay",
+  "exchangeRate": "Rate",
+  "payWithCard": "Card",
+  "chooseCard": "Choose a card",
+  "recentPayees": "Recent",
+  "payButton": "Pay",
+  "quoteRefreshing": "Updating the price…",
+  "noteLabel": "Note for the seller (optional)",
+  "stepProcessing": "Processing",
+  "stepSent": "Sent",
+  "stepReceived": "Received",
+  "checkingPayment": "Checking your payment…",
+  "confirmWithBank": "Confirm with your bank",
+  "confirmWithBankBody": "Your bank needs to confirm this payment.",
+  "openBankCheck": "Continue",
+  "successTitle": "Payment sent",
+  "successBody": "{name} received {amount}.",
+  "@successBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "failedTitle": "Payment not completed",
+  "notCharged": "You have not been charged.",
+  "holdReleasing": "Your bank's hold is being released. You have not been charged.",
+  "reviewTitle": "We're checking your payment",
+  "refundedTitle": "Payment refunded",
+  "shareReceipt": "Share receipt",
+  "receiptTitle": "Receipt",
+  "reference": "Reference",
+  "dateTime": "Date (Kigali time)",
+  "merchant": "Seller",
+  "cardCharged": "Card",
+  "statusLabel": "Status",
+  "statusCompleted": "Completed",
+  "statusFailed": "Failed",
+  "statusInProgress": "In progress",
+  "statusInReview": "Being checked",
+  "statusRefunded": "Refunded",
+  "filterAll": "All",
+  "noPayments": "Your payments will appear here.",
+  "loadMore": "Load more",
+  "payAgain": "Pay again",
+  "addCardToPay": "Add a card to pay",
+  "sandboxReceiptNote": "Sandbox: simulated, no real money moved.",
+  "receiptShareText": "XenDirekt receipt {reference}\nPaid {amountRwf} to {merchant} on {date} (Kigali).\nCharged {total} to {card}.",
+  "@receiptShareText": {
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      },
+      "amountRwf": {
+        "type": "String"
+      },
+      "merchant": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "card": {
+        "type": "String"
+      }
+    }
+  },
+  "reportProblem": "Report a problem",
+  "reportProblemTitle": "What went wrong?",
+  "reportSent": "Thanks — we've received your report {reference}.",
+  "@reportSent": {
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "ticketSellerNotPaid": "Seller didn't receive it",
+  "ticketWrongAmount": "Wrong amount",
+  "ticketChargedButFailed": "Charged but it failed",
+  "ticketChargedTwice": "Charged twice",
+  "ticketWrongSeller": "Paid the wrong seller",
+  "ticketRefundRequest": "I need a refund",
+  "ticketAppProblem": "Problem with the app",
+  "ticketOther": "Something else",
+  "addDetails": "Add details (optional)",
+  "send": "Send",
+  "helpCentre": "Help",
+  "myRequests": "My requests",
+  "noRequests": "You haven't reported any problems.",
+  "contactSupport": "Contact support",
+  "notificationsTitle": "Notifications",
+  "noNotifications": "You're all caught up.",
+  "ticketStatusOpen": "Open",
+  "ticketStatusInProgress": "In progress",
+  "ticketStatusResolved": "Resolved",
+  "ticketStatusClosed": "Closed",
+  "faq1q": "How does XenDirekt work?",
+  "faq1a": "Type the seller's MTN MoMo number and the amount in Rwandan francs. We show the name registered to that account, the fee and what your card will be charged. Tap Pay, confirm with Face ID or your PIN, and the seller receives francs in their MoMo account.",
+  "faq2q": "Will I be charged if a payment fails?",
+  "faq2a": "No. Your card is only held first and charged after the seller's MoMo account has received the money. If the seller can't receive it, the hold is released and you are not charged.",
+  "faq3q": "Which numbers can I pay?",
+  "faq3a": "Any active MTN MoMo account in Rwanda. Other networks are not supported yet.",
+  "faq4q": "Is my card safe?",
+  "faq4a": "Your card details are entered on our licensed payment partner's secure page. XenDirekt never sees or stores your card number or security code.",
+  "faq5q": "What fees do I pay?",
+  "faq5a": "You see the XenDirekt fee, the exchange rate and the exact total in your card's currency before you pay. Your bank may add its own foreign transaction fees.",
+  "faq6q": "What is the extra check from my bank?",
+  "faq6a": "Banks often ask you to confirm the first payment with a card (3-D Secure), for example with a code or in your banking app. It protects you from fraud.",
+  "faq7q": "The seller says the money didn't arrive. What now?",
+  "faq7a": "Open the payment in History and tap Report a problem. The payment reference is attached automatically and our team will look into it.",
+  "faq8q": "Why is my payment being checked?",
+  "faq8a": "Sometimes the mobile money network doesn't answer in time, or a payment needs a quick safety review. We'll update you within 30 minutes, and you'll never be charged twice.",
+  "ageYears": "{age, plural, =1{1 year old} other{{age} years old}}",
+  "@ageYears": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "dobPickerSubtitle": "You must be 18 or older to use XenDirekt.",
+  "profileSubtitle": "A few details to keep your payments safe. It takes 30 seconds.",
+  "stepOf": "Step {current} of {total}",
+  "@stepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "selectPlaceholder": "Select",
+  "sectionPreferences": "Preferences",
+  "sectionSupport": "Support",
+  "sectionDangerZone": "Danger zone",
+  "sandboxAccount": "Sandbox account",
+  "verifiedAccount": "Verified",
+  "cardsCount": "{count, plural, =0{No cards yet} =1{1 of 3 cards} other{{count} of 3 cards}}",
+  "@cardsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addFirstCardTitle": "Add your first card",
+  "addFirstCardBody": "Card details go straight to our payment partner. XenDirekt never sees your card number.",
+  "biometricsSubtitle": "Approve payments with a glance or a touch",
+  "changePinSubtitle": "Your 6-digit fallback code",
+  "notificationsSubtitle": "Payment updates and messages",
+  "helpSubtitle": "Questions, problems and requests",
+  "termsSubtitle": "How we handle your data",
+  "greetingMorning": "Good morning",
+  "greetingAfternoon": "Good afternoon",
+  "greetingEvening": "Good evening",
+  "greetingWithName": "{greeting}, {name}",
+  "@greetingWithName": {
+    "placeholders": {
+      "greeting": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "paySubtitle": "Pay any MTN MoMo account with your card.",
+  "sendTo": "Send to",
+  "amountSection": "Amount",
+  "payWithLabel": "Pay with",
+  "summarySection": "Summary",
+  "rateHeldFor": "Rate held for {time}",
+  "@rateHeldFor": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "registeredNameVerified": "Registered name",
+  "historySubtitle": "Every payment you have made, newest first.",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "noPaymentsTitle": "No payments yet",
+  "makePayment": "Make a payment",
+  "featureMomo": "Pay any MTN MoMo number or shop",
+  "featureCard": "Use the Visa or Mastercard you already carry",
+  "featureName": "See the seller's registered name before you pay",
+  "securedByPartner": "Card details are handled by our licensed payment partner.",
+  "signInSubtitleEmail": "We'll send you a 6-digit code. No password needed.",
+  "signInSubtitlePhone": "We'll text you a 6-digit code. No password needed.",
+  "appearance": "Appearance",
+  "themeSystem": "Same as device",
+  "themeLight": "Light",
+  "themeDark": "Dark"
 }

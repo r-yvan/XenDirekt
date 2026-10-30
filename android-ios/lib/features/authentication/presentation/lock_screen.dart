@@ -3,12 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/localization/generated/app_localizations.dart';
 import '../../../app/providers.dart';
+import '../../../app/theme/app_colors.dart';
 import '../../../core/errors/api_failure.dart';
 import '../../../core/errors/error_messages.dart';
+import '../../../core/security/screen_security.dart';
 import '../../../core/widgets/digit_code_field.dart';
+import '../../../core/widgets/primary_button.dart';
 import '../../../core/widgets/state_views.dart';
-import '../../../core/widgets/xd_logo.dart';
+import '../../../core/widgets/ui_kit.dart';
 import '../application/session_controller.dart';
+import 'auth_layout.dart';
 
 /// Shown on cold start and after 5 minutes in the background (NFR-SEC-04).
 /// Biometrics start automatically; the PIN is checked by the server.
@@ -92,58 +96,57 @@ class _LockScreenState extends ConsumerState<LockScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final session = ref.watch(sessionControllerProvider);
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 32),
-              const Center(child: XdLogo(size: 64)),
-              const SizedBox(height: 24),
-              Text(
-                session.profile?.firstName == null
-                    ? l10n.unlockTitle
-                    : '${l10n.unlockTitle}, ${session.profile!.firstName}',
-                style: Theme.of(context).textTheme.headlineSmall,
-                textAlign: TextAlign.center,
+    final firstName = session.profile?.firstName;
+    return SecureScreen(
+      child: AuthLayout(
+        centered: true,
+        hero: InitialsAvatar(name: session.profile?.fullName ?? 'X', size: 88),
+        title: firstName == null
+            ? l10n.unlockTitle
+            : '${l10n.unlockTitle}, $firstName',
+        subtitle: session.offline ? l10n.offlineBanner : null,
+        actions: [
+          if (!_showPin) ...[
+            PrimaryButton(
+              label: l10n.unlockWithBiometrics,
+              icon: Icons.fingerprint_rounded,
+              onPressed: _busy ? null : _tryBiometrics,
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () => setState(() => _showPin = true),
+              style: TextButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
               ),
-              if (session.offline) ...[
-                const SizedBox(height: 12),
-                Text(l10n.offlineBanner, textAlign: TextAlign.center),
-              ],
-              const SizedBox(height: 32),
-              if (_showPin)
-                DigitCodeField(
-                  length: 6,
-                  obscure: true,
-                  controller: _controller,
-                  enabled: !_busy,
-                  semanticLabel: l10n.pinFieldLabel,
-                  errorText: _error,
-                  onCompleted: _pin,
-                )
-              else ...[
-                FilledButton.icon(
-                  onPressed: _tryBiometrics,
-                  icon: const Icon(Icons.fingerprint),
-                  label: Text(l10n.unlockWithBiometrics),
-                ),
-                TextButton(
-                  onPressed: () => setState(() => _showPin = true),
-                  child: Text(l10n.usePinInstead),
-                ),
-              ],
-              if (_error != null && !_showPin) InlineError(_error!),
-              const Spacer(),
-              TextButton(
-                onPressed: () =>
-                    ref.read(sessionControllerProvider.notifier).signOut(),
-                child: Text(l10n.logOut),
-              ),
-            ],
+              child: Text(l10n.usePinInstead),
+            ),
+          ],
+          TextButton.icon(
+            onPressed: () =>
+                ref.read(sessionControllerProvider.notifier).signOut(),
+            style: TextButton.styleFrom(
+              foregroundColor: context.xd.textSecondary,
+              minimumSize: const Size.fromHeight(48),
+            ),
+            icon: const Icon(Icons.logout_rounded, size: 18),
+            label: Text(l10n.logOut),
           ),
+        ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (_showPin)
+              DigitCodeField(
+                length: 6,
+                obscure: true,
+                controller: _controller,
+                enabled: !_busy,
+                semanticLabel: l10n.pinFieldLabel,
+                errorText: _error,
+                onCompleted: _pin,
+              ),
+            if (_error != null && !_showPin) InlineError(_error!),
+          ],
         ),
       ),
     );

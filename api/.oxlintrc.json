@@ -14,8 +14,15 @@
   },
   "overrides": [
     {
-      "files": ["src/database/cli/**", "src/modules/admin/cli/**", "src/scripts/**"],
-      "rules": { "no-console": "off" }
+      "files": [
+        "src/database/cli/**",
+        "src/modules/admin/cli/**",
+        "src/scripts/**",
+        "src/modules/provider/xentripay/cli/**"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
     }
   ]
 }

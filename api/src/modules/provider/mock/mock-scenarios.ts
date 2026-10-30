@@ -12,9 +12,22 @@ export interface MockCard {
   funding: 'CREDIT' | 'DEBIT' | 'PREPAID';
   currency: string | null;
   behaviour: 'OK' | 'ALWAYS_3DS' | 'DECLINE' | 'CAPTURE_FAILS' | 'SETUP_FAILS';
+  /** A physical card nobody has used before: a fresh fingerprint on every setup. */
+  uniqueFingerprint?: boolean;
 }
 
 export const MOCK_CARDS: MockCard[] = [
+  {
+    key: 'visa-new',
+    label: 'Visa •••• 6011 · a brand-new card (unique fingerprint)',
+    brand: 'VISA',
+    last4: '6011',
+    issuingCountry: null,
+    funding: 'CREDIT',
+    currency: null,
+    behaviour: 'OK',
+    uniqueFingerprint: true,
+  },
   {
     key: 'visa-home',
     label: 'Visa •••• 4242 · credit · issued in your country',

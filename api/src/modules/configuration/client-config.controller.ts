@@ -4,6 +4,7 @@ import { Public } from '../../common/decorators/public.decorator';
 import { AppConfig } from '../../config/app-config';
 import { PIN_LENGTH } from '../auth/domain/pin-policy';
 import { OTP_LENGTH, OTP_RESEND_COOLDOWN_MS } from '../auth/otp.service';
+import { ConfigurationService } from './configuration.service';
 
 /**
  * What the app needs to render correctly before sign-in: whether money is simulated, which
@@ -14,10 +15,14 @@ import { OTP_LENGTH, OTP_RESEND_COOLDOWN_MS } from '../auth/otp.service';
 @Public()
 @Controller('v1/app-config')
 export class ClientConfigController {
-  constructor(private readonly config: AppConfig) {}
+  constructor(
+    private readonly config: AppConfig,
+    private readonly configuration: ConfigurationService,
+  ) {}
 
   @Get()
-  get() {
+  async get() {
+    const limits = await this.configuration.get('LIMITS');
     return {
       environment: this.config.environment,
       providerMode: this.config.usesSimulatedProvider ? 'SANDBOX' : 'LIVE',
@@ -40,7 +45,7 @@ export class ClientConfigController {
         termsUrl: this.config.legal.termsUrl,
         privacyUrl: this.config.legal.privacyUrl,
       },
-      banner: null as null | { kind: 'PROVIDER_DEGRADED'; since: string },
+      banner: limits.value.paymentsPaused ? { kind: 'PAYMENTS_PAUSED' as const } : null,
     };
   }
 }

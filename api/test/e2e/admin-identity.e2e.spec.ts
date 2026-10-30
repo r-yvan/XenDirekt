@@ -1,33 +1,7 @@
 import { totpAt, totpStep } from '../../src/shared/crypto/totp';
 import { AdminAuthService } from '../../src/modules/admin/admin-auth.service';
 import { createE2eApp, E2eApp } from '../support/e2e-app';
-import { signIn } from '../support/flows';
-
-export async function adminSession(
-  e2e: E2eApp,
-  role: 'VIEWER' | 'SUPPORT_AGENT' | 'RISK_ANALYST' | 'ADMIN',
-  email = `${role.toLowerCase()}@xendirekt.test`,
-) {
-  const created = await e2e.app
-    .get(AdminAuthService)
-    .createAdmin({ email, fullName: `${role} User`, role, createdBy: 'test' });
-  const login = await e2e.http
-    .post('/v1/admin/auth/login')
-    .send({ email, password: created.initialPassword })
-    .expect(200);
-  const tokens = await e2e.http
-    .post('/v1/admin/auth/totp')
-    .send({
-      challengeToken: login.body.challengeToken,
-      totp: totpAt(created.totpSecret, totpStep(e2e.clock.now())),
-    })
-    .expect(200);
-  return {
-    ...created,
-    accessToken: tokens.body.accessToken as string,
-    auth: { Authorization: `Bearer ${tokens.body.accessToken}` },
-  };
-}
+import { adminSession, signIn } from '../support/flows';
 
 describe('admin identity (e2e)', () => {
   let e2e: E2eApp;

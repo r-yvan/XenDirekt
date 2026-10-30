@@ -75,6 +75,11 @@ export const ERROR_DEFINITIONS = {
   },
   REFUND_NOT_ALLOWED: { status: 409, message: 'This payment cannot be refunded.' },
 
+  PAYMENTS_PAUSED: {
+    status: 503,
+    message:
+      'Payments are paused for a moment. You have not been charged. Please try again shortly.',
+  },
   PROVIDER_UNAVAILABLE: {
     status: 503,
     message: 'Our payment partner is not responding. Please try again shortly.',

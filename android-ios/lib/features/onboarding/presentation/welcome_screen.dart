@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../../app/localization/generated/app_localizations.dart';
 import '../../../app/router/routes.dart';
 import '../../../app/theme/app_colors.dart';
+import '../../../core/widgets/motion/fade_slide_in.dart';
+import '../../../core/widgets/primary_button.dart';
+import '../../../core/widgets/ui_kit.dart';
 import '../../../core/widgets/xd_logo.dart';
 import '../../authentication/application/session_controller.dart';
 
@@ -16,44 +19,125 @@ class WelcomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context).textTheme;
     final config = ref.watch(sessionControllerProvider).clientConfig;
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Spacer(),
-              const Center(child: XdLogo(size: 88)),
-              const SizedBox(height: 32),
-              Text(
-                l10n.welcomeTitle,
-                style: Theme.of(context).textTheme.headlineMedium,
-                textAlign: TextAlign.center,
+        child: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 12, 24, 16),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight - 28,
               ),
-              const SizedBox(height: 12),
-              Text(
-                l10n.tagline,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.textSecondary),
+              child: IntrinsicHeight(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Spacer(),
+                    FadeSlideIn(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          width: 84,
+                          height: 84,
+                          decoration: BoxDecoration(
+                            color: context.xd.surface1,
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(color: context.xd.hairline),
+                          ),
+                          alignment: Alignment.center,
+                          child: const XdLogo(size: 48),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 120),
+                      child: Text(
+                        l10n.welcomeTitle,
+                        style: theme.displaySmall?.copyWith(
+                          fontSize: 34,
+                          height: 1.08,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 180),
+                      child: Text(
+                        l10n.tagline,
+                        style: theme.bodyLarge?.copyWith(
+                          color: context.xd.textSecondary,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 22),
+                    for (final (index, (icon, text)) in [
+                      (Icons.storefront_rounded, l10n.featureMomo),
+                      (Icons.credit_card_rounded, l10n.featureCard),
+                      (Icons.verified_user_outlined, l10n.featureName),
+                    ].indexed)
+                      FadeSlideIn(
+                        delay: Duration(milliseconds: 240 + 60 * index),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Row(
+                            children: [
+                              IconBadge(icon, size: 32),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  text,
+                                  style: theme.bodyMedium?.copyWith(
+                                    color: context.xd.textPrimary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 18),
+                    if (config == null || config.emailSignIn)
+                      PrimaryButton(
+                        label: l10n.continueWithEmail,
+                        icon: Icons.mail_outline_rounded,
+                        onPressed: () => context.push(Routes.signInEmail),
+                      ),
+                    if (config?.smsSignIn ?? false) ...[
+                      const SizedBox(height: 12),
+                      OutlinedButton.icon(
+                        onPressed: () => context.push(Routes.signInPhone),
+                        icon: const Icon(Icons.smartphone_rounded),
+                        label: Text(l10n.continueWithPhone),
+                      ),
+                    ],
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.lock_outline_rounded,
+                          size: 14,
+                          color: context.xd.textTertiary,
+                        ),
+                        const SizedBox(width: 6),
+                        Flexible(
+                          child: Text(
+                            l10n.securedByPartner,
+                            textAlign: TextAlign.center,
+                            style: theme.bodySmall?.copyWith(
+                              color: context.xd.textTertiary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              const Spacer(),
-              if (config == null || config.emailSignIn)
-                FilledButton.icon(
-                  onPressed: () => context.push(Routes.signInEmail),
-                  icon: const Icon(Icons.mail_outline),
-                  label: Text(l10n.continueWithEmail),
-                ),
-              if (config?.smsSignIn ?? false) ...[
-                const SizedBox(height: 12),
-                OutlinedButton.icon(
-                  onPressed: () => context.push(Routes.signInPhone),
-                  icon: const Icon(Icons.phone_iphone),
-                  label: Text(l10n.continueWithPhone),
-                ),
-              ],
-            ],
+            ),
           ),
         ),
       ),

@@ -165,6 +165,12 @@ export class UsersService {
         .where('user_id', '=', user.userId)
         .where('revoked_at', 'is', null)
         .execute();
+      await trx
+        .updateTable('push_tokens')
+        .set({ revoked_at: this.clock.now() })
+        .where('user_id', '=', user.userId)
+        .where('revoked_at', 'is', null)
+        .execute();
       await this.sessions.revokeAllForUser(user.userId, 'ACCOUNT_DELETED', trx);
       await this.audit.record(
         {

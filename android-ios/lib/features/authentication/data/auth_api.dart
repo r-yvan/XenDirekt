@@ -1,4 +1,4 @@
-import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart';
 
 import '../../../core/network/api_client.dart';
 import '../../../shared/models/app_client_config.dart';
@@ -14,11 +14,14 @@ class AuthApi {
   final String installId;
 
   static String? get _platform {
-    try {
-      return Platform.isIOS ? 'ios' : (Platform.isAndroid ? 'android' : null);
-    } on Object {
-      return null;
+    if (kIsWeb) {
+      return null; // the API accepts only ios/android; web is a dev preview
     }
+    return switch (defaultTargetPlatform) {
+      TargetPlatform.iOS => 'ios',
+      TargetPlatform.android => 'android',
+      _ => null,
+    };
   }
 
   Future<AppClientConfig> appConfig() async => AppClientConfig.fromJson(

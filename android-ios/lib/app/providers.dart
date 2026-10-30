@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/analytics/analytics.dart';
 import '../core/config/app_config.dart';
 import '../core/network/api_client.dart';
 import '../core/security/biometric_gate.dart';
@@ -10,8 +12,11 @@ import '../core/web/hosted_page_launcher.dart';
 import '../features/authentication/data/auth_api.dart';
 import '../features/authentication/data/token_store.dart';
 import '../features/cards/data/cards_api.dart';
+import '../features/notifications/data/notifications_api.dart';
 import '../features/payee_lookup/data/payees_api.dart';
+import '../features/payments/data/payments_api.dart';
 import '../features/quotes/data/quotes_api.dart';
+import '../features/support/data/support_api.dart';
 
 /// Root dependencies, overridden in main.dart (after async bootstrap) and in tests.
 final appConfigProvider = Provider<AppConfig>(
@@ -79,5 +84,18 @@ final quotesApiProvider = Provider<QuotesApi>(
   (ref) => QuotesApi(ref.watch(apiClientProvider)),
 );
 final hostedPageLauncherProvider = Provider<HostedPageLauncher>(
-  (ref) => WebViewHostedPageLauncher(),
+  (ref) =>
+      kIsWeb ? BrowserTabHostedPageLauncher() : WebViewHostedPageLauncher(),
+);
+final paymentsApiProvider = Provider<PaymentsApi>(
+  (ref) => PaymentsApi(ref.watch(apiClientProvider)),
+);
+final supportApiProvider = Provider<SupportApi>(
+  (ref) => SupportApi(ref.watch(apiClientProvider)),
+);
+final notificationsApiProvider = Provider<NotificationsApi>(
+  (ref) => NotificationsApi(ref.watch(apiClientProvider)),
+);
+final analyticsProvider = Provider<Analytics>(
+  (ref) => Analytics(ref.watch(apiClientProvider)),
 );

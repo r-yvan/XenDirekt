@@ -1,6 +1,6 @@
 {
-  "id": "a0522103-fac4-4877-8369-e70fb484aaaa",
-  "reference": "XD-UDWTN8",
+  "id": "2988c62d-ffda-4c9e-82b5-269c5660c00e",
+  "reference": "XD-2G5T5F",
   "state": "PENDING_REVIEW",
   "status": "IN_REVIEW",
   "chargeStatus": "UNKNOWN",
@@ -29,8 +29,8 @@
   },
   "note": "2 baskets",
   "simulated": true,
-  "createdAt": "2026-10-26T12:57:06.998Z",
-  "updatedAt": "2026-10-26T12:57:07.270Z",
+  "createdAt": "2026-10-27T15:18:52.107Z",
+  "updatedAt": "2026-10-27T15:18:52.340Z",
   "completedAt": null,
   "receipt": null
 }

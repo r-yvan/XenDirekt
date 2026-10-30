@@ -36,6 +36,7 @@ class SessionState {
       profile?.profileComplete == true &&
       profile?.pinSet != true;
   bool get isSandbox => clientConfig?.isSandbox ?? false;
+  bool get paymentsPaused => clientConfig?.paymentsPaused ?? false;
 
   SessionState copyWith({
     UserProfile? profile,

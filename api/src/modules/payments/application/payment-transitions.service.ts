@@ -10,6 +10,13 @@ import { assertTransition, ReviewReason, STATE_TIMESTAMP } from '../domain/payme
 
 export type PaymentRow = Selectable<PaymentsTable>;
 
+/** Runs inside the transition's transaction (notifications, analytics). Must not call providers. */
+export type TransitionListener = (
+  trx: Executor,
+  payment: PaymentRow,
+  from: PaymentState,
+) => Promise<void>;
+
 export interface TransitionOptions {
   source: EventSource;
   reason?: string;
@@ -28,10 +35,16 @@ export interface TransitionOptions {
  */
 @Injectable()
 export class PaymentTransitionsService {
+  private readonly listeners: TransitionListener[] = [];
+
   constructor(
     private readonly clock: Clock,
     private readonly metrics: MetricsService,
   ) {}
+
+  onTransition(listener: TransitionListener): void {
+    this.listeners.push(listener);
+  }
 
   async lock(trx: Executor, paymentId: string): Promise<PaymentRow | undefined> {
     return trx
@@ -85,6 +98,9 @@ export class PaymentTransitionsService {
       payload: options.payload,
     });
     this.metrics.paymentTransitions.inc({ from: payment.state, to });
+    for (const listener of this.listeners) {
+      await listener(trx, updated, payment.state);
+    }
     return updated;
   }
 

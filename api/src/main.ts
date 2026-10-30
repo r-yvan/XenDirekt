@@ -10,6 +10,8 @@ loadLocalEnvFile();
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule.forRoot({ role: 'api' }), {
     bufferLogs: true,
+    // Keeps the exact bytes for webhook signature checks (req.rawBody).
+    rawBody: true,
   });
   const config = configureHttpApp(app);
   await app.listen(config.http.port);

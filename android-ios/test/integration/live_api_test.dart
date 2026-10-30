@@ -16,6 +16,8 @@ import 'package:xendirekt/features/authentication/data/auth_models.dart';
 import 'package:xendirekt/features/authentication/data/token_store.dart';
 import 'package:xendirekt/features/cards/data/cards_api.dart';
 import 'package:xendirekt/features/payee_lookup/data/payees_api.dart';
+import 'package:xendirekt/features/payments/data/payment_models.dart';
+import 'package:xendirekt/features/payments/data/payments_api.dart';
 import 'package:xendirekt/features/quotes/data/quotes_api.dart';
 
 /// Mobile ↔ API integration against a running backend (no mocks):
@@ -23,6 +25,13 @@ import 'package:xendirekt/features/quotes/data/quotes_api.dart';
 /// The API must run with APP_ENV=local|test and EMAIL_TRANSPORT=dev-inbox so the
 /// emailed code can be read from /dev/inbox. Skipped when XD_LIVE_API is unset.
 final liveApi = Platform.environment['XD_LIVE_API'];
+
+/// A fresh sandbox seller per run (ending 5xxx avoids the scripted failure numbers),
+/// so velocity rules on a shared dev database don't hold repeated test runs.
+String randomSellerNumber() {
+  final n = DateTime.now().microsecondsSinceEpoch;
+  return '0785${(n ~/ 1000 % 100).toString().padLeft(2, '0')}5${(n % 1000).toString().padLeft(3, '0')}';
+}
 
 class LiveSession {
   LiveSession(this.baseUrl) {
@@ -61,6 +70,43 @@ class LiveSession {
     } finally {
       client.close();
     }
+  }
+
+  /// What the WebView does on the bank's (mock) 3-D Secure page.
+  Future<Uri> approveThreeDs(Uri actionUrl) async {
+    final client = HttpClient();
+    try {
+      final request = await client.postUrl(actionUrl);
+      request.followRedirects = false;
+      request.headers.contentType = ContentType(
+        'application',
+        'x-www-form-urlencoded',
+      );
+      request.write('decision=approve');
+      final response = await request.close();
+      await response.drain<void>();
+      return Uri.parse(response.headers.value('location')!);
+    } finally {
+      client.close();
+    }
+  }
+
+  /// Polls like the progress screen until the payment settles or needs action.
+  Future<Payment> follow(
+    PaymentsApi payments,
+    String id, {
+    bool Function(Payment)? until,
+  }) async {
+    for (var i = 0; i < 60; i++) {
+      final payment = await payments.get(id);
+      if ((until ?? (p) => p.isSettled || p.isInReview || p.nextAction != null)(
+        payment,
+      )) {
+        return payment;
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+    }
+    throw StateError('Payment $id did not settle');
   }
 
   Future<String> codeFromDevInbox(String email) async {
@@ -137,19 +183,86 @@ void main() {
       final setup = await cardsApi.startSetup();
       final redirect = await session.chooseTestCard(
         setup.hostedUrl,
-        'visa-home',
+        'visa-new',
       );
       expect(redirect.toString(), startsWith(setup.returnUrlPrefix));
       final card = await cardsApi.completeSetup(setup.setupId);
       expect(card.isDefault, isTrue);
       expect(card.issuingCountry, 'GB');
 
-      final payee = await PayeesApi(session.api).lookupPhone('078 812 3456');
+      final payee = await PayeesApi(session.api)
+          .lookupPhone(randomSellerNumber());
       expect(payee.registeredName, startsWith('SANDBOX'));
       final quote = await QuotesApi(session.api)
           .create(payeeId: payee.payeeId, cardId: card.id, amountRwf: 12000);
       expect(quote.totalRwf, quote.amountRwf + quote.feeRwf);
       expect(quote.cardCurrency, 'GBP');
+
+      // Phase 4: biometric step-up → idempotent payment → 3-D Secure → completed.
+      final payments = PaymentsApi(session.api);
+      Future<String> biometricStepUp() async {
+        final challenge = await session.auth.stepUpChallenge(
+          StepUpPurpose.payment,
+        );
+        return session.auth.stepUpWithDeviceKey(
+          StepUpPurpose.payment,
+          challengeId: challenge.challengeId,
+          signature: await session.deviceKey.sign(challenge.signingMessage),
+        );
+      }
+
+      const key = 'live-test-payment-key-1';
+      final created = await payments.create(
+        quoteId: quote.quoteId,
+        idempotencyKey: key,
+        stepUpToken: await biometricStepUp(),
+        note: 'live test',
+      );
+      // Lost-response replay: same key, no new step-up, same payment.
+      final replay = await payments.create(
+        quoteId: quote.quoteId,
+        idempotencyKey: key,
+        note: 'live test',
+      );
+      expect(replay.id, created.id);
+
+      final challenged = await session.follow(payments, created.id);
+      expect(challenged.status, 'ACTION_REQUIRED');
+      final back = await session.approveThreeDs(challenged.nextAction!.url);
+      expect(
+        back.toString(),
+        startsWith(challenged.nextAction!.returnUrlPrefix),
+      );
+      final completed = await session.follow(
+        payments,
+        created.id,
+        until: (Payment p) => p.isSettled || p.isInReview,
+      );
+      expect(completed.status, 'COMPLETED');
+      expect(completed.chargeStatus, 'CHARGED');
+
+      // Forced payout failure (sandbox number ending 1111): hold released, not charged.
+      final failingPayee = await PayeesApi(session.api)
+          .lookupPhone('0788121111');
+      final failingQuote = await QuotesApi(
+        session.api,
+      ).create(payeeId: failingPayee.payeeId, cardId: card.id, amountRwf: 1500);
+      final failing = await payments.create(
+        quoteId: failingQuote.quoteId,
+        idempotencyKey: 'live-test-payment-key-2',
+        stepUpToken: await biometricStepUp(),
+      );
+      final voided = await session.follow(
+        payments,
+        failing.id,
+        until: (Payment p) => p.isSettled || p.isInReview,
+      );
+      expect(voided.status, 'FAILED');
+      expect(voided.chargeStatus, 'NOT_CHARGED');
+      expect(
+        (await payments.list()).payments.map((p) => p.id),
+        containsAll([created.id, failing.id]),
+      );
 
       final wrongPin = session.auth.verifyPin('905173');
       await expectLater(

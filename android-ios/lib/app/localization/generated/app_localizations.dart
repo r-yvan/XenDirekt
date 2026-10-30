@@ -128,6 +128,12 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get cancel;
 
+  /// No description provided for @hostedPageInNewTab.
+  ///
+  /// In en, this message translates to:
+  /// **'The page opened in a new tab. Finish there, then come back and tap Continue.'**
+  String get hostedPageInNewTab;
+
   /// No description provided for @done.
   ///
   /// In en, this message translates to:
@@ -169,6 +175,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Payments are slower than usual right now. You will never be charged twice.'**
   String get providerOutageBanner;
+
+  /// No description provided for @paymentsPausedBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments are paused for a moment. Nothing you paid is affected.'**
+  String get paymentsPausedBanner;
 
   /// No description provided for @tabPay.
   ///
@@ -563,13 +575,13 @@ abstract class AppLocalizations {
   /// No description provided for @errorThreeDsAbandoned.
   ///
   /// In en, this message translates to:
-  /// **'Payment not completed. You were not charged.'**
+  /// **'Your bank\'s security check wasn\'t completed, so the payment was stopped.'**
   String get errorThreeDsAbandoned;
 
   /// No description provided for @errorPayoutFailed.
   ///
   /// In en, this message translates to:
-  /// **'The seller\'s MoMo couldn\'t receive this payment. You have not been charged.'**
+  /// **'The seller\'s MoMo account couldn\'t receive this payment, so we stopped it.'**
   String get errorPayoutFailed;
 
   /// No description provided for @errorPendingReview.
@@ -601,6 +613,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Our payment partner isn\'t responding. Please try again shortly.'**
   String get errorProviderUnavailable;
+
+  /// No description provided for @errorPaymentsPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments are paused for a moment. You have not been charged. Please try again shortly.'**
+  String get errorPaymentsPaused;
 
   /// No description provided for @errorInsecureConnection.
   ///
@@ -805,6 +823,805 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your bank couldn\'t verify this card. Try another card.'**
   String get errorCardSetupFailed;
+
+  /// No description provided for @momoNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller\'s MTN MoMo number'**
+  String get momoNumberLabel;
+
+  /// No description provided for @momoNumberHint.
+  ///
+  /// In en, this message translates to:
+  /// **'078 123 4567'**
+  String get momoNumberHint;
+
+  /// No description provided for @mtnMomo.
+  ///
+  /// In en, this message translates to:
+  /// **'MTN MoMo'**
+  String get mtnMomo;
+
+  /// No description provided for @lookingUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding the account…'**
+  String get lookingUp;
+
+  /// No description provided for @checkNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the name with the seller before you pay.'**
+  String get checkNameHint;
+
+  /// No description provided for @amountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount in RWF'**
+  String get amountLabel;
+
+  /// No description provided for @sellerReceives.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller receives'**
+  String get sellerReceives;
+
+  /// No description provided for @xendirektFee.
+  ///
+  /// In en, this message translates to:
+  /// **'XenDirekt fee'**
+  String get xendirektFee;
+
+  /// No description provided for @youPay.
+  ///
+  /// In en, this message translates to:
+  /// **'You pay'**
+  String get youPay;
+
+  /// No description provided for @exchangeRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate'**
+  String get exchangeRate;
+
+  /// No description provided for @payWithCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Card'**
+  String get payWithCard;
+
+  /// No description provided for @chooseCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a card'**
+  String get chooseCard;
+
+  /// No description provided for @recentPayees.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent'**
+  String get recentPayees;
+
+  /// No description provided for @payButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay'**
+  String get payButton;
+
+  /// No description provided for @quoteRefreshing.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating the price…'**
+  String get quoteRefreshing;
+
+  /// No description provided for @noteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Note for the seller (optional)'**
+  String get noteLabel;
+
+  /// No description provided for @stepProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get stepProcessing;
+
+  /// No description provided for @stepSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get stepSent;
+
+  /// No description provided for @stepReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get stepReceived;
+
+  /// No description provided for @checkingPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your payment…'**
+  String get checkingPayment;
+
+  /// No description provided for @confirmWithBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm with your bank'**
+  String get confirmWithBank;
+
+  /// No description provided for @confirmWithBankBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your bank needs to confirm this payment.'**
+  String get confirmWithBankBody;
+
+  /// No description provided for @openBankCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get openBankCheck;
+
+  /// No description provided for @successTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment sent'**
+  String get successTitle;
+
+  /// No description provided for @successBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} received {amount}.'**
+  String successBody(String name, String amount);
+
+  /// No description provided for @failedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment not completed'**
+  String get failedTitle;
+
+  /// No description provided for @notCharged.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not been charged.'**
+  String get notCharged;
+
+  /// No description provided for @holdReleasing.
+  ///
+  /// In en, this message translates to:
+  /// **'Your bank\'s hold is being released. You have not been charged.'**
+  String get holdReleasing;
+
+  /// No description provided for @reviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re checking your payment'**
+  String get reviewTitle;
+
+  /// No description provided for @refundedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment refunded'**
+  String get refundedTitle;
+
+  /// No description provided for @shareReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Share receipt'**
+  String get shareReceipt;
+
+  /// No description provided for @receiptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt'**
+  String get receiptTitle;
+
+  /// No description provided for @reference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get reference;
+
+  /// No description provided for @dateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Date (Kigali time)'**
+  String get dateTime;
+
+  /// No description provided for @merchant.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller'**
+  String get merchant;
+
+  /// No description provided for @cardCharged.
+  ///
+  /// In en, this message translates to:
+  /// **'Card'**
+  String get cardCharged;
+
+  /// No description provided for @statusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get statusLabel;
+
+  /// No description provided for @statusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get statusCompleted;
+
+  /// No description provided for @statusFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get statusFailed;
+
+  /// No description provided for @statusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get statusInProgress;
+
+  /// No description provided for @statusInReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Being checked'**
+  String get statusInReview;
+
+  /// No description provided for @statusRefunded.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunded'**
+  String get statusRefunded;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// No description provided for @noPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Your payments will appear here.'**
+  String get noPayments;
+
+  /// No description provided for @loadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get loadMore;
+
+  /// No description provided for @payAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay again'**
+  String get payAgain;
+
+  /// No description provided for @addCardToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a card to pay'**
+  String get addCardToPay;
+
+  /// No description provided for @sandboxReceiptNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Sandbox: simulated, no real money moved.'**
+  String get sandboxReceiptNote;
+
+  /// No description provided for @receiptShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'XenDirekt receipt {reference}\nPaid {amountRwf} to {merchant} on {date} (Kigali).\nCharged {total} to {card}.'**
+  String receiptShareText(
+    String reference,
+    String amountRwf,
+    String merchant,
+    String date,
+    String total,
+    String card,
+  );
+
+  /// No description provided for @reportProblem.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a problem'**
+  String get reportProblem;
+
+  /// No description provided for @reportProblemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What went wrong?'**
+  String get reportProblemTitle;
+
+  /// No description provided for @reportSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks — we\'ve received your report {reference}.'**
+  String reportSent(String reference);
+
+  /// No description provided for @ticketSellerNotPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller didn\'t receive it'**
+  String get ticketSellerNotPaid;
+
+  /// No description provided for @ticketWrongAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong amount'**
+  String get ticketWrongAmount;
+
+  /// No description provided for @ticketChargedButFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Charged but it failed'**
+  String get ticketChargedButFailed;
+
+  /// No description provided for @ticketChargedTwice.
+  ///
+  /// In en, this message translates to:
+  /// **'Charged twice'**
+  String get ticketChargedTwice;
+
+  /// No description provided for @ticketWrongSeller.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid the wrong seller'**
+  String get ticketWrongSeller;
+
+  /// No description provided for @ticketRefundRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'I need a refund'**
+  String get ticketRefundRequest;
+
+  /// No description provided for @ticketAppProblem.
+  ///
+  /// In en, this message translates to:
+  /// **'Problem with the app'**
+  String get ticketAppProblem;
+
+  /// No description provided for @ticketOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get ticketOther;
+
+  /// No description provided for @addDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Add details (optional)'**
+  String get addDetails;
+
+  /// No description provided for @send.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get send;
+
+  /// No description provided for @helpCentre.
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get helpCentre;
+
+  /// No description provided for @myRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'My requests'**
+  String get myRequests;
+
+  /// No description provided for @noRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t reported any problems.'**
+  String get noRequests;
+
+  /// No description provided for @contactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact support'**
+  String get contactSupport;
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up.'**
+  String get noNotifications;
+
+  /// No description provided for @ticketStatusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get ticketStatusOpen;
+
+  /// No description provided for @ticketStatusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get ticketStatusInProgress;
+
+  /// No description provided for @ticketStatusResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get ticketStatusResolved;
+
+  /// No description provided for @ticketStatusClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get ticketStatusClosed;
+
+  /// No description provided for @faq1q.
+  ///
+  /// In en, this message translates to:
+  /// **'How does XenDirekt work?'**
+  String get faq1q;
+
+  /// No description provided for @faq1a.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the seller\'s MTN MoMo number and the amount in Rwandan francs. We show the name registered to that account, the fee and what your card will be charged. Tap Pay, confirm with Face ID or your PIN, and the seller receives francs in their MoMo account.'**
+  String get faq1a;
+
+  /// No description provided for @faq2q.
+  ///
+  /// In en, this message translates to:
+  /// **'Will I be charged if a payment fails?'**
+  String get faq2q;
+
+  /// No description provided for @faq2a.
+  ///
+  /// In en, this message translates to:
+  /// **'No. Your card is only held first and charged after the seller\'s MoMo account has received the money. If the seller can\'t receive it, the hold is released and you are not charged.'**
+  String get faq2a;
+
+  /// No description provided for @faq3q.
+  ///
+  /// In en, this message translates to:
+  /// **'Which numbers can I pay?'**
+  String get faq3q;
+
+  /// No description provided for @faq3a.
+  ///
+  /// In en, this message translates to:
+  /// **'Any active MTN MoMo account in Rwanda. Other networks are not supported yet.'**
+  String get faq3a;
+
+  /// No description provided for @faq4q.
+  ///
+  /// In en, this message translates to:
+  /// **'Is my card safe?'**
+  String get faq4q;
+
+  /// No description provided for @faq4a.
+  ///
+  /// In en, this message translates to:
+  /// **'Your card details are entered on our licensed payment partner\'s secure page. XenDirekt never sees or stores your card number or security code.'**
+  String get faq4a;
+
+  /// No description provided for @faq5q.
+  ///
+  /// In en, this message translates to:
+  /// **'What fees do I pay?'**
+  String get faq5q;
+
+  /// No description provided for @faq5a.
+  ///
+  /// In en, this message translates to:
+  /// **'You see the XenDirekt fee, the exchange rate and the exact total in your card\'s currency before you pay. Your bank may add its own foreign transaction fees.'**
+  String get faq5a;
+
+  /// No description provided for @faq6q.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the extra check from my bank?'**
+  String get faq6q;
+
+  /// No description provided for @faq6a.
+  ///
+  /// In en, this message translates to:
+  /// **'Banks often ask you to confirm the first payment with a card (3-D Secure), for example with a code or in your banking app. It protects you from fraud.'**
+  String get faq6a;
+
+  /// No description provided for @faq7q.
+  ///
+  /// In en, this message translates to:
+  /// **'The seller says the money didn\'t arrive. What now?'**
+  String get faq7q;
+
+  /// No description provided for @faq7a.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the payment in History and tap Report a problem. The payment reference is attached automatically and our team will look into it.'**
+  String get faq7a;
+
+  /// No description provided for @faq8q.
+  ///
+  /// In en, this message translates to:
+  /// **'Why is my payment being checked?'**
+  String get faq8q;
+
+  /// No description provided for @faq8a.
+  ///
+  /// In en, this message translates to:
+  /// **'Sometimes the mobile money network doesn\'t answer in time, or a payment needs a quick safety review. We\'ll update you within 30 minutes, and you\'ll never be charged twice.'**
+  String get faq8a;
+
+  /// No description provided for @ageYears.
+  ///
+  /// In en, this message translates to:
+  /// **'{age, plural, =1{1 year old} other{{age} years old}}'**
+  String ageYears(int age);
+
+  /// No description provided for @dobPickerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be 18 or older to use XenDirekt.'**
+  String get dobPickerSubtitle;
+
+  /// No description provided for @profileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A few details to keep your payments safe. It takes 30 seconds.'**
+  String get profileSubtitle;
+
+  /// No description provided for @stepOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String stepOf(int current, int total);
+
+  /// No description provided for @selectPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get selectPlaceholder;
+
+  /// No description provided for @sectionPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get sectionPreferences;
+
+  /// No description provided for @sectionSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get sectionSupport;
+
+  /// No description provided for @sectionDangerZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger zone'**
+  String get sectionDangerZone;
+
+  /// No description provided for @sandboxAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Sandbox account'**
+  String get sandboxAccount;
+
+  /// No description provided for @verifiedAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get verifiedAccount;
+
+  /// No description provided for @cardsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No cards yet} =1{1 of 3 cards} other{{count} of 3 cards}}'**
+  String cardsCount(int count);
+
+  /// No description provided for @addFirstCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first card'**
+  String get addFirstCardTitle;
+
+  /// No description provided for @addFirstCardBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Card details go straight to our payment partner. XenDirekt never sees your card number.'**
+  String get addFirstCardBody;
+
+  /// No description provided for @biometricsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve payments with a glance or a touch'**
+  String get biometricsSubtitle;
+
+  /// No description provided for @changePinSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your 6-digit fallback code'**
+  String get changePinSubtitle;
+
+  /// No description provided for @notificationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment updates and messages'**
+  String get notificationsSubtitle;
+
+  /// No description provided for @helpSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions, problems and requests'**
+  String get helpSubtitle;
+
+  /// No description provided for @termsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How we handle your data'**
+  String get termsSubtitle;
+
+  /// No description provided for @greetingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get greetingMorning;
+
+  /// No description provided for @greetingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get greetingAfternoon;
+
+  /// No description provided for @greetingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get greetingEvening;
+
+  /// No description provided for @greetingWithName.
+  ///
+  /// In en, this message translates to:
+  /// **'{greeting}, {name}'**
+  String greetingWithName(String greeting, String name);
+
+  /// No description provided for @paySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay any MTN MoMo account with your card.'**
+  String get paySubtitle;
+
+  /// No description provided for @sendTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to'**
+  String get sendTo;
+
+  /// No description provided for @amountSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amountSection;
+
+  /// No description provided for @payWithLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay with'**
+  String get payWithLabel;
+
+  /// No description provided for @summarySection.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get summarySection;
+
+  /// No description provided for @rateHeldFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate held for {time}'**
+  String rateHeldFor(String time);
+
+  /// No description provided for @registeredNameVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered name'**
+  String get registeredNameVerified;
+
+  /// No description provided for @historySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Every payment you have made, newest first.'**
+  String get historySubtitle;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// No description provided for @noPaymentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No payments yet'**
+  String get noPaymentsTitle;
+
+  /// No description provided for @makePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a payment'**
+  String get makePayment;
+
+  /// No description provided for @featureMomo.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay any MTN MoMo number or shop'**
+  String get featureMomo;
+
+  /// No description provided for @featureCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the Visa or Mastercard you already carry'**
+  String get featureCard;
+
+  /// No description provided for @featureName.
+  ///
+  /// In en, this message translates to:
+  /// **'See the seller\'s registered name before you pay'**
+  String get featureName;
+
+  /// No description provided for @securedByPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Card details are handled by our licensed payment partner.'**
+  String get securedByPartner;
+
+  /// No description provided for @signInSubtitleEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send you a 6-digit code. No password needed.'**
+  String get signInSubtitleEmail;
+
+  /// No description provided for @signInSubtitlePhone.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll text you a 6-digit code. No password needed.'**
+  String get signInSubtitlePhone;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as device'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
 }
 
 class _AppLocalizationsDelegate

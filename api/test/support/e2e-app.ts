@@ -45,7 +45,10 @@ export async function createE2eApp(env: Record<string, string> = {}): Promise<E2
     .overrideProvider(SmsSender)
     .useValue(sms)
     .compile();
-  const app = moduleRef.createNestApplication<NestExpressApplication>({ bufferLogs: true });
+  const app = moduleRef.createNestApplication<NestExpressApplication>({
+    bufferLogs: true,
+    rawBody: true,
+  });
   configureHttpApp(app);
   await app.init();
   const db = app.get<Kysely<DB>>(DATABASE);

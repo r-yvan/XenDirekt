@@ -325,7 +325,9 @@ describe('payment orchestration (e2e, mock provider)', () => {
     const responses = await Promise.all(tokens.map((token) => send(token)));
     const ids = new Set(responses.map((response) => response.body.id));
     expect(ids.size).toBe(1);
-    expect(responses.map((response) => response.status).sort((a, b) => a - b)).toEqual([200, 200, 201]);
+    expect(responses.map((response) => response.status).sort((a, b) => a - b)).toEqual([
+      200, 200, 201,
+    ]);
 
     // Replay after a lost response: no step-up needed, same payment, no new charge.
     const replay = await e2e.http

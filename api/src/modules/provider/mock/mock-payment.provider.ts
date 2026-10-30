@@ -99,6 +99,16 @@ export class MockPaymentProvider implements PaymentProvider {
     );
   }
 
+  /** Issued tokens, or ones minted before a restart (`mock_tok.<card key>.<uuid>`). */
+  private cardForToken(token: string): MockCard | undefined {
+    const known = this.tokens.get(token);
+    if (known) {
+      return known;
+    }
+    const key = /^mock_tok\.([a-z0-9-]+)\.[0-9a-f-]{36}$/.exec(token)?.[1];
+    return MOCK_CARDS.find((card) => card.key === key);
+  }
+
   /** Called by the hosted mock page when the tester picks a card. Returns the redirect URL. */
   completeSetup(providerSetupId: string, cardKey: string): string | null {
     const setup = this.setups.get(providerSetupId);
@@ -109,7 +119,8 @@ export class MockPaymentProvider implements PaymentProvider {
     if (card.behaviour === 'SETUP_FAILS') {
       setup.result = { status: 'FAILED', reason: 'THREE_DS_FAILED' };
     } else {
-      const token = `mock_tok_${randomUUID()}`;
+      // Self-describing so a restarted mock (in-memory state lost) still knows the card.
+      const token = `mock_tok.${card.key}.${randomUUID()}`;
       this.tokens.set(token, card);
       const country = card.issuingCountry ?? setup.customerCountry ?? 'US';
       setup.result = {
@@ -123,7 +134,9 @@ export class MockPaymentProvider implements PaymentProvider {
           issuingCountry: country,
           funding: card.funding,
           currency: card.currency ?? COUNTRY_CURRENCY[country] ?? 'USD',
-          fingerprint: `mockfp_${card.key}`,
+          fingerprint: card.uniqueFingerprint
+            ? `mockfp_${card.key}_${randomUUID()}`
+            : `mockfp_${card.key}`,
           binPrefix: card.brand === 'VISA' ? '424242' : '555555',
           cardholderName: null,
           threeDsVerified: true,
@@ -164,7 +177,7 @@ export class MockPaymentProvider implements PaymentProvider {
     if (existing) {
       return this.authView(existing);
     }
-    const card = this.tokens.get(request.cardToken);
+    const card = this.cardForToken(request.cardToken);
     const providerRef = `mock_auth_${randomUUID()}`;
     if (!card) {
       return { status: 'DECLINED', providerRef, declineCode: 'INVALID_TOKEN' };

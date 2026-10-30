@@ -1,0 +1,12 @@
+{
+  "id": "6cf933b5-b06b-45f6-b2da-54ef91a3db0d",
+  "reference": "TK-3R6NGQ",
+  "category": "SELLER_NOT_PAID",
+  "message": "The seller says nothing arrived.",
+  "status": "OPEN",
+  "paymentId": "b0e6c50e-ddf1-4d8f-8ce7-16c638d2c6ce",
+  "paymentReference": "XD-N2A6PS",
+  "paymentStateAtReport": "QUOTED",
+  "createdAt": "2026-10-27T15:18:56.072Z",
+  "resolvedAt": null
+}

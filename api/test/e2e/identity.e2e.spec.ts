@@ -513,6 +513,11 @@ describe('identity and profile (e2e)', () => {
   describe('account deletion (FR-ONB-07)', () => {
     it('anonymises personal data, revokes sessions and keeps the audit trail', async () => {
       const tourist = await onboardTourist(e2e, 'delete-me@example.com');
+      await e2e.http
+        .post('/v1/push-tokens')
+        .set(tourist.auth)
+        .send({ platform: 'android', token: 'fcm-token-for-a-deleted-account-0001' })
+        .expect((response) => expect(response.status).toBeLessThan(300));
       await e2e.http.delete('/v1/me').set(tourist.auth).expect(401);
       const token = await stepUpWithPin(e2e, tourist, 'DELETE_ACCOUNT');
       await e2e.http.delete('/v1/me').set(tourist.auth).set('X-Step-Up-Token', token).expect(204);
@@ -535,6 +540,13 @@ describe('identity and profile (e2e)', () => {
         .where('user_id', '=', tourist.userId)
         .execute();
       expect(consents).toHaveLength(2);
+      const pushTokens = await e2e.db
+        .selectFrom('push_tokens')
+        .select('revoked_at')
+        .where('user_id', '=', tourist.userId)
+        .execute();
+      expect(pushTokens).toHaveLength(1);
+      expect(pushTokens[0]!.revoked_at).not.toBeNull();
       // The same email can start over as a brand-new account (after the resend cooldown).
       e2e.clock.advance(31_000);
       const again = await signIn(e2e, 'delete-me@example.com');

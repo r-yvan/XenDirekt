@@ -1,0 +1,26 @@
+{
+  "environment": "test",
+  "providerMode": "SANDBOX",
+  "features": {
+    "merchantCodes": false,
+    "federatedSignIn": false,
+    "identityVerification": false,
+    "pushNotifications": false,
+    "smsSignIn": true,
+    "emailSignIn": true
+  },
+  "auth": {
+    "otpLength": 6,
+    "otpResendSeconds": 30,
+    "pinLength": 6
+  },
+  "legal": {
+    "termsVersion": "2026-10-01",
+    "privacyVersion": "2026-10-01",
+    "termsUrl": "https://xendirekt.example/terms",
+    "privacyUrl": "https://xendirekt.example/privacy"
+  },
+  "banner": {
+    "kind": "PAYMENTS_PAUSED"
+  }
+}

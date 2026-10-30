@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../app/localization/generated/app_localizations.dart';
 import '../../../core/errors/api_failure.dart';
 import '../../../core/errors/error_messages.dart';
+import '../../../core/security/screen_security.dart';
 import '../../../core/widgets/digit_code_field.dart';
 
 /// Bottom sheet asking for the PIN; [submit] verifies it on the server. Wrong
@@ -14,6 +15,7 @@ Future<T?> showPinPromptSheet<T>(
 }) {
   return showModalBottomSheet<T>(
     context: context,
+    useRootNavigator: true,
     isScrollControlled: true,
     builder: (context) => _PinPromptSheet<T>(title: title, submit: submit),
   );
@@ -68,37 +70,39 @@ class _PinPromptSheetState<T> extends State<_PinPromptSheet<T>> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-        24,
-        8,
-        24,
-        24 + MediaQuery.viewInsetsOf(context).bottom,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            widget.title,
-            style: Theme.of(context).textTheme.titleLarge,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-          DigitCodeField(
-            length: 6,
-            obscure: true,
-            controller: _controller,
-            enabled: !_busy,
-            semanticLabel: l10n.pinFieldLabel,
-            errorText: _error,
-            onCompleted: _completed,
-          ),
-          const SizedBox(height: 16),
-          TextButton(
-            onPressed: _busy ? null : () => Navigator.of(context).pop(),
-            child: Text(l10n.cancel),
-          ),
-        ],
+    return SecureScreen(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          24,
+          8,
+          24,
+          24 + MediaQuery.viewInsetsOf(context).bottom,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              widget.title,
+              style: Theme.of(context).textTheme.titleLarge,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            DigitCodeField(
+              length: 6,
+              obscure: true,
+              controller: _controller,
+              enabled: !_busy,
+              semanticLabel: l10n.pinFieldLabel,
+              errorText: _error,
+              onCompleted: _completed,
+            ),
+            const SizedBox(height: 16),
+            TextButton(
+              onPressed: _busy ? null : () => Navigator.of(context).pop(),
+              child: Text(l10n.cancel),
+            ),
+          ],
+        ),
       ),
     );
   }

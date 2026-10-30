@@ -1,0 +1,15 @@
+{
+  "notifications": [
+    {
+      "id": "72ff7d80-c74c-4ab6-9c03-2a028b578dc1",
+      "paymentId": "4fe5d31f-ad8c-413d-88c8-7da767773051",
+      "kind": "PAYMENT_COMPLETED",
+      "title": "Payment sent",
+      "body": "[SANDBOX: not real money] SANDBOX Moto Ride 456 received RWF 12,000. Ref XD-F8T48V.",
+      "deepLink": "xendirekt://payments/4fe5d31f-ad8c-413d-88c8-7da767773051",
+      "read": false,
+      "createdAt": "2026-10-27T15:18:54.859Z"
+    }
+  ],
+  "unread": 1
+}

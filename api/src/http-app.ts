@@ -1,5 +1,6 @@
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
+import { json } from 'express';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import { AppConfig } from './config/app-config';
@@ -37,6 +38,10 @@ export function configureHttpApp(app: NestExpressApplication): AppConfig {
           imgSrc: ["'self'", 'data:'],
           formAction: ["'self'"],
           frameAncestors: ["'none'"],
+          // Helmet adds this by default. Over plain-HTTP development it makes browsers
+          // post the mock card and 3-D Secure forms to https://, which fails the TLS
+          // handshake; production is HTTPS-only, so it stays there.
+          upgradeInsecureRequests: config.isProduction ? [] : null,
         },
       },
       strictTransportSecurity: config.isProduction
@@ -60,6 +65,8 @@ export function configureHttpApp(app: NestExpressApplication): AppConfig {
       maxAge: 600,
     });
   }
+  // Settlement files are the one large upload; everything else stays small.
+  app.use('/v1/admin/reconciliation/settlement-files', json({ limit: '6mb' }));
   app.useBodyParser('json', { limit: '64kb' });
   app.useBodyParser('urlencoded', { limit: '16kb', extended: false });
   if (config.http.enableApiDocs) {

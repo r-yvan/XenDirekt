@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:uuid/uuid.dart';
 
 import '../config/app_config.dart';
 import '../errors/api_failure.dart';
+import 'pinned_adapter.dart';
 
 /// Supplies the current access token and refreshes it when the server says it
 /// has expired. Implemented by the session controller.
@@ -36,8 +34,11 @@ class ApiClient {
       responseType: ResponseType.json,
       headers: {'Accept': 'application/json', 'X-Device-Id': installId},
     );
-    if (config.certificatePinsPem.isNotEmpty) {
-      _dio.httpClientAdapter = _pinnedAdapter(config.certificatePinsPem);
+    final pinned = config.certificatePinsPem.isEmpty
+        ? null
+        : pinnedAdapter(config.certificatePinsPem);
+    if (pinned != null) {
+      _dio.httpClientAdapter = pinned;
     }
     _dio.interceptors.add(
       QueuedInterceptorsWrapper(
@@ -169,19 +170,6 @@ class ApiClient {
     }
     return null;
   }
-
-  static IOHttpClientAdapter _pinnedAdapter(List<String> pemCertificates) {
-    return IOHttpClientAdapter(
-      createHttpClient: () {
-        // Only chains ending in a pinned certificate are trusted (NFR-SEC-02).
-        final context = SecurityContext(withTrustedRoots: false);
-        for (final pem in pemCertificates) {
-          context.setTrustedCertificatesBytes(pem.codeUnits);
-        }
-        return HttpClient(context: context);
-      },
-    );
-  }
 }
 
 /// Maps transport errors to [ApiFailure]. Timeouts after the request was sent
@@ -206,7 +194,7 @@ ApiFailure mapDioError(DioException error) {
     case DioExceptionType.unknown:
       final response = error.response;
       if (response == null) {
-        return error.error is SocketException
+        return isSocketException(error.error)
             ? const ApiFailure.network()
             : const ApiFailure(code: 'INTERNAL_ERROR');
       }

@@ -1,0 +1,14 @@
+{
+  "id": "9ccc0c4f-f9ad-4e88-8efc-5a0b72052450",
+  "reference": "RF-4T33F9",
+  "paymentId": "df7b66cb-2794-4d01-82a9-39c65f9bd47a",
+  "type": "REFUND",
+  "status": "REQUESTED",
+  "amountMinor": 1180,
+  "currency": "CAD",
+  "reason": "Seller agreed to refund the tourist",
+  "requestedBy": "9b8495aa-7fb0-41e6-9265-f3ec53c47563",
+  "approvedBy": null,
+  "providerRef": null,
+  "createdAt": "2026-10-27T15:18:40.956Z"
+}

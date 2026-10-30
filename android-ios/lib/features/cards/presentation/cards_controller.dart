@@ -37,9 +37,16 @@ class CardsController extends AsyncNotifier<List<PaymentCard>> {
     if (returned == null) {
       return null;
     }
-    final card = await api.completeSetup(session.setupId);
-    await refresh();
-    return card;
+    final analytics = ref.read(analyticsProvider);
+    try {
+      final card = await api.completeSetup(session.setupId);
+      analytics.track('card_added', {'brand': card.brand});
+      await refresh();
+      return card;
+    } on ApiFailure catch (failure) {
+      analytics.track('card_add_failed', {'reason': failure.code});
+      rethrow;
+    }
   }
 
   Future<void> makeDefault(String cardId) async {

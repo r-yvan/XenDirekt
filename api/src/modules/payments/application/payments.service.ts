@@ -1,3 +1,4 @@
+import { scrubCardNumbers } from '../../../common/logging/redaction';
 import { Injectable } from '@nestjs/common';
 import { Kysely, sql } from 'kysely';
 import { type AuthenticatedUser } from '../../../common/decorators/auth.decorators';
@@ -91,12 +92,17 @@ export class PaymentsService {
     if (!idempotencyKey || !IDEMPOTENCY_KEY.test(idempotencyKey)) {
       throw new AppError('IDEMPOTENCY_KEY_REQUIRED');
     }
-    const note = input.note?.trim() || null;
+    // The note reaches the seller by SMS: never let a card number through.
+    const note = input.note ? scrubCardNumbers(input.note.trim()) || null : null;
     const requestHash = sha256Hex(JSON.stringify({ quoteId: input.quoteId, note }));
 
     const replay = await this.findByKey(user.userId, idempotencyKey, requestHash);
     if (replay) {
       return { payment: replay, created: false };
+    }
+    // A replay above still answers while paused; only new payments are refused.
+    if ((await this.configuration.get('LIMITS')).value.paymentsPaused) {
+      throw new AppError('PAYMENTS_PAUSED');
     }
 
     for (let attempt = 0; attempt < 3; attempt += 1) {

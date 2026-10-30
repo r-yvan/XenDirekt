@@ -730,11 +730,7 @@ export class PaymentOrchestrator implements OnModuleInit {
       .where('id', '=', payment.payee_id)
       .where('first_paid_at', 'is', null)
       .execute();
-    await this.completionHook?.(trx, payment);
   }
-
-  /** Set by the notifications module so completion triggers receipts and messages (Phase 5). */
-  completionHook?: (trx: Executor, payment: PaymentRow) => Promise<void>;
 
   // ------------------------------------------------------------------------------------------
   // Void (release the hold)

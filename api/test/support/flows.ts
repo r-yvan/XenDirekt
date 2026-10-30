@@ -1,4 +1,6 @@
 import { generateKeyPairSync, randomUUID, sign } from 'node:crypto';
+import { AdminAuthService } from '../../src/modules/admin/admin-auth.service';
+import { totpAt, totpStep } from '../../src/shared/crypto/totp';
 import { E2eApp } from './e2e-app';
 
 export interface SignedInTourist {
@@ -175,4 +177,31 @@ export async function completeThreeDs(
   decision: 'approve' | 'decline',
 ) {
   return e2e.http.post(new URL(actionUrl).pathname).type('form').send({ decision }).expect(303);
+}
+
+/** Creates an admin with the given role and completes password + TOTP sign-in. */
+export async function adminSession(
+  e2e: E2eApp,
+  role: 'VIEWER' | 'SUPPORT_AGENT' | 'RISK_ANALYST' | 'ADMIN',
+  email = `${role.toLowerCase()}@xendirekt.test`,
+) {
+  const created = await e2e.app
+    .get(AdminAuthService)
+    .createAdmin({ email, fullName: `${role} User`, role, createdBy: 'test' });
+  const login = await e2e.http
+    .post('/v1/admin/auth/login')
+    .send({ email, password: created.initialPassword })
+    .expect(200);
+  const tokens = await e2e.http
+    .post('/v1/admin/auth/totp')
+    .send({
+      challengeToken: login.body.challengeToken,
+      totp: totpAt(created.totpSecret, totpStep(e2e.clock.now())),
+    })
+    .expect(200);
+  return {
+    ...created,
+    accessToken: tokens.body.accessToken as string,
+    auth: { Authorization: `Bearer ${tokens.body.accessToken}` },
+  };
 }

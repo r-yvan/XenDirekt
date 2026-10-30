@@ -26,15 +26,42 @@ class PlatformSecureStore implements SecureStore {
 
   final FlutterSecureStorage _storage;
 
-  @override
-  Future<String?> read(String key) => _storage.read(key: key);
+  /// Set when the platform has no secure storage: a browser page served over
+  /// plain HTTP (not a secure context), e.g. the web preview opened on a phone
+  /// via the LAN address. Secrets then live in memory only and are never
+  /// written anywhere unencrypted; a page reload means signing in again.
+  MemorySecureStore? _fallback;
+
+  bool get isMemoryOnly => _fallback != null;
+
+  Future<T> _guard<T>(
+    Future<T> Function() secure,
+    Future<T> Function(MemorySecureStore memory) memory,
+  ) async {
+    final fallback = _fallback;
+    if (fallback != null) {
+      return memory(fallback);
+    }
+    try {
+      return await secure();
+    } on UnsupportedError {
+      return memory(_fallback = MemorySecureStore());
+    }
+  }
 
   @override
-  Future<void> write(String key, String value) =>
-      _storage.write(key: key, value: value);
+  Future<String?> read(String key) =>
+      _guard(() => _storage.read(key: key), (memory) => memory.read(key));
 
   @override
-  Future<void> delete(String key) => _storage.delete(key: key);
+  Future<void> write(String key, String value) => _guard(
+    () => _storage.write(key: key, value: value),
+    (memory) => memory.write(key, value),
+  );
+
+  @override
+  Future<void> delete(String key) =>
+      _guard(() => _storage.delete(key: key), (memory) => memory.delete(key));
 }
 
 class MemorySecureStore implements SecureStore {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#0A0A0B</color>
+    <!-- Matches the app's canvas so launch → first frame has no flash. -->
+    <color name="splash_background">#F4F4F6</color>
+</resources>

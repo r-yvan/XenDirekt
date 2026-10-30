@@ -29,6 +29,12 @@ import { PayeesModule } from './modules/payees/payees.module';
 import { ProviderModule } from './modules/provider/provider.module';
 import { QuotesModule } from './modules/quotes/quotes.module';
 import { PaymentsModule } from './modules/payments/payments.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { TicketsModule } from './modules/tickets/tickets.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { ReconciliationModule } from './modules/reconciliation/reconciliation.module';
+import { RefundsModule } from './modules/refunds/refunds.module';
+import { WebhooksModule } from './modules/webhooks/webhooks.module';
 import { HealthModule } from './modules/health/health.module';
 import { HttpMetricsMiddleware } from './modules/health/http-metrics.middleware';
 import { NotificationChannelsModule } from './modules/notifications/notification-channels.module';
@@ -64,6 +70,12 @@ export class AppModule implements NestModule {
         PayeesModule,
         QuotesModule,
         PaymentsModule,
+        NotificationsModule,
+        TicketsModule,
+        AnalyticsModule,
+        RefundsModule,
+        ReconciliationModule,
+        WebhooksModule,
       ],
       providers: [
         { provide: APP_FILTER, useClass: AllExceptionsFilter },

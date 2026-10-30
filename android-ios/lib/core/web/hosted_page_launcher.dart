@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../app/localization/generated/app_localizations.dart';
@@ -23,7 +24,8 @@ class WebViewHostedPageLauncher implements HostedPageLauncher {
     required String returnPrefix,
     required String title,
   }) {
-    return Navigator.of(context).push<Uri>(
+    // Root navigator: the partner page covers the tab bar like a real modal.
+    return Navigator.of(context, rootNavigator: true).push<Uri>(
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (_) => _HostedPageScreen(
@@ -97,5 +99,43 @@ class _HostedPageScreenState extends State<_HostedPageScreen> {
         ],
       ),
     );
+  }
+}
+
+/// Web preview only: browsers have no embeddable WebView, so the partner page
+/// opens in a new tab and the user comes back here when done. The server, not
+/// this dialog, decides whether the card was added or the payment approved.
+class BrowserTabHostedPageLauncher implements HostedPageLauncher {
+  @override
+  Future<Uri?> open(
+    BuildContext context,
+    Uri url, {
+    required String returnPrefix,
+    required String title,
+  }) async {
+    final opened = await launchUrl(url, webOnlyWindowName: '_blank');
+    if (!opened || !context.mounted) {
+      return null;
+    }
+    final l10n = AppLocalizations.of(context);
+    final done = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(l10n.hostedPageInNewTab),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.continueLabel),
+          ),
+        ],
+      ),
+    );
+    return done == true ? Uri.parse(returnPrefix) : null;
   }
 }

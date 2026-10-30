@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,6 +9,7 @@ import 'locale_controller.dart';
 import 'localization/generated/app_localizations.dart';
 import 'router/app_router.dart';
 import 'theme/app_theme.dart';
+import 'theme_controller.dart';
 
 class XenDirektApp extends ConsumerWidget {
   const XenDirektApp({super.key});
@@ -17,9 +19,9 @@ class XenDirektApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'XenDirekt',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark(),
+      theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
-      themeMode: ThemeMode.dark,
+      themeMode: ref.watch(themeModeProvider),
       locale: ref.watch(localeControllerProvider),
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -29,10 +31,13 @@ class XenDirektApp extends ConsumerWidget {
       ],
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: ref.watch(routerProvider),
-      builder: (context, child) => AppLockObserver(
-        onLockRequired: () =>
-            ref.read(sessionControllerProvider.notifier).lock(),
-        child: child ?? const SizedBox.shrink(),
+      builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+        value: Theme.of(context).appBarTheme.systemOverlayStyle!,
+        child: AppLockObserver(
+          onLockRequired: () =>
+              ref.read(sessionControllerProvider.notifier).lock(),
+          child: child ?? const SizedBox.shrink(),
+        ),
       ),
     );
   }

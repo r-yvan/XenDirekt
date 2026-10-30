@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:xendirekt/core/errors/api_failure.dart';
+import 'package:xendirekt/core/widgets/primary_button.dart';
 import 'package:xendirekt/features/authentication/data/auth_models.dart';
 
 import '../support/fake_auth_api.dart';
@@ -74,9 +75,9 @@ void main() {
 
       expect(find.text('About you'), findsOneWidget);
       expect(await harness.secure.read('xd.refresh_token'), '<refreshToken>');
-      final continueButton = find.widgetWithText(FilledButton, 'Continue');
+      final continueButton = find.widgetWithText(PrimaryButton, 'Continue');
       expect(
-        tester.widget<FilledButton>(continueButton).onPressed,
+        tester.widget<PrimaryButton>(continueButton).onPressed,
         isNull,
         reason: 'disabled until complete',
       );
@@ -88,10 +89,28 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.widgetWithText(ListTile, 'Canada'));
       await tester.pumpAndSettle();
+      // Wheel date picker: spin day, month and year, then confirm.
       await tester.tap(find.text('Date of birth'));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextField).last, '04/12/1990');
-      await tester.tap(find.text('OK'));
+      const item = 46.0;
+      final defaultYear = DateTime.now().year - 30;
+      await tester.drag(
+        find.byKey(const Key('dob-day')),
+        const Offset(0, -11 * item),
+      );
+      await tester.pumpAndSettle();
+      await tester.drag(
+        find.byKey(const Key('dob-month')),
+        const Offset(0, -3 * item),
+      );
+      await tester.pumpAndSettle();
+      await tester.drag(
+        find.byKey(const Key('dob-year')),
+        Offset(0, (defaultYear - 1990) * item),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('April 12, 1990'), findsWidgets);
+      await tester.tap(find.text('Done'));
       await tester.pumpAndSettle();
       await tester.ensureVisible(continueButton);
       await tester.tap(continueButton);
@@ -119,6 +138,16 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Pay'), findsWidgets);
       expect(find.text('Sandbox: no real money moves'), findsOneWidget);
+      expect(
+        harness.analytics.events.map((event) => event.$1),
+        containsAllInOrder(['signup_started', 'signup_completed']),
+      );
+      expect(
+        harness.analytics.events
+            .firstWhere((e) => e.$1 == 'signup_completed')
+            .$2,
+        {'country': 'CA'},
+      );
     },
   );
 

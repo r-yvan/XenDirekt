@@ -49,27 +49,36 @@ class _HoldToConfirmButtonState extends State<HoldToConfirmButton>
         onTapCancel: _progress.reverse,
         child: AnimatedBuilder(
           animation: _progress,
-          builder: (context, _) => Container(
-            height: 56,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.statusError),
-              gradient: LinearGradient(
-                colors: const [AppColors.statusError, AppColors.brandBlack],
-                stops: [_progress.value, _progress.value],
+          builder: (context, _) {
+            final error = context.xd.statusErrorText;
+            return Container(
+              height: 54,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: error),
               ),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              widget.label,
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: _progress.value > 0.5
-                    ? AppColors.brandBlack
-                    : AppColors.statusErrorText,
+              child: Stack(
+                children: [
+                  // The fill grows while the finger stays down.
+                  FractionallySizedBox(
+                    widthFactor: _progress.value,
+                    heightFactor: 1,
+                    child: ColoredBox(color: error.withValues(alpha: 0.16)),
+                  ),
+                  Center(
+                    child: Text(
+                      widget.label,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: error,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

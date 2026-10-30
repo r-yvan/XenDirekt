@@ -7,9 +7,12 @@ import 'package:xendirekt/core/errors/api_failure.dart';
 import 'package:xendirekt/core/network/api_client.dart';
 import 'package:xendirekt/features/authentication/data/auth_models.dart';
 import 'package:xendirekt/features/cards/data/card_models.dart';
+import 'package:xendirekt/features/notifications/data/notifications_api.dart';
 import 'package:xendirekt/features/payee_lookup/data/payee_models.dart';
 import 'package:xendirekt/features/payee_lookup/data/payees_api.dart';
+import 'package:xendirekt/features/payments/data/payment_models.dart';
 import 'package:xendirekt/features/quotes/data/quote_models.dart';
+import 'package:xendirekt/features/support/data/support_api.dart';
 import 'package:xendirekt/shared/models/app_client_config.dart';
 import 'package:xendirekt/shared/models/json.dart';
 import 'package:xendirekt/shared/models/user_profile.dart';
@@ -34,6 +37,11 @@ void main() {
     expect(config.otpLength, 6);
     expect(config.pinLength, 6);
     expect(config.merchantCodes, isFalse);
+    expect(config.paymentsPaused, isFalse);
+    expect(
+      AppClientConfig.fromJson(fixture('app_config_paused')).paymentsPaused,
+      isTrue,
+    );
   });
 
   test('OTP challenge', () {
@@ -118,5 +126,44 @@ void main() {
     expect(isCompleteRwandanNumber('078 812 3456'), isTrue);
     expect(isCompleteRwandanNumber('+250788123456'), isTrue);
     expect(isCompleteRwandanNumber('078812345'), isFalse);
+  });
+
+  test('payments across the lifecycle', () {
+    final created = Payment.fromJson(fixture('payment_created'));
+    expect(created.reference, matches(RegExp(r'^XD-[A-Z2-9]{6}$')));
+    expect(created.isSettled, isFalse);
+
+    final action = Payment.fromJson(fixture('payment_three_ds_required'));
+    expect(action.status, 'ACTION_REQUIRED');
+    expect(action.nextAction!.returnUrlPrefix, 'xendirekt-app://3ds/return');
+
+    final completed = Payment.fromJson(fixture('payment_completed'));
+    expect(completed.isSettled, isTrue);
+    expect(completed.chargeStatus, 'CHARGED');
+    expect(completed.steps.received, isTrue);
+
+    final declined = Payment.fromJson(fixture('payment_declined'));
+    expect(declined.failureReason, 'CARD_DECLINED');
+    expect(declined.chargeStatus, 'NOT_CHARGED');
+
+    final voided = Payment.fromJson(fixture('payment_payout_failed_voided'));
+    expect(voided.status, 'FAILED');
+    expect(voided.chargeStatus, 'NOT_CHARGED');
+
+    final review = Payment.fromJson(fixture('payment_pending_review'));
+    expect(review.isInReview, isTrue);
+    expect(review.isSettled, isFalse);
+
+    final page = PaymentPage.fromJson(fixture('payments_list'));
+    expect(page.payments, isNotEmpty);
+  });
+
+  test('notifications inbox and support ticket', () {
+    final inbox = Inbox.fromJson(fixture('notifications_inbox'));
+    expect(inbox.items.first.kind, 'PAYMENT_COMPLETED');
+    expect(inbox.items.first.paymentId, isNotNull);
+    final ticket = SupportTicket.fromJson(fixture('ticket_created'));
+    expect(ticket.reference, startsWith('TK-'));
+    expect(ticket.paymentReference, startsWith('XD-'));
   });
 }

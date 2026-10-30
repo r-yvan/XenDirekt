@@ -22,6 +22,8 @@ export const limitsConfigSchema = z
     perPayeeDailyRwf: rwf,
     perUserTripRwf: rwf,
     tripDays: z.number().int().min(1).max(365),
+    /** Operations kill switch (runbooks/provider-outage.md): refuse new quotes and payments. */
+    paymentsPaused: z.boolean().optional(),
   })
   .refine(
     (value) => value.minPaymentRwf <= value.maxPaymentRwf,

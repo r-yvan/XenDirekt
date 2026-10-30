@@ -1,3 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../features/authentication/data/auth_models.dart';
 
 abstract final class Routes {
@@ -16,6 +18,20 @@ abstract final class Routes {
 
   static const publicRoutes = {welcome, signInEmail, signInPhone, verifyOtp};
 }
+
+/// The code challenge being verified. Kept in app state rather than in the
+/// route's `extra`, which is dropped whenever the router rebuilds the page
+/// (session changes, app restore) and crashed the code screen.
+class PendingOtp extends Notifier<OtpRouteArgs?> {
+  @override
+  OtpRouteArgs? build() => null;
+
+  void set(OtpRouteArgs args) => state = args;
+}
+
+final pendingOtpProvider = NotifierProvider<PendingOtp, OtpRouteArgs?>(
+  PendingOtp.new,
+);
 
 class OtpRouteArgs {
   const OtpRouteArgs({
