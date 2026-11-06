@@ -1,6 +1,6 @@
 {
-  "id": "1bc9b1dd-a0f5-4c33-ba3e-86fdc2f6cf42",
-  "reference": "XD-5UF86Y",
+  "id": "53f9a7d0-47e3-4a9e-bb15-8413d5342cd0",
+  "reference": "XD-EXUBSJ",
   "state": "VOIDED",
   "status": "FAILED",
   "chargeStatus": "NOT_CHARGED",
@@ -29,8 +29,8 @@
   },
   "note": "2 baskets",
   "simulated": true,
-  "createdAt": "2026-10-27T15:18:51.137Z",
-  "updatedAt": "2026-10-27T15:18:51.225Z",
+  "createdAt": "2026-11-05T08:41:32.612Z",
+  "updatedAt": "2026-11-05T08:41:32.730Z",
   "completedAt": null,
   "receipt": null
 }

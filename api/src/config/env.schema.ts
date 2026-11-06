@@ -60,7 +60,7 @@ export const envSchema = z.object({
     .regex(/^[a-z0-9-]{1,16}$/)
     .default('k1'),
 
-  PAYMENT_PROVIDER: z.enum(['mock', 'xentripay']).default('mock'),
+  PAYMENT_PROVIDER: z.enum(['mock', 'xentripay', 'hybrid']).default('mock'),
   XENTRIPAY_BASE_URL: z.url().default('https://merchant.test.xentripay.com'),
   XENTRIPAY_API_KEY: z.string().optional(),
   XENTRIPAY_CONNECT_TIMEOUT_MS: z.coerce.number().int().min(500).max(30000).default(3000),

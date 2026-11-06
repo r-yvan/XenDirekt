@@ -2,10 +2,10 @@
   "accessToken": "<accessToken>",
   "accessTokenExpiresIn": 900,
   "refreshToken": "<refreshToken>",
-  "sessionId": "d15b2613-3271-48c8-9efc-a87af58c4960",
+  "sessionId": "e2599484-4931-4ca2-b232-8ec1e97cea1b",
   "isNewUser": true,
   "user": {
-    "id": "26f01a46-04ac-4194-9768-52132464c918",
+    "id": "20123479-6a48-4822-a25d-61375682558d",
     "fullName": null,
     "email": "oliver@example.com",
     "phone": null,
@@ -19,6 +19,6 @@
     "kycLevel": "NONE",
     "acceptedTermsVersion": null,
     "acceptedPrivacyVersion": null,
-    "createdAt": "2026-10-27T15:18:37.602Z"
+    "createdAt": "2026-11-05T08:41:06.926Z"
   }
 }

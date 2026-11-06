@@ -42,7 +42,8 @@ export class ProviderGateway {
     if (!this.provider.implemented.has(capability)) {
       return false;
     }
-    return this.provider.simulated ? !this.config.isProduction : this.approved.has(capability);
+    const simulated = this.provider.isSimulatedCapability?.(capability) ?? this.provider.simulated;
+    return simulated ? !this.config.isProduction : this.approved.has(capability);
   }
 
   /** Runs a provider call behind its capability, with metrics. Provider errors propagate typed. */

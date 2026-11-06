@@ -90,6 +90,12 @@ export interface PaymentProvider {
   /** What this adapter actually implements. Usability also requires approval (see ProviderGateway). */
   readonly implemented: ReadonlySet<ProviderCapability>;
 
+  /**
+   * For adapters that mix simulated and real operations (the hybrid): whether this capability
+   * is simulated. Defaults to `simulated` for the whole adapter.
+   */
+  isSimulatedCapability?(capability: ProviderCapability): boolean;
+
   createCardSetup(input: {
     setupRef: string;
     customerCountry: string | null;

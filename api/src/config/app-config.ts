@@ -167,7 +167,8 @@ export class AppConfig {
   }
 
   /** The mock provider produces simulated results; it must never run where money is real. */
+  /** True for the mock and for the hybrid (simulated cards, XentriPay payouts). */
   get usesSimulatedProvider(): boolean {
-    return this.provider.name === 'mock';
+    return this.provider.name !== 'xentripay';
   }
 }

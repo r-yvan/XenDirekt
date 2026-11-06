@@ -64,7 +64,9 @@ export function collectStartupProblems(config: AppConfig): string[] {
   }
 
   if (config.usesSimulatedProvider) {
-    problems.push('PAYMENT_PROVIDER=mock is forbidden in production (simulated results)');
+    problems.push(
+      `PAYMENT_PROVIDER=${config.provider.name} is forbidden in production (simulated results)`,
+    );
   }
   if (!config.redisUrl) {
     problems.push('REDIS_URL is required in production (shared rate limits)');

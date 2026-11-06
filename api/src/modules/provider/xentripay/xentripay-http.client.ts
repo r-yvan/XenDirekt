@@ -91,6 +91,16 @@ export class XentriPayHttpClient {
         json = null;
       }
     }
+    // Observed in XentriPay's sandbox (2026-11-06, OQ-19): an unknown customerReference is a 500
+    // with this message, not a 404. Only this exact message counts as "not found".
+    const message500 = (json as { message?: unknown } | null)?.message;
+    if (
+      response.status === 500 &&
+      typeof message500 === 'string' &&
+      /^Payment with customerReference not found$/i.test(message500.trim())
+    ) {
+      return { status: 404, json };
+    }
     if (response.status >= 500) {
       throw new ProviderOutcomeUnknownError(
         `XentriPay ${method} ${path} returned ${response.status}`,

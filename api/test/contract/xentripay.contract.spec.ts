@@ -189,6 +189,17 @@ describe('XentriPay adapter (contract)', () => {
     expect(await provider().getPayoutStatus('X')).toEqual({ status: 'NOT_FOUND' });
   });
 
+  it('maps the sandbox\'s "customerReference not found" 500 to NOT_FOUND, other 500s stay unknown', async () => {
+    // Observed against merchant.test.xentripay.com on 2026-11-06.
+    handler = (_req, _body, res) =>
+      json(res, 500, { message: 'Payment with customerReference not found', status: 500 });
+    expect(await provider().getPayoutStatus('X')).toEqual({ status: 'NOT_FOUND' });
+    handler = (_req, _body, res) => json(res, 500, { message: 'Internal error', status: 500 });
+    await expect(provider().getPayoutStatus('X')).rejects.toBeInstanceOf(
+      ProviderOutcomeUnknownError,
+    );
+  });
+
   it('refuses every undocumented capability instead of simulating it', async () => {
     const adapter = provider();
     await expect(adapter.lookupPayee()).rejects.toBeInstanceOf(CapabilityNotConfiguredError);

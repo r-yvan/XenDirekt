@@ -90,9 +90,7 @@ async function main(): Promise<void> {
     }
   } catch (error) {
     if (error instanceof ProviderRejectedError) {
-      fail(
-        `Rejected by XentriPay (${error.providerCode ?? 'no code'}): ${error.message}. Check the API key.`,
-      );
+      fail(`Rejected by XentriPay (${error.providerCode ?? 'no code'}): ${error.message}.`);
     }
     if (error instanceof ProviderError) {
       fail(`${error.name}: ${error.message}`);

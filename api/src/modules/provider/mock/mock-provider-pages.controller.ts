@@ -5,6 +5,7 @@ import { Public } from '../../../common/decorators/public.decorator';
 import { AppConfig } from '../../../config/app-config';
 import { formatMinorAsDecimal } from '../../../shared/money/currency';
 import { PAYMENT_PROVIDER, type PaymentProvider } from '../domain/payment-provider';
+import { HybridPaymentProvider } from '../hybrid/hybrid-payment.provider';
 import { MockPaymentProvider } from './mock-payment.provider';
 import { MOCK_CARDS } from './mock-scenarios';
 
@@ -39,10 +40,17 @@ export class MockProviderPagesController {
   ) {}
 
   private get mock(): MockPaymentProvider {
-    if (this.config.isProduction || !(this.provider instanceof MockPaymentProvider)) {
+    // The hybrid simulates cards with the same mock, so its pages are served too.
+    const mock =
+      this.provider instanceof MockPaymentProvider
+        ? this.provider
+        : this.provider instanceof HybridPaymentProvider
+          ? this.provider.mock
+          : null;
+    if (this.config.isProduction || !mock) {
       throw new NotFoundException();
     }
-    return this.provider;
+    return mock;
   }
 
   @Get('card-setup/:setupId')

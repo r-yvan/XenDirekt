@@ -32,7 +32,7 @@ Swagger (local): <http://localhost:3000/docs> (controlled by `ENABLE_API_DOCS`).
 Web is a separate origin, so the API must allow it via CORS. `CORS_ALLOWED_ORIGINS=http://localhost:8080` is set in `api/.env`, so pin the web port to `8080`.
 
 ```bash
-cd "android-ios"
+cd "/run/media/r-yvan/Personal Disk/Skills & Knowledge/Coding/Projects/Business Oriented/Pending/XenDirekt/android-ios"
 flutter run -d chrome --web-port=8080 --web-hostname=localhost \
   --dart-define=API_BASE_URL=http://localhost:3000
 ```
@@ -44,17 +44,20 @@ flutter run -d chrome --web-port=8080 --web-hostname=localhost \
 From inside the emulator, the host PC is reached at `10.0.2.2` (not `localhost`, not the LAN IP). Make sure KVM is free and the emulator is stopped before heavy Gradle builds (7.5 GB RAM).
 
 ```bash
-flutter emulators --launch Pixel_10_Pro   # starts the emulator; wait for it to boot
-cd "android-ios"
-flutter run -d emulator --dart-define=API_BASE_URL=http://10.0.2.2:3000
-```
+# 1. Launch the emulator and WAIT until it is fully booted (getprop returns 1).
+flutter emulators --launch Pixel_10_Pro
+adb wait-for-device
+until [ "$(adb -s emulator-5554 shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ]; do sleep 2; done
 
-If `-d emulator` is ambiguous, list devices and use the exact id:
-
-```bash
-flutter devices
+# 2. Run the app (the device id is emulator-5554, NOT "emulator").
+cd "/run/media/r-yvan/Personal Disk/Skills & Knowledge/Coding/Projects/Business Oriented/Pending/XenDirekt/android-ios"
 flutter run -d emulator-5554 --dart-define=API_BASE_URL=http://10.0.2.2:3000
 ```
+
+Notes if it fails:
+- **"No supported devices … matching 'emulator'"** → the emulator hadn't finished booting yet, or you used `-d emulator`. Wait for boot (step 1) and use the exact id `emulator-5554`.
+- **"cd: android-ios: No such file or directory"** → you weren't at the project root. The absolute `cd` above avoids that.
+- Confirm the id any time with `flutter devices` or `adb devices`.
 
 ---
 
@@ -65,7 +68,7 @@ flutter run -d emulator-5554 --dart-define=API_BASE_URL=http://10.0.2.2:3000
 ```bash
 adb devices                    # confirm the phone shows as "device" (authorize on phone if prompted)
 adb reverse tcp:3000 tcp:3000  # phone localhost:3000 -> PC :3000
-cd "android-ios"
+cd "/run/media/r-yvan/Personal Disk/Skills & Knowledge/Coding/Projects/Business Oriented/Pending/XenDirekt/android-ios"
 flutter run --dart-define=API_BASE_URL=http://localhost:3000
 ```
 

@@ -56,6 +56,11 @@ describe('startup guards', () => {
     expect(problems.join('\n')).toContain('PAYMENT_PROVIDER=mock is forbidden in production');
   });
 
+  it('forbids the hybrid (simulated cards + XentriPay payouts) in production', () => {
+    const problems = collectStartupProblems(productionEnv({ PAYMENT_PROVIDER: 'hybrid' }));
+    expect(problems.join('\n')).toContain('PAYMENT_PROVIDER=hybrid is forbidden in production');
+  });
+
   it('refuses production when the capability checklist is incomplete', () => {
     const problems = collectStartupProblems(
       productionEnv({ PROVIDER_CAPABILITY_APPROVALS: 'PAYOUT_STATUS=EV-9' }),
