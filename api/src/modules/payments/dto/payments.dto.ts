@@ -15,6 +15,14 @@ export class CreatePaymentDto {
   @IsString()
   @MaxLength(60)
   note?: string;
+
+  @ApiPropertyOptional({
+    enum: ['APP', 'WEB'],
+    description: 'Where 3-D Secure returns to: the app deep link (default) or the web portal',
+  })
+  @IsOptional()
+  @IsIn(['APP', 'WEB'])
+  returnTo?: 'APP' | 'WEB';
 }
 
 export const HISTORY_FILTERS = [

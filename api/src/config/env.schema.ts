@@ -35,6 +35,11 @@ export const envSchema = z.object({
   TRUST_PROXY: booleanFlag,
   CORS_ALLOWED_ORIGINS: csv,
   ENABLE_API_DOCS: booleanFlag,
+  /**
+   * The web portal and website (Next.js, /web). Card setup and 3-D Secure pages return here for
+   * web sessions, and waitlist emails link here.
+   */
+  WEB_APP_BASE_URL: z.url().default('http://localhost:3100'),
 
   DATABASE_URL: z.string().min(1),
   DATABASE_POOL_MAX: z.coerce.number().int().min(1).max(100).default(10),

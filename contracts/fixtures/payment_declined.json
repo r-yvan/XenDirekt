@@ -1,6 +1,6 @@
 {
-  "id": "63f95ab8-857e-48ec-a04c-c78d417114ab",
-  "reference": "XD-CJ5X3R",
+  "id": "60aa752d-f51a-4b83-a60f-17402ff06a20",
+  "reference": "XD-C3CYDS",
   "state": "AUTH_FAILED",
   "status": "FAILED",
   "chargeStatus": "NOT_CHARGED",
@@ -29,8 +29,8 @@
   },
   "note": "2 baskets",
   "simulated": true,
-  "createdAt": "2026-11-05T08:41:30.901Z",
-  "updatedAt": "2026-11-05T08:41:30.950Z",
+  "createdAt": "2026-11-06T15:43:57.027Z",
+  "updatedAt": "2026-11-06T15:43:57.048Z",
   "completedAt": null,
   "receipt": null
 }

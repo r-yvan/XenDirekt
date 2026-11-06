@@ -145,11 +145,13 @@ export type SessionRevokedReason =
   | 'NEW_SIGN_IN_ON_DEVICE'
   | 'PIN_CHANGED';
 
+export type ClientPlatform = 'ios' | 'android' | 'web';
+
 export interface SessionsTable {
   id: Generated<string>;
   user_id: string;
   device_id_hash: string;
-  platform: 'ios' | 'android' | null;
+  platform: ClientPlatform | null;
   app_version: string | null;
   refresh_token_hash: string;
   previous_refresh_token_hash: string | null;
@@ -352,6 +354,8 @@ export type PaymentState =
   | 'COMPLETED'
   | 'REFUNDED';
 
+export type ReturnChannel = 'APP' | 'WEB';
+
 export interface PaymentsTable {
   id: Generated<string>;
   reference: string;
@@ -376,6 +380,8 @@ export interface PaymentsTable {
   is_simulated: boolean;
   three_ds_required: Generated<boolean>;
   next_action_url: string | null;
+  /** Where 3-D Secure returns to: the app deep link or the web portal. */
+  return_channel: Generated<ReturnChannel>;
   payee_name_snapshot: string;
   payee_identifier_masked: string;
   card_brand_snapshot: string;
@@ -616,6 +622,51 @@ export interface AnalyticsEventsTable {
   source: 'APP' | 'SERVER';
 }
 
+export type LaunchPersona = 'VISITOR' | 'SENDER' | 'DIASPORA' | 'RECEIVER';
+
+export interface WaitlistEntriesTable {
+  id: Generated<string>;
+  seq: ColumnType<bigint, never, never>;
+  email: string;
+  full_name: string | null;
+  persona: LaunchPersona | null;
+  country_code: string | null;
+  locale: Generated<'en' | 'fr'>;
+  referral_code: string;
+  referred_by: string | null;
+  source: string | null;
+  privacy_version: string;
+  welcome_sent_at: NullableTimestamp;
+  created_at: CreatedAt;
+  updated_at: Updatable;
+}
+
+export interface HustleCheckResponsesTable {
+  id: Generated<string>;
+  persona: LaunchPersona;
+  last_time: 'SMOOTH' | 'DETOUR' | 'DECLINED' | 'STUCK';
+  speed: 'SECONDS' | 'SAME_DAY' | 'DAYS' | 'UNKNOWN';
+  fees: 'LOW' | 'SOME' | 'LOTS' | 'UNKNOWN';
+  checking: 'NEVER' | 'SOMETIMES' | 'OFTEN' | 'ALWAYS';
+  score: number;
+  created_at: CreatedAt;
+}
+
+export type StoryStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
+export interface WallStoriesTable {
+  id: Generated<string>;
+  body: string;
+  country_code: string | null;
+  persona: LaunchPersona | null;
+  status: Generated<StoryStatus>;
+  moderated_by: string | null;
+  moderated_at: NullableTimestamp;
+  moderation_note: string | null;
+  created_at: CreatedAt;
+  updated_at: Updatable;
+}
+
 export interface DB {
   audit_logs: AuditLogsTable;
   outbox_events: OutboxEventsTable;
@@ -649,4 +700,7 @@ export interface DB {
   reconciliation_runs: ReconciliationRunsTable;
   reconciliation_items: ReconciliationItemsTable;
   analytics_events: AnalyticsEventsTable;
+  waitlist_entries: WaitlistEntriesTable;
+  hustle_check_responses: HustleCheckResponsesTable;
+  wall_stories: WallStoriesTable;
 }

@@ -17,6 +17,7 @@ import {
   OutboxEvent,
 } from '../../../jobs/outbox/outbox.types';
 import { redact } from '../../../common/logging/redaction';
+import { AppConfig } from '../../../config/app-config';
 import { generatePublicReference } from '../../../shared/references/public-reference';
 import { Clock } from '../../../shared/time/clock';
 import { AuditService } from '../../audit/audit.service';
@@ -38,7 +39,7 @@ import { ProviderGateway } from '../../provider/provider.gateway';
 import { RiskService } from '../../risk/risk.service';
 import { ReviewReason } from '../domain/payment-state-machine';
 import { PaymentRow, PaymentTransitionsService } from './payment-transitions.service';
-import { THREE_DS_RETURN_PREFIX } from './payment-view';
+import { threeDsReturnPrefix } from './payment-view';
 import { PAYMENT_JOBS } from './payments.service';
 
 type Operation = Selectable<ProviderOperationsTable>;
@@ -89,6 +90,7 @@ export class PaymentOrchestrator implements OnModuleInit {
     private readonly cards: CardsService,
     private readonly risk: RiskService,
     private readonly audit: AuditService,
+    private readonly config: AppConfig,
   ) {}
 
   onModuleInit(): void {
@@ -155,7 +157,7 @@ export class PaymentOrchestrator implements OnModuleInit {
           amountMinor: payment.total_card_minor,
           currency: payment.card_currency,
           requireThreeDs: payment.three_ds_required,
-          returnUrl: `${THREE_DS_RETURN_PREFIX}?paymentId=${payment.id}`,
+          returnUrl: `${threeDsReturnPrefix(payment.return_channel, this.config.web.baseUrl)}?paymentId=${payment.id}`,
         }),
       );
     } catch (error) {

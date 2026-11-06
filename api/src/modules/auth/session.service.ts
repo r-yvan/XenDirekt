@@ -4,7 +4,12 @@ import { AppError } from '../../common/errors/app-error';
 import { AppConfig } from '../../config/app-config';
 import { Executor } from '../../database/database.factory';
 import { InjectDatabase } from '../../database/database.module';
-import type { DB, SessionRevokedReason, SessionsTable } from '../../database/schema';
+import type {
+  ClientPlatform,
+  DB,
+  SessionRevokedReason,
+  SessionsTable,
+} from '../../database/schema';
 import { hmacSha256Hex, randomToken, sha256Hex } from '../../shared/crypto/tokens';
 import { Clock } from '../../shared/time/clock';
 import { AuditService } from '../audit/audit.service';
@@ -19,7 +24,7 @@ export interface TokenPair {
 
 export interface DeviceInfo {
   deviceId: string;
-  platform?: 'ios' | 'android';
+  platform?: ClientPlatform;
   appVersion?: string;
 }
 

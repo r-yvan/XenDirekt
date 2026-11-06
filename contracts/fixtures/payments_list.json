@@ -1,8 +1,8 @@
 {
   "payments": [
     {
-      "id": "4ba3bba8-b41a-4563-9865-e8b883975fb0",
-      "reference": "XD-JJVMTA",
+      "id": "3e544420-4884-4c3d-8752-2b1f6f7d7daf",
+      "reference": "XD-NCTKR6",
       "state": "QUOTED",
       "status": "PROCESSING",
       "chargeStatus": "NOT_CHARGED",
@@ -31,14 +31,14 @@
       },
       "note": "2 baskets",
       "simulated": true,
-      "createdAt": "2026-11-05T08:41:37.476Z",
-      "updatedAt": "2026-11-05T08:41:37.476Z",
+      "createdAt": "2026-11-06T15:44:00.835Z",
+      "updatedAt": "2026-11-06T15:44:00.835Z",
       "completedAt": null,
       "receipt": null
     },
     {
-      "id": "66ec3dd3-c634-4522-b206-aa63e1f38eea",
-      "reference": "XD-SKWWKR",
+      "id": "d5f02fea-8741-4027-bdf6-492c491025b6",
+      "reference": "XD-GVA2ZF",
       "state": "QUOTED",
       "status": "PROCESSING",
       "chargeStatus": "NOT_CHARGED",
@@ -67,11 +67,11 @@
       },
       "note": "2 baskets",
       "simulated": true,
-      "createdAt": "2026-11-05T08:41:37.355Z",
-      "updatedAt": "2026-11-05T08:41:37.355Z",
+      "createdAt": "2026-11-06T15:44:00.771Z",
+      "updatedAt": "2026-11-06T15:44:00.771Z",
       "completedAt": null,
       "receipt": null
     }
   ],
-  "nextCursor": "eyJjIjoiMjAyNi0xMS0wNVQwODo0MTozNy4zNTVaIiwiaSI6IjY2ZWMzZGQzLWM2MzQtNDUyMi1iMjA2LWFhNjNlMWYzOGVlYSJ9"
+  "nextCursor": "eyJjIjoiMjAyNi0xMS0wNlQxNTo0NDowMC43NzFaIiwiaSI6ImQ1ZjAyZmVhLTg3NDEtNDAyNy1iZGY2LTQ5MmM0OTEwMjViNiJ9"
 }

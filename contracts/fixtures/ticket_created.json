@@ -1,12 +1,12 @@
 {
-  "id": "f6b40cf4-35dc-4c5c-abf9-902e2c40214b",
-  "reference": "TK-RQUE3Q",
+  "id": "2de05a9d-648e-4e0d-b167-1c37fb71927f",
+  "reference": "TK-VDAYCP",
   "category": "SELLER_NOT_PAID",
   "message": "The seller says nothing arrived.",
   "status": "OPEN",
-  "paymentId": "ac63c7aa-698e-4cb9-97f5-190b4c3e0ffc",
-  "paymentReference": "XD-Q5RN23",
+  "paymentId": "b7f48060-4a21-48db-b5fd-ad0d842d0990",
+  "paymentReference": "XD-5VET3M",
   "paymentStateAtReport": "QUOTED",
-  "createdAt": "2026-11-05T08:41:46.644Z",
+  "createdAt": "2026-11-06T15:44:06.379Z",
   "resolvedAt": null
 }

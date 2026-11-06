@@ -1,14 +1,14 @@
 {
   "notifications": [
     {
-      "id": "cf6afc48-7117-448f-bc52-dceb4766f3be",
-      "paymentId": "c2a37365-372a-42ee-99c5-026ae961c283",
+      "id": "930832f2-ef22-4b67-8880-c8a7a72c3abe",
+      "paymentId": "f92f951c-f26c-4e01-adce-594a318307e9",
       "kind": "PAYMENT_COMPLETED",
       "title": "Payment sent",
-      "body": "[SANDBOX: not real money] SANDBOX Moto Ride 456 received RWF 12,000. Ref XD-A7VNAG.",
-      "deepLink": "xendirekt://payments/c2a37365-372a-42ee-99c5-026ae961c283",
+      "body": "[SANDBOX: not real money] SANDBOX Moto Ride 456 received RWF 12,000. Ref XD-HWPSVX.",
+      "deepLink": "xendirekt://payments/f92f951c-f26c-4e01-adce-594a318307e9",
       "read": false,
-      "createdAt": "2026-11-05T08:41:44.812Z"
+      "createdAt": "2026-11-06T15:44:05.128Z"
     }
   ],
   "unread": 1

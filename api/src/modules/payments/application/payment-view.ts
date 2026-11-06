@@ -2,11 +2,19 @@ import { formatMoneyForDisplay } from '../../../shared/money/currency';
 import { formatRate, parseRate } from '../../../shared/money/fx';
 import { toSafeNumber } from '../../../shared/money/money';
 import { displayRate } from '../../quotes/domain/quote-calculator';
+import type { ReturnChannel } from '../../../database/schema';
 import type { ReviewReason } from '../domain/payment-state-machine';
 import { userFacingStatus } from '../domain/payment-view-model';
 import type { PaymentRow } from './payment-transitions.service';
 
 export const THREE_DS_RETURN_PREFIX = 'xendirekt-app://3ds/return';
+/** Web portal page that 3-D Secure returns to for payments made on the web. */
+export const WEB_THREE_DS_RETURN_PATH = '/app/payments/return';
+
+/** Where the issuer's 3-D Secure page sends the payer back to: the app or the web portal. */
+export function threeDsReturnPrefix(channel: ReturnChannel, webBaseUrl: string): string {
+  return channel === 'WEB' ? `${webBaseUrl}${WEB_THREE_DS_RETURN_PATH}` : THREE_DS_RETURN_PREFIX;
+}
 
 /** Kigali is UTC+02:00 with no daylight saving. */
 function kigaliIso(date: Date | null): string | null {
@@ -16,8 +24,11 @@ function kigaliIso(date: Date | null): string | null {
   return `${new Date(date.getTime() + 2 * 3_600_000).toISOString().slice(0, 19)}+02:00`;
 }
 
-/** The public payment representation (contracts/fixtures/payment_*.json). */
-export function paymentView(row: PaymentRow) {
+/**
+ * The public payment representation (contracts/fixtures/payment_*.json). `webBaseUrl` makes the
+ * 3-D Secure return prefix absolute for web payments.
+ */
+export function paymentView(row: PaymentRow, webBaseUrl = '') {
   const status = userFacingStatus(row.state, {
     hasNextAction: row.next_action_url !== null,
     failureCode: row.failure_code,
@@ -38,7 +49,7 @@ export function paymentView(row: PaymentRow) {
         ? {
             type: 'THREE_DS' as const,
             url: row.next_action_url,
-            returnUrlPrefix: THREE_DS_RETURN_PREFIX,
+            returnUrlPrefix: threeDsReturnPrefix(row.return_channel, webBaseUrl),
           }
         : null,
     amountRwf: toSafeNumber(row.amount_rwf),

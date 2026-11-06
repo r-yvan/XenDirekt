@@ -36,7 +36,9 @@ export function configureHttpApp(app: NestExpressApplication): AppConfig {
           scriptSrc: ["'self'"],
           styleSrc: ["'self'", "'unsafe-inline'"],
           imgSrc: ["'self'", 'data:'],
-          formAction: ["'self'"],
+          // The sandbox card and 3-D Secure forms redirect back to the web portal after a web
+          // session's choice, and browsers apply form-action to that redirect too.
+          formAction: ["'self'", config.web.origin],
           frameAncestors: ["'none'"],
           // Helmet adds this by default. Over plain-HTTP development it makes browsers
           // post the mock card and 3-D Secure forms to https://, which fails the TLS

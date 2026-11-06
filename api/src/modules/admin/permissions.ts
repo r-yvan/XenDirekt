@@ -24,6 +24,8 @@ export const PERMISSIONS = {
   'risk:read': ['RISK_ANALYST', 'ADMIN'],
   'metrics:read': ALL,
   'admins:manage': ['ADMIN'],
+  'launch:read': ALL,
+  'launch:moderate': ['SUPPORT_AGENT', 'ADMIN'],
   self: ALL,
 } as const satisfies Record<string, readonly AdminRole[]>;
 

@@ -1,6 +1,6 @@
 {
-  "id": "89fbc4cf-1ce3-4d91-98e5-81478011706f",
-  "reference": "XD-EK8X5K",
+  "id": "050ecdc2-300c-4402-b6c8-18feccef6c23",
+  "reference": "XD-6ZKD82",
   "state": "QUOTED",
   "status": "PROCESSING",
   "chargeStatus": "NOT_CHARGED",
@@ -29,8 +29,8 @@
   },
   "note": "2 baskets",
   "simulated": true,
-  "createdAt": "2026-11-05T08:41:29.474Z",
-  "updatedAt": "2026-11-05T08:41:29.474Z",
+  "createdAt": "2026-11-06T15:43:56.168Z",
+  "updatedAt": "2026-11-06T15:43:56.168Z",
   "completedAt": null,
   "receipt": null
 }

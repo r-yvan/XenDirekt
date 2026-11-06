@@ -1,6 +1,6 @@
 {
-  "quoteId": "15040bcb-3118-4493-90c1-3d6d9448a70f",
-  "expiresAt": "2026-11-05T08:46:42.326Z",
+  "quoteId": "eaf298a1-7c3f-4a44-8037-35edb070c72b",
+  "expiresAt": "2026-11-06T15:49:03.713Z",
   "amountRwf": 12000,
   "feeRwf": 380,
   "totalRwf": 12380,
@@ -11,12 +11,12 @@
   "fxRate": "1050",
   "fxRateDisplay": "1 CAD = 1,050 RWF",
   "payee": {
-    "payeeId": "d0c14b24-b170-459b-be64-7769418274b7",
+    "payeeId": "34c9d49c-9a9e-47f8-b7b4-eb36a2e7fc22",
     "registeredName": "SANDBOX Moto Ride 456",
     "maskedIdentifier": "078* *** 456"
   },
   "card": {
-    "id": "9caa6d65-a9a1-435b-af72-ff26eaf1482e",
+    "id": "52d4d37a-0d0e-4165-a36d-28957d37f52d",
     "brand": "VISA",
     "last4": "4242"
   },

@@ -1,6 +1,6 @@
 {
-  "id": "1db09513-c85c-4569-8671-f399b9956afb",
-  "reference": "XD-NZSK4Y",
+  "id": "f3b3ddd3-dcd5-4d86-b94e-4279411b051d",
+  "reference": "XD-A8QGAH",
   "state": "PENDING_REVIEW",
   "status": "IN_REVIEW",
   "chargeStatus": "UNKNOWN",
@@ -29,8 +29,8 @@
   },
   "note": "2 baskets",
   "simulated": true,
-  "createdAt": "2026-11-05T08:41:34.131Z",
-  "updatedAt": "2026-11-05T08:41:34.522Z",
+  "createdAt": "2026-11-06T15:43:58.903Z",
+  "updatedAt": "2026-11-06T15:43:59.159Z",
   "completedAt": null,
   "receipt": null
 }

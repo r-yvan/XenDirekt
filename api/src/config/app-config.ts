@@ -41,6 +41,8 @@ export class AppConfig {
     corsAllowedOrigins: string[];
     enableApiDocs: boolean;
   };
+  /** The web portal and website; card setup and 3-D Secure return there for web sessions. */
+  readonly web: { baseUrl: string; origin: string };
   readonly logLevel: Env['LOG_LEVEL'];
   readonly database: { url: string; poolMax: number; ssl: boolean };
   readonly redisUrl: string | undefined;
@@ -101,6 +103,8 @@ export class AppConfig {
       corsAllowedOrigins: env.CORS_ALLOWED_ORIGINS,
       enableApiDocs: env.ENABLE_API_DOCS || this.isDevelopmentLike,
     };
+    const webBaseUrl = env.WEB_APP_BASE_URL.replace(/\/+$/, '');
+    this.web = { baseUrl: webBaseUrl, origin: new URL(webBaseUrl).origin };
     this.logLevel = env.LOG_LEVEL;
     this.database = {
       url: env.DATABASE_URL,

@@ -36,6 +36,7 @@ import { ReconciliationModule } from './modules/reconciliation/reconciliation.mo
 import { RefundsModule } from './modules/refunds/refunds.module';
 import { WebhooksModule } from './modules/webhooks/webhooks.module';
 import { HealthModule } from './modules/health/health.module';
+import { LaunchModule } from './modules/launch/launch.module';
 import { HttpMetricsMiddleware } from './modules/health/http-metrics.middleware';
 import { NotificationChannelsModule } from './modules/notifications/notification-channels.module';
 import { SharedModule } from './shared/shared.module';
@@ -76,6 +77,7 @@ export class AppModule implements NestModule {
         RefundsModule,
         ReconciliationModule,
         WebhooksModule,
+        LaunchModule,
       ],
       providers: [
         { provide: APP_FILTER, useClass: AllExceptionsFilter },

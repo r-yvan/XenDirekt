@@ -30,15 +30,18 @@ export class RequestOtpDto {
 }
 
 export class DeviceDto {
-  @ApiProperty({ description: 'App-generated install ID (random UUID kept in secure storage)' })
+  @ApiProperty({
+    description:
+      'App-generated install ID (random UUID kept in secure storage); the web portal uses a per-browser ID',
+  })
   @IsString()
   @Length(16, 128)
   deviceId: string;
 
-  @ApiPropertyOptional({ enum: ['ios', 'android'] })
+  @ApiPropertyOptional({ enum: ['ios', 'android', 'web'] })
   @IsOptional()
-  @IsIn(['ios', 'android'])
-  platform?: 'ios' | 'android';
+  @IsIn(['ios', 'android', 'web'])
+  platform?: 'ios' | 'android' | 'web';
 
   @ApiPropertyOptional()
   @IsOptional()

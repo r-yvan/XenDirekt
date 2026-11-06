@@ -13,7 +13,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { type AuthenticatedUser, CurrentUser } from '../../common/decorators/auth.decorators';
 import { RateLimit } from '../../common/decorators/rate-limit.decorator';
 import { CardsService } from './cards.service';
-import { CompleteCardSetupDto, UpdateCardDto } from './dto/cards.dto';
+import { CompleteCardSetupDto, StartCardSetupDto, UpdateCardDto } from './dto/cards.dto';
 
 @ApiTags('cards')
 @ApiBearerAuth('user')
@@ -27,8 +27,8 @@ export class CardsController {
       'Start adding a card: returns the partner-hosted page URL (card details never reach XenDirekt)',
   })
   @RateLimit({ name: 'card-setup', key: 'user', limit: 10, windowSeconds: 3600 })
-  setup(@CurrentUser() user: AuthenticatedUser) {
-    return this.cards.startSetup(user);
+  setup(@CurrentUser() user: AuthenticatedUser, @Body() body: StartCardSetupDto) {
+    return this.cards.startSetup(user, body.returnTo ?? 'APP');
   }
 
   @Post()

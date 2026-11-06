@@ -1,6 +1,6 @@
 {
-  "id": "89fbc4cf-1ce3-4d91-98e5-81478011706f",
-  "reference": "XD-EK8X5K",
+  "id": "050ecdc2-300c-4402-b6c8-18feccef6c23",
+  "reference": "XD-6ZKD82",
   "state": "AUTH_PENDING",
   "status": "ACTION_REQUIRED",
   "chargeStatus": "NOT_CHARGED",
@@ -12,7 +12,7 @@
   },
   "nextAction": {
     "type": "THREE_DS",
-    "url": "http://localhost:3000/dev/mock-provider/3ds/mock_auth_0ce3f6ad-1ee6-4d59-b0c9-743e1496b3bc",
+    "url": "http://localhost:3000/dev/mock-provider/3ds/mock_auth_9dae231b-6d44-4b26-97ad-d5b61d3ceced",
     "returnUrlPrefix": "xendirekt-app://3ds/return"
   },
   "amountRwf": 12000,
@@ -33,8 +33,8 @@
   },
   "note": "2 baskets",
   "simulated": true,
-  "createdAt": "2026-11-05T08:41:29.474Z",
-  "updatedAt": "2026-11-05T08:41:29.536Z",
+  "createdAt": "2026-11-06T15:43:56.168Z",
+  "updatedAt": "2026-11-06T15:43:56.200Z",
   "completedAt": null,
   "receipt": null
 }

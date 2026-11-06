@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Kysely, Selectable, sql } from 'kysely';
 import { type AuthenticatedUser } from '../../common/decorators/auth.decorators';
 import { AppError } from '../../common/errors/app-error';
+import { AppConfig } from '../../config/app-config';
 import { Executor } from '../../database/database.factory';
 import { InjectDatabase } from '../../database/database.module';
 import type { CardsTable, DB } from '../../database/schema';
@@ -15,6 +16,8 @@ import { AccountDeletionHooks } from '../users/account-deletion.hooks';
 import { checkCardEligibility } from './domain/card-eligibility';
 
 export const CARD_SETUP_RETURN_URL = 'xendirekt-app://card-setup/return';
+/** Web portal page the hosted card page returns to for web sessions. */
+export const WEB_CARD_SETUP_RETURN_PATH = '/app/cards/return';
 export const TOKEN_CONTEXT = 'cards.provider_token';
 
 export interface CardView {
@@ -46,6 +49,7 @@ export class CardsService implements OnModuleInit {
     private readonly blocklist: BlocklistService,
     private readonly audit: AuditService,
     private readonly deletionHooks: AccountDeletionHooks,
+    private readonly config: AppConfig,
   ) {}
 
   onModuleInit(): void {
@@ -64,7 +68,11 @@ export class CardsService implements OnModuleInit {
     });
   }
 
-  async startSetup(user: AuthenticatedUser) {
+  async startSetup(user: AuthenticatedUser, returnTo: 'APP' | 'WEB' = 'APP') {
+    const returnUrl =
+      returnTo === 'WEB'
+        ? `${this.config.web.baseUrl}${WEB_CARD_SETUP_RETURN_PATH}`
+        : CARD_SETUP_RETURN_URL;
     const rules = (await this.configuration.get('CARD_RULES')).value;
     await this.assertBelowLimit(this.db, user.userId, rules.maxActiveCards);
     const profile = await this.db
@@ -79,7 +87,7 @@ export class CardsService implements OnModuleInit {
         provider.createCardSetup({
           setupRef: user.userId,
           customerCountry: profile.country_of_residence,
-          returnUrl: CARD_SETUP_RETURN_URL,
+          returnUrl,
         }),
     );
     const row = await this.db
@@ -95,7 +103,7 @@ export class CardsService implements OnModuleInit {
     return {
       setupId: row.id,
       hostedUrl: session.hostedUrl,
-      returnUrlPrefix: CARD_SETUP_RETURN_URL,
+      returnUrlPrefix: returnUrl,
       expiresAt: session.expiresAt.toISOString(),
       simulated: this.provider.simulated,
     };

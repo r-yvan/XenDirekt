@@ -1,6 +1,6 @@
 {
-  "id": "53f9a7d0-47e3-4a9e-bb15-8413d5342cd0",
-  "reference": "XD-EXUBSJ",
+  "id": "364df658-e3cd-4478-b0aa-4867a473afed",
+  "reference": "XD-E8PHC6",
   "state": "VOIDED",
   "status": "FAILED",
   "chargeStatus": "NOT_CHARGED",
@@ -29,8 +29,8 @@
   },
   "note": "2 baskets",
   "simulated": true,
-  "createdAt": "2026-11-05T08:41:32.612Z",
-  "updatedAt": "2026-11-05T08:41:32.730Z",
+  "createdAt": "2026-11-06T15:43:58.019Z",
+  "updatedAt": "2026-11-06T15:43:58.083Z",
   "completedAt": null,
   "receipt": null
 }

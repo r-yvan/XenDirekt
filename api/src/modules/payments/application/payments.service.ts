@@ -3,8 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { Kysely, sql } from 'kysely';
 import { type AuthenticatedUser } from '../../../common/decorators/auth.decorators';
 import { AppError } from '../../../common/errors/app-error';
+import { AppConfig } from '../../../config/app-config';
 import { InjectDatabase } from '../../../database/database.module';
-import type { DB, PaymentState } from '../../../database/schema';
+import type { DB, PaymentState, ReturnChannel } from '../../../database/schema';
 import { OutboxService } from '../../../jobs/outbox/outbox.service';
 import { sha256Hex } from '../../../shared/crypto/tokens';
 import { generatePublicReference } from '../../../shared/references/public-reference';
@@ -77,7 +78,12 @@ export class PaymentsService {
     private readonly blocklist: BlocklistService,
     private readonly configuration: ConfigurationService,
     private readonly provider: ProviderGateway,
+    private readonly config: AppConfig,
   ) {}
+
+  private view(row: Parameters<typeof paymentView>[0]): PaymentView {
+    return paymentView(row, this.config.web.baseUrl);
+  }
 
   /**
    * Same key + same request → the original payment (no new charge). Same key + different
@@ -85,7 +91,7 @@ export class PaymentsService {
    */
   async create(
     user: AuthenticatedUser,
-    input: { quoteId: string; note?: string },
+    input: { quoteId: string; note?: string; returnTo?: ReturnChannel },
     idempotencyKey: string | undefined,
     stepUpToken: string | undefined,
   ): Promise<{ payment: PaymentView; created: boolean }> {
@@ -114,6 +120,7 @@ export class PaymentsService {
           idempotencyKey,
           requestHash,
           stepUpToken,
+          input.returnTo ?? 'APP',
         );
         return { payment: outcome.view, created: outcome.created };
       } catch (error) {
@@ -152,7 +159,7 @@ export class PaymentsService {
     if (existing.request_hash !== requestHash) {
       throw new AppError('IDEMPOTENCY_KEY_REUSED');
     }
-    return paymentView(existing);
+    return this.view(existing);
   }
 
   private async insertPayment(
@@ -162,6 +169,7 @@ export class PaymentsService {
     idempotencyKey: string,
     requestHash: string,
     stepUpToken: string | undefined,
+    returnChannel: ReturnChannel,
   ): Promise<{ view: PaymentView; created: boolean }> {
     const limits = await this.configuration.get('LIMITS');
     return this.db.transaction().execute(async (trx) => {
@@ -183,7 +191,7 @@ export class PaymentsService {
         if (raced.request_hash !== requestHash) {
           throw new AppError('IDEMPOTENCY_KEY_REUSED');
         }
-        return { view: paymentView(raced), created: false };
+        return { view: this.view(raced), created: false };
       }
       await this.stepUp.consume(trx, user, 'PAYMENT', stepUpToken);
       const quote = await this.quotes.requireUsable(user.userId, quoteId, trx);
@@ -233,6 +241,7 @@ export class PaymentsService {
           is_simulated: this.provider.simulated,
           // NFR-RSK-01: 3-D Secure on the first payment of every card.
           three_ds_required: card.first_payment_at === null,
+          return_channel: returnChannel,
           payee_name_snapshot: payee.registered_name,
           payee_identifier_masked: this.payees.mask(payee.identifier_type, payee.identifier),
           card_brand_snapshot: card.brand,
@@ -274,7 +283,7 @@ export class PaymentsService {
         payload: { paymentId: inserted.id },
         dedupeKey: `payment:${inserted.id}:authorise`,
       });
-      return { view: paymentView(inserted), created: true };
+      return { view: this.view(inserted), created: true };
     });
   }
 
@@ -289,7 +298,7 @@ export class PaymentsService {
     if (!row) {
       throw new AppError('NOT_FOUND');
     }
-    return paymentView(row);
+    return this.view(row);
   }
 
   async list(
@@ -321,7 +330,7 @@ export class PaymentsService {
     const page = rows.slice(0, limit);
     const last = page[page.length - 1];
     return {
-      payments: page.map(paymentView),
+      payments: page.map((row) => this.view(row)),
       nextCursor: rows.length > limit && last ? encodeCursor(last.created_at, last.id) : null,
     };
   }

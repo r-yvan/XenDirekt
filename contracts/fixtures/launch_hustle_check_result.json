@@ -1,0 +1,13 @@
+{
+  "id": "cf85a865-322d-4b62-a72e-61990de9e6c6",
+  "score": 100,
+  "tier": "LEGEND",
+  "percentile": 94,
+  "responses": 10,
+  "insights": {
+    "hitAWallPct": 20,
+    "unknownFeesPct": 20,
+    "alwaysCheckingPct": 20,
+    "waitDaysOrMorePct": 20
+  }
+}

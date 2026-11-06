@@ -1,14 +1,14 @@
 {
-  "id": "230973cc-519b-4a64-80b3-10934e99579a",
-  "reference": "RF-K5RMAJ",
-  "paymentId": "636795a7-f16b-48a8-bb3f-823f48c9c478",
+  "id": "9e989814-7472-4958-92e1-c56f86d38776",
+  "reference": "RF-PR9T53",
+  "paymentId": "de28c286-a486-4056-a00d-c9a59f78c676",
   "type": "REFUND",
   "status": "REQUESTED",
   "amountMinor": 1180,
   "currency": "CAD",
   "reason": "Seller agreed to refund the tourist",
-  "requestedBy": "41621746-8029-41b4-a86b-e6aa17040481",
+  "requestedBy": "328d52ea-0e3b-472d-8153-78c258dea0a9",
   "approvedBy": null,
   "providerRef": null,
-  "createdAt": "2026-11-05T08:41:13.111Z"
+  "createdAt": "2026-11-06T15:43:47.610Z"
 }

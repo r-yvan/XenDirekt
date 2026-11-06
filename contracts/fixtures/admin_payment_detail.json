@@ -1,7 +1,7 @@
 {
   "payment": {
-    "id": "ca5e9c3f-2b75-4952-879e-e10e51ca4be8",
-    "reference": "XD-ZKU9NM",
+    "id": "c494e7a9-989e-4f25-b553-a693b9117446",
+    "reference": "XD-ZM2CMK",
     "state": "COMPLETED",
     "status": "COMPLETED",
     "chargeStatus": "CHARGED",
@@ -30,12 +30,12 @@
     },
     "note": "2 baskets",
     "simulated": true,
-    "createdAt": "2026-11-05T08:41:17.983Z",
-    "updatedAt": "2026-11-05T08:41:18.137Z",
-    "completedAt": "2026-11-05T08:41:23.101Z",
+    "createdAt": "2026-11-06T15:43:49.992Z",
+    "updatedAt": "2026-11-06T15:43:50.067Z",
+    "completedAt": "2026-11-06T15:43:55.560Z",
     "receipt": {
-      "reference": "XD-ZKU9NM",
-      "kigaliDateTime": "2026-11-05T10:41:23+02:00",
+      "reference": "XD-ZM2CMK",
+      "kigaliDateTime": "2026-11-06T17:43:55+02:00",
       "merchantName": "SANDBOX Moto Ride 456",
       "merchantIdentifier": "078* *** 456",
       "amountRwf": 12000,
@@ -49,28 +49,28 @@
     "reviewReason": null,
     "provider": "mock",
     "customer": {
-      "userId": "1791e1ee-9a76-498e-8227-87c25279b82d",
+      "userId": "a3e6162b-1a7b-4ba2-9bc7-5073b1d514ba",
       "name": "Oliver Martin",
-      "email": "tourist-b61154a2@example.com",
+      "email": "tourist-f0560474@example.com",
       "phone": null
     }
   },
   "timeline": [
     {
-      "at": "2026-11-05T08:41:17.983Z",
+      "at": "2026-11-06T15:43:49.992Z",
       "type": "PAYMENT_CREATED",
       "from": null,
       "to": "QUOTED",
       "source": "APP",
-      "actorId": "1791e1ee-9a76-498e-8227-87c25279b82d",
+      "actorId": "a3e6162b-1a7b-4ba2-9bc7-5073b1d514ba",
       "reason": null,
       "payload": {
-        "quoteId": "0def0488-3f97-4a0a-8a1e-97395db50b9b",
-        "idempotencyKey": "key-7evlos51cj"
+        "quoteId": "0c4de796-37a7-4c12-8e78-1471d0a71c84",
+        "idempotencyKey": "key-sm7kjpula2"
       }
     },
     {
-      "at": "2026-11-05T08:41:18.007Z",
+      "at": "2026-11-06T15:43:50.001Z",
       "type": "STATE_CHANGED",
       "from": "QUOTED",
       "to": "AUTH_PENDING",
@@ -80,7 +80,7 @@
       "payload": null
     },
     {
-      "at": "2026-11-05T08:41:18.017Z",
+      "at": "2026-11-06T15:43:50.005Z",
       "type": "THREE_DS_REQUIRED",
       "from": null,
       "to": null,
@@ -90,7 +90,7 @@
       "payload": null
     },
     {
-      "at": "2026-11-05T08:41:18.055Z",
+      "at": "2026-11-06T15:43:50.025Z",
       "type": "STATE_CHANGED",
       "from": "AUTH_PENDING",
       "to": "AUTHORISED",
@@ -100,7 +100,7 @@
       "payload": null
     },
     {
-      "at": "2026-11-05T08:41:18.072Z",
+      "at": "2026-11-06T15:43:50.034Z",
       "type": "STATE_CHANGED",
       "from": "AUTHORISED",
       "to": "PAYOUT_PENDING",
@@ -110,7 +110,7 @@
       "payload": null
     },
     {
-      "at": "2026-11-05T08:41:18.114Z",
+      "at": "2026-11-06T15:43:50.055Z",
       "type": "STATE_CHANGED",
       "from": "PAYOUT_PENDING",
       "to": "CAPTURE_PENDING",
@@ -120,7 +120,7 @@
       "payload": null
     },
     {
-      "at": "2026-11-05T08:41:18.137Z",
+      "at": "2026-11-06T15:43:50.067Z",
       "type": "STATE_CHANGED",
       "from": "CAPTURE_PENDING",
       "to": "COMPLETED",
@@ -132,45 +132,45 @@
   ],
   "operations": [
     {
-      "id": "72c1204b-8df6-4e59-88c8-5a63e0e20132",
+      "id": "c3aace51-d442-4615-bcb9-dad95e9b621c",
       "type": "AUTHORISATION",
-      "requestRef": "XD-ZKU9NM-AUTH",
-      "providerRef": "mock_auth_40c4b352-845b-47da-bf90-4feec2a12492",
+      "requestRef": "XD-ZM2CMK-AUTH",
+      "providerRef": "mock_auth_2eab1123-a707-4c44-b098-813d68ba3ab4",
       "status": "SUCCEEDED",
       "providerStatus": "AUTHORISED",
       "failureCode": null,
       "amountMinor": 1180,
       "currency": "CAD",
-      "requestedAt": "2026-11-05T08:41:17.101Z",
-      "completedAt": "2026-11-05T08:41:20.101Z",
+      "requestedAt": "2026-11-06T15:43:49.560Z",
+      "completedAt": "2026-11-06T15:43:52.560Z",
       "checks": 0
     },
     {
-      "id": "c9f07e79-5b17-4f0c-aace-ccbadfa47b7f",
+      "id": "bb5c902a-99ef-4623-a27a-70ecc5bce429",
       "type": "PAYOUT",
-      "requestRef": "XD-ZKU9NM-PAYOUT",
-      "providerRef": "mock_payout_1feec89c-b95f-4d5f-93ce-7def027e202b",
+      "requestRef": "XD-ZM2CMK-PAYOUT",
+      "providerRef": "mock_payout_87880807-df73-40bf-9f1c-c649a7ac099b",
       "status": "SUCCEEDED",
       "providerStatus": "COMPLETED",
       "failureCode": null,
       "amountMinor": 12000,
       "currency": "RWF",
-      "requestedAt": "2026-11-05T08:41:20.101Z",
-      "completedAt": "2026-11-05T08:41:23.101Z",
+      "requestedAt": "2026-11-06T15:43:52.560Z",
+      "completedAt": "2026-11-06T15:43:55.560Z",
       "checks": 1
     },
     {
-      "id": "4ea754fc-f874-42e6-a966-e2ce83c08f0d",
+      "id": "35d7b5fc-f8fd-49d8-aba5-c9d8fc01a852",
       "type": "CAPTURE",
-      "requestRef": "XD-ZKU9NM-CAP1",
-      "providerRef": "mock_cap_4c9f09ee-beea-4fcb-893f-967b4be5d6d9",
+      "requestRef": "XD-ZM2CMK-CAP1",
+      "providerRef": "mock_cap_fd5aac0d-c4fb-44c4-ba47-2847e6daff29",
       "status": "SUCCEEDED",
       "providerStatus": "SUCCEEDED",
       "failureCode": null,
       "amountMinor": 1180,
       "currency": "CAD",
-      "requestedAt": "2026-11-05T08:41:23.101Z",
-      "completedAt": "2026-11-05T08:41:23.101Z",
+      "requestedAt": "2026-11-06T15:43:55.560Z",
+      "completedAt": "2026-11-06T15:43:55.560Z",
       "checks": 0
     }
   ],
