@@ -18,7 +18,7 @@ the card is captured only after the payout is confirmed. A failed payout release
 | `android-ios/` | Flutter app for Android 9+ and iOS 15+ |
 | `contracts/fixtures/` | API responses recorded by the e2e tests and decoded by the app's tests |
 | `docs/` | Architecture, state machine, API, data model, security, operations, ADRs, runbooks |
-| `web/` | Intentionally empty: the admin web UI is a later phase (the admin **API** exists) |
+| `web/` | Next.js website (waitlist, Hustle Check, Wall of Hustle) and the web portal ([web/README.md](web/README.md)) |
 | `reference-docs/` | Source documents (read-only; contains personal data, do not copy) |
 
 ## Run it locally
@@ -41,7 +41,10 @@ npm run db:migrate
 npm run start:dev             # http://localhost:3000, Swagger at /docs, mock provider, inline worker
 npm run admin:create -- --email ops@example.com --name "Ops Lead" --role ADMIN   # optional
 
-# 3. App (another terminal). The Android emulator reaches the host at 10.0.2.2.
+# 3. Website + web portal (another terminal): http://localhost:3100
+cd web && cp .env.example .env.local && npm install && npm run dev
+
+# 4. App (another terminal). The Android emulator reaches the host at 10.0.2.2.
 cd android-ios
 flutter pub get
 flutter run --dart-define=API_BASE_URL=http://10.0.2.2:3000

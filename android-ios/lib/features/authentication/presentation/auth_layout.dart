@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../app/localization/generated/app_localizations.dart';
 import '../../../app/theme/app_colors.dart';
+import '../../../core/widgets/motion/auth_illustration.dart';
 import '../../../core/widgets/motion/fade_slide_in.dart';
 import '../../../core/widgets/state_views.dart';
 import '../../../core/widgets/ui_kit.dart';
@@ -15,6 +16,8 @@ class AuthLayout extends StatelessWidget {
     required this.child,
     this.icon,
     this.hero,
+    this.illustration,
+    this.illustrationProgress,
     this.subtitle,
     this.step,
     this.totalSteps = 3,
@@ -30,6 +33,12 @@ class AuthLayout extends StatelessWidget {
 
   /// Replaces the haloed [icon] with any widget (e.g. the user's avatar).
   final Widget? hero;
+
+  /// Animated illustration shown instead of the haloed [icon].
+  final AuthIllustrationKind? illustration;
+
+  /// Live progress for illustrations that reflect input (PIN digits entered / 6).
+  final double? illustrationProgress;
   final String? subtitle;
 
   /// 1-based onboarding step; null hides the progress bar.
@@ -116,6 +125,18 @@ class AuthLayout extends StatelessWidget {
                               if (hero != null) ...[
                                 hero!,
                                 const SizedBox(height: 18),
+                              ] else if (illustration != null) ...[
+                                Align(
+                                  alignment: centered
+                                      ? Alignment.center
+                                      : Alignment.centerLeft,
+                                  child: AuthIllustration(
+                                    kind: illustration!,
+                                    size: centered ? 240 : 200,
+                                    progress: illustrationProgress,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
                               ] else if (icon != null) ...[
                                 HaloIcon(icon!, size: centered ? 128 : 96),
                                 const SizedBox(height: 18),

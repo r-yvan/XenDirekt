@@ -11,6 +11,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../core/errors/api_failure.dart';
 import '../../../core/errors/error_messages.dart';
 import '../../../core/widgets/digit_code_field.dart';
+import '../../../core/widgets/motion/auth_illustration.dart';
 import '../application/session_controller.dart';
 import '../data/auth_models.dart';
 import 'auth_layout.dart';
@@ -111,11 +112,10 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context).textTheme;
-    final isEmail = widget.args.channel == 'EMAIL';
     return AuthLayout(
       showBack: true,
       step: 1,
-      icon: isEmail ? Icons.mark_email_read_outlined : Icons.sms_outlined,
+      illustration: AuthIllustrationKind.code,
       title: l10n.otpTitle,
       subtitle: l10n.otpSentTo(_challenge.destinationMasked),
       child: Column(

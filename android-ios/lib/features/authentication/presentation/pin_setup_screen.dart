@@ -7,6 +7,7 @@ import '../../../core/errors/api_failure.dart';
 import '../../../core/errors/error_messages.dart';
 import '../../../core/security/screen_security.dart';
 import '../../../core/widgets/digit_code_field.dart';
+import '../../../core/widgets/motion/auth_illustration.dart';
 import '../application/session_controller.dart';
 import 'auth_layout.dart';
 
@@ -72,7 +73,8 @@ class _PinSetupScreenState extends ConsumerState<PinSetupScreen> {
     return SecureScreen(
       child: AuthLayout(
         step: 3,
-        icon: _first == null ? Icons.lock_outline_rounded : Icons.lock_rounded,
+        illustration: AuthIllustrationKind.pin,
+        illustrationProgress: _first == null ? null : 1,
         title: _first == null ? l10n.pinCreateTitle : l10n.pinConfirmTitle,
         subtitle: l10n.pinCreateBody,
         child: Column(

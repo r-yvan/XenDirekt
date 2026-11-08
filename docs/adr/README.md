@@ -12,3 +12,4 @@
 | [0008](0008-mtn-only-payee-routing.md) | MTN MoMo only payee routing | Accepted |
 
 Format: context, decision, consequences. Superseded ADRs stay in place and are marked as such.
+| [0009](0009-web-portal-and-launch-site.md) | Web portal and pre-launch website | Accepted |

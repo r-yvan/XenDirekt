@@ -12,6 +12,7 @@ import '../../../app/theme/app_colors.dart';
 import '../../../core/errors/api_failure.dart';
 import '../../../core/errors/error_messages.dart';
 import '../../../core/widgets/date_wheel_picker.dart';
+import '../../../core/widgets/motion/auth_illustration.dart';
 import '../../../core/widgets/motion/fade_slide_in.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../core/widgets/state_views.dart';
@@ -153,11 +154,16 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
                       color: context.xd.textTertiary,
                     ),
                   ),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 20),
                   FadeSlideIn(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const AuthIllustration(
+                          kind: AuthIllustrationKind.profile,
+                          size: 200,
+                        ),
+                        const SizedBox(height: 12),
                         Semantics(
                           header: true,
                           child: Text(

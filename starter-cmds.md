@@ -77,3 +77,20 @@ flutter run --dart-define=API_BASE_URL=http://localhost:3000
 ```bash
 flutter run --dart-define=API_BASE_URL=http://192.168.1.97:3000
 ```
+
+---
+
+## 5. Website + web portal (Next.js, this PC)
+
+The browser only talks to the web server, which proxies the API, so no CORS is needed. Run the
+backend first, then:
+
+```bash
+cd "/run/media/r-yvan/Personal Disk/Skills & Knowledge/Coding/Projects/Business Oriented/Pending/XenDirekt/web"
+npm install          # first time only
+npm run dev          # http://localhost:3100  (website at /, portal at /sign-in)
+```
+
+`web/.env.local` sets `API_BASE_URL=http://localhost:3000`. The API's `WEB_APP_BASE_URL` defaults
+to `http://localhost:3100` (card setup and 3-D Secure return there). Recommended in `api/.env`
+when using the web: `TRUST_PROXY=true`, so rate limits see each visitor's IP.

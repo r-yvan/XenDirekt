@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../app/localization/generated/app_localizations.dart';
 import '../../../app/router/routes.dart';
 import '../../../app/theme/app_colors.dart';
+import '../../../core/widgets/motion/auth_illustration.dart';
 import '../../../core/widgets/motion/fade_slide_in.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../core/widgets/ui_kit.dart';
@@ -35,22 +36,38 @@ class WelcomeScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Spacer(),
-                    FadeSlideIn(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          width: 84,
-                          height: 84,
-                          decoration: BoxDecoration(
-                            color: context.xd.surface1,
-                            borderRadius: BorderRadius.circular(22),
-                            border: Border.all(color: context.xd.hairline),
+                    // The illustration stands in for the logo tile; very short screens keep the
+                    // compact tile so the sign-in buttons stay above the fold.
+                    if (constraints.maxHeight >= 680)
+                      FadeSlideIn(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: AuthIllustration(
+                            kind: AuthIllustrationKind.welcome,
+                            size: (constraints.maxHeight * 0.22).clamp(
+                              160,
+                              240,
+                            ),
                           ),
-                          alignment: Alignment.center,
-                          child: const XdLogo(size: 48),
+                        ),
+                      )
+                    else
+                      FadeSlideIn(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              color: context.xd.surface1,
+                              borderRadius: BorderRadius.circular(22),
+                              border: Border.all(color: context.xd.hairline),
+                            ),
+                            alignment: Alignment.center,
+                            child: const XdLogo(size: 36),
+                          ),
                         ),
                       ),
-                    ),
                     const SizedBox(height: 28),
                     FadeSlideIn(
                       delay: const Duration(milliseconds: 120),

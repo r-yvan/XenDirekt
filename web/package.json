@@ -15,8 +15,10 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "node --test --experimental-strip-types \"lib/**/*.test.ts\"",
-    "qa:screens": "node --experimental-strip-types scripts/qa-screens.ts"
+    "qa:screens": "node scripts/qa-screens.mjs",
+    "qa:launch": "node scripts/qa-launch-flow.mjs",
+    "qa:portal": "node scripts/qa-portal-flow.mjs",
+    "render:hero": "python3 -I scripts/render-hero-video.py"
   },
   "dependencies": {
     "@tanstack/react-query": "5.105.0",

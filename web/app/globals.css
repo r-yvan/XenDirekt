@@ -1,0 +1,325 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/*
+ * Tokens mirror the mobile app (android-ios/lib/app/theme/app_colors.dart, XdColors) so the
+ * website, the portal and the app read as one product. Orange #FF640A is the only accent;
+ * orange surfaces carry near-black text, and orange as text uses --xd-accent-text.
+ */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --xd-canvas: #f4f4f6;
+  --xd-surface-1: #ffffff;
+  --xd-surface-2: #efeff2;
+  --xd-surface-3: #e5e5ea;
+  --xd-text: #111113;
+  --xd-text-2: #55555f;
+  --xd-text-3: #6b6b75;
+  --xd-hairline: rgb(0 0 0 / 0.08);
+  --xd-hairline-strong: rgb(0 0 0 / 0.14);
+  --xd-accent-text: #b94500;
+  --xd-success: #15803d;
+  --xd-warning: #a15c07;
+  --xd-error: #c8231b;
+  --xd-info: #2457d6;
+  --xd-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 12px 32px -12px rgb(0 0 0 / 0.12);
+  --xd-glow: 0.55;
+  --xd-glow-side: 0.2;
+  --xd-glow-edge: 0.9;
+  --xd-glow-edge-side: 0.45;
+  --xd-glow-near: 0.3;
+  --xd-tile: #ffffff;
+  --xd-tile-hover: #fafafb;
+  --xd-globe-light: 0.26;
+  --xd-mark-hi: rgb(0 0 0 / 0.05);
+  --xd-mark-lo: rgb(0 0 0 / 0.02);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --xd-canvas: #0a0a0a;
+  --xd-surface-1: #141416;
+  --xd-surface-2: #1c1c1f;
+  --xd-surface-3: #26262a;
+  --xd-text: #f4f4f5;
+  --xd-text-2: #a1a1aa;
+  --xd-text-3: #8b8b94;
+  --xd-hairline: rgb(255 255 255 / 0.08);
+  --xd-hairline-strong: rgb(255 255 255 / 0.14);
+  --xd-accent-text: #ff640a;
+  --xd-success: #34c26e;
+  --xd-warning: #f5b83d;
+  --xd-error: #ff6369;
+  --xd-info: #6e9bff;
+  --xd-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 24px 48px -24px rgb(0 0 0 / 0.7);
+  --xd-glow: 0.9;
+  --xd-glow-side: 0.36;
+  --xd-glow-edge: 1;
+  --xd-glow-edge-side: 0.6;
+  --xd-glow-near: 0.55;
+  --xd-tile: rgb(255 255 255 / 0.012);
+  --xd-tile-hover: rgb(255 255 255 / 0.04);
+  --xd-globe-light: 0.42;
+  --xd-mark-hi: rgb(255 255 255 / 0.055);
+  --xd-mark-lo: rgb(255 255 255 / 0.022);
+}
+
+@theme inline {
+  --font-sans: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, 'SFMono-Regular', monospace;
+
+  --color-canvas: var(--xd-canvas);
+  --color-surface-1: var(--xd-surface-1);
+  --color-surface-2: var(--xd-surface-2);
+  --color-surface-3: var(--xd-surface-3);
+  --color-ink: var(--xd-text);
+  --color-ink-2: var(--xd-text-2);
+  --color-ink-3: var(--xd-text-3);
+  --color-hairline: var(--xd-hairline);
+  --color-hairline-strong: var(--xd-hairline-strong);
+  --color-tile: var(--xd-tile);
+  --color-tile-hover: var(--xd-tile-hover);
+  --color-accent: #ff640a;
+  --color-accent-hover: #ff7a2e;
+  --color-accent-text: var(--xd-accent-text);
+  --color-on-accent: #0a0a0b;
+  --color-success: var(--xd-success);
+  --color-warning: var(--xd-warning);
+  --color-error: var(--xd-error);
+  --color-info: var(--xd-info);
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Satoshi reads loose at default tracking: everything is tightened, headings much more so. */
+html {
+  background: var(--xd-canvas);
+  color: var(--xd-text);
+  font-family: var(--font-sans);
+  letter-spacing: -0.022em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'ss01' 0;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--xd-canvas);
+  overflow-x: clip;
+}
+
+::selection {
+  background: rgb(255 100 10 / 0.3);
+}
+
+:focus-visible {
+  outline: 2px solid #ff640a;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@layer components {
+  .display-xl {
+    font-weight: 700;
+    font-size: clamp(2.5rem, 5.6vw, 5.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.064em;
+  }
+  .display {
+    font-weight: 700;
+    font-size: clamp(2.25rem, 4.6vw, 4.25rem);
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+  }
+  .heading {
+    font-weight: 700;
+    font-size: clamp(1.9rem, 3.4vw, 3.1rem);
+    line-height: 1.02;
+    letter-spacing: -0.056em;
+  }
+  .title {
+    font-weight: 700;
+    font-size: 1.375rem;
+    line-height: 1.2;
+    letter-spacing: -0.045em;
+  }
+  .lead {
+    font-size: clamp(1.075rem, 1.4vw, 1.3rem);
+    line-height: 1.5;
+    letter-spacing: -0.032em;
+    color: var(--xd-text-2);
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--xd-accent-text);
+  }
+  .mono {
+    font-family: var(--font-mono);
+    letter-spacing: 0;
+  }
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+  .card {
+    background: var(--xd-surface-1);
+    border: 1px solid var(--xd-hairline);
+    border-radius: 20px;
+  }
+  .field {
+    width: 100%;
+    height: 3.25rem;
+    border-radius: 14px;
+    border: 1px solid var(--xd-hairline-strong);
+    background: var(--xd-surface-1);
+    padding: 0 1rem;
+    font-size: 1rem;
+    letter-spacing: -0.026em;
+    color: var(--xd-text);
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  .field::placeholder {
+    color: var(--xd-text-3);
+  }
+  .field:focus {
+    outline: none;
+    border-color: #ff640a;
+    box-shadow: 0 0 0 4px rgb(255 100 10 / 0.14);
+  }
+  .container-x {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 768px) {
+    .container-x {
+      padding-inline: 32px;
+    }
+  }
+  /* Diagonal hairline hatching: "classified" tiles before the Hustle Check. */
+  .hatch {
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 10px,
+      var(--xd-hairline) 10px 11px
+    );
+  }
+  /* Thin, Linear-like grid lines behind product visuals. */
+  .grid-lines {
+    background-image:
+      linear-gradient(var(--xd-hairline) 1px, transparent 1px),
+      linear-gradient(90deg, var(--xd-hairline) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+/*
+ * Portal preview glow: an orange halo along every side of the window, brightest at the four
+ * corners, plus a lit frame edge (the whole border glows, the corners most).
+ */
+.glow-bloom {
+  background:
+    radial-gradient(440px 300px at 0% 0%, rgb(255 100 10 / var(--xd-glow)), transparent 70%),
+    radial-gradient(440px 300px at 100% 0%, rgb(255 100 10 / var(--xd-glow)), transparent 70%),
+    radial-gradient(500px 340px at 0% 100%, rgb(255 100 10 / var(--xd-glow)), transparent 70%),
+    radial-gradient(500px 340px at 100% 100%, rgb(255 100 10 / var(--xd-glow)), transparent 70%),
+    linear-gradient(rgb(255 100 10 / var(--xd-glow-side)) 0 0);
+  filter: blur(96px);
+}
+
+/* A tight halo hugging the frame, so the wide bloom still reads as glow from the edges. */
+.glow-near {
+  background:
+    radial-gradient(260px 180px at 0% 0%, rgb(255 110 25 / var(--xd-glow)), transparent 72%),
+    radial-gradient(260px 180px at 100% 0%, rgb(255 110 25 / var(--xd-glow)), transparent 72%),
+    radial-gradient(300px 210px at 0% 100%, rgb(255 110 25 / var(--xd-glow)), transparent 72%),
+    radial-gradient(300px 210px at 100% 100%, rgb(255 110 25 / var(--xd-glow)), transparent 72%),
+    linear-gradient(rgb(255 100 10 / var(--xd-glow-near)) 0 0);
+  filter: blur(22px);
+}
+
+/* Backlight behind the particle globe. */
+.globe-backlight {
+  background: radial-gradient(circle, rgb(255 100 10 / var(--xd-globe-light)), transparent 70%);
+  filter: blur(90px);
+}
+
+.glow-edge {
+  padding: 1.5px;
+  background:
+    radial-gradient(260px 190px at 0% 0%, rgb(255 150 80 / var(--xd-glow-edge)), transparent 72%),
+    radial-gradient(260px 190px at 100% 0%, rgb(255 150 80 / var(--xd-glow-edge)), transparent 72%),
+    radial-gradient(300px 220px at 0% 100%, rgb(255 150 80 / var(--xd-glow-edge)), transparent 72%),
+    radial-gradient(
+      300px 220px at 100% 100%,
+      rgb(255 150 80 / var(--xd-glow-edge)),
+      transparent 72%
+    ),
+    linear-gradient(rgb(255 110 30 / var(--xd-glow-edge-side)) 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+@keyframes xd-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-3px);
+  }
+  40% {
+    transform: translateX(3px);
+  }
+  60% {
+    transform: translateX(-2px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes xd-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes xd-pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

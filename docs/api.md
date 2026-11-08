@@ -76,6 +76,12 @@ The app maps `code` to localised text and never shows `message` verbatim. Codes 
 | Support | `POST /v1/tickets`, `POST /v1/payments/:id/tickets`, `GET /v1/tickets` |
 | Notifications | `GET /v1/notifications`, `POST /v1/notifications/:id/read`, `POST /v1/push-tokens` |
 | Analytics | `POST /v1/analytics/events` (allowlisted names and properties only) |
+| Website (public) | `POST /v1/launch/waitlist` (201 new, 200 existing spot), `GET /v1/launch/waitlist/:referralCode`, `POST /v1/launch/waitlist/leave` (emailed token; deletes the entry), `POST /v1/launch/hustle-check`, `GET`/`POST /v1/launch/stories` (POST → 202, shown after review), `GET /v1/launch/stats` |
+
+**Web clients.** `POST /v1/auth/verify` accepts `platform: "web"`. `POST /v1/cards/setup` and
+`POST /v1/payments` accept `returnTo: "WEB"`: the hosted card page returns to
+`{WEB_APP_BASE_URL}/app/cards/return?setupId=…` and 3-D Secure to
+`{WEB_APP_BASE_URL}/app/payments/return?paymentId=…` instead of the app deep links.
 
 ## Admin endpoints
 
@@ -93,6 +99,7 @@ Every route checks a permission (`api/src/modules/admin/permissions.ts`).
 | Reconciliation | `GET`/`POST /v1/admin/reconciliation/runs`, `POST …/settlement-files`, `GET …/runs/:id/items`, `GET …/runs/:id/export.csv`, `PATCH …/items/:id` | `reconciliation:read` / `:manage` |
 | Tickets | `GET /v1/admin/tickets`, `PATCH /v1/admin/tickets/:id` | `tickets:read`, `tickets:manage` |
 | Audit | `GET /v1/admin/audit-logs` | `audit:read` |
+| Launch | `GET /v1/admin/launch/waitlist`, `GET /v1/admin/launch/hustle-check`, `GET /v1/admin/launch/stories`, `PATCH /v1/admin/launch/stories/:id` (approve/reject, audited) | `launch:read`, `launch:moderate` |
 | Metrics | `GET /v1/admin/metrics/summary` (completion rate, volume, median time to pay, p95 settlement, failure reasons) | `metrics:read` |
 
 Configuration keys:

@@ -8,6 +8,7 @@ import '../../../app/router/routes.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../core/errors/api_failure.dart';
 import '../../../core/errors/error_messages.dart';
+import '../../../core/widgets/motion/auth_illustration.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../application/biometric_enrolment.dart';
 import 'auth_layout.dart';
@@ -58,7 +59,7 @@ class _BiometricOfferScreenState extends ConsumerState<BiometricOfferScreen> {
     final l10n = AppLocalizations.of(context);
     return AuthLayout(
       centered: true,
-      icon: Icons.fingerprint_rounded,
+      illustration: AuthIllustrationKind.biometrics,
       title: l10n.enableBiometricsTitle,
       subtitle: l10n.enableBiometricsBody,
       actions: [

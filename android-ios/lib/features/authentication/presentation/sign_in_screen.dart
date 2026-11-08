@@ -8,6 +8,7 @@ import '../../../app/providers.dart';
 import '../../../app/router/routes.dart';
 import '../../../core/errors/api_failure.dart';
 import '../../../core/errors/error_messages.dart';
+import '../../../core/widgets/motion/auth_illustration.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../core/widgets/state_views.dart';
 import 'auth_layout.dart';
@@ -91,7 +92,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     return AuthLayout(
       showBack: true,
       step: 1,
-      icon: _isEmail ? Icons.alternate_email_rounded : Icons.smartphone_rounded,
+      illustration: _isEmail
+          ? AuthIllustrationKind.email
+          : AuthIllustrationKind.phone,
       title: _isEmail ? l10n.emailTitle : l10n.phoneTitle,
       subtitle: _isEmail ? l10n.signInSubtitleEmail : l10n.signInSubtitlePhone,
       actions: [
