@@ -21,7 +21,7 @@ export function Hero() {
           trigger="mount"
           delay={0.15}
           stagger={0.09}
-          text="Paying into Rwanda [shouldn’t be] a hustle."
+          text="Paying in Rwanda [shouldn’t be] a hustle."
           className="display-xl max-w-[15ch] text-ink"
         />
         <p className="mt-6 max-w-[36rem] text-[1rem] leading-[1.55] tracking-[-0.028em] text-ink-2 sm:text-[1.06rem]">

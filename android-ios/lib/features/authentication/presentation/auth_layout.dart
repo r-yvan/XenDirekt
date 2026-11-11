@@ -54,10 +54,12 @@ class AuthLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context).textTheme;
-    final align = centered
+    // Screens with an illustration centre it and the heading, like the biometrics offer.
+    final centerHeader = centered || illustration != null;
+    final align = centerHeader
         ? CrossAxisAlignment.center
         : CrossAxisAlignment.start;
-    final textAlign = centered ? TextAlign.center : TextAlign.start;
+    final textAlign = centerHeader ? TextAlign.center : TextAlign.start;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -117,7 +119,7 @@ class AuthLayout extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        if (centered) const SizedBox(height: 24),
+                        if (centerHeader) const SizedBox(height: 12),
                         FadeSlideIn(
                           child: Column(
                             crossAxisAlignment: align,
@@ -126,17 +128,17 @@ class AuthLayout extends StatelessWidget {
                                 hero!,
                                 const SizedBox(height: 18),
                               ] else if (illustration != null) ...[
-                                Align(
-                                  alignment: centered
-                                      ? Alignment.center
-                                      : Alignment.centerLeft,
+                                Center(
                                   child: AuthIllustration(
                                     kind: illustration!,
-                                    size: centered ? 240 : 200,
+                                    size: (constraints.maxWidth * 0.68).clamp(
+                                      200.0,
+                                      260.0,
+                                    ),
                                     progress: illustrationProgress,
                                   ),
                                 ),
-                                const SizedBox(height: 12),
+                                const SizedBox(height: 16),
                               ] else if (icon != null) ...[
                                 HaloIcon(icon!, size: centered ? 128 : 96),
                                 const SizedBox(height: 18),

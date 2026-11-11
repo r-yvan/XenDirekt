@@ -33,7 +33,7 @@ import { XentriPayPaymentProvider } from './xentripay/xentripay-payment.provider
           case 'mock':
             return mock();
           case 'hybrid':
-            return new HybridPaymentProvider(mock(), xentripay());
+            return new HybridPaymentProvider(mock(), xentripay(), config.provider.hybridTestPayees);
           default:
             return xentripay();
         }

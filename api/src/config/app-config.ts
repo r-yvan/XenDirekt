@@ -69,6 +69,8 @@ export class AppConfig {
       responseTimeoutMs: number;
     };
     mock: { latencyMs: number; webhookSecret: string | undefined };
+    /** Hybrid only: national MSISDN (0788123456) → registered name, for real sandbox payouts. */
+    hybridTestPayees: ReadonlyMap<string, string>;
   };
   readonly notifications: {
     email: {
@@ -145,6 +147,7 @@ export class AppConfig {
         latencyMs: env.MOCK_PROVIDER_LATENCY_MS,
         webhookSecret: env.MOCK_WEBHOOK_SECRET || undefined,
       },
+      hybridTestPayees: parseHybridTestPayees(env.HYBRID_TEST_PAYEES),
     };
     this.notifications = {
       email: {
@@ -175,4 +178,24 @@ export class AppConfig {
   get usesSimulatedProvider(): boolean {
     return this.provider.name !== 'xentripay';
   }
+}
+
+/** Parses "0788123456=Jane Doe;0795000000=John Doe" into national MSISDN → name. */
+export function parseHybridTestPayees(raw: string): ReadonlyMap<string, string> {
+  const payees = new Map<string, string>();
+  for (const entry of raw.split(';')) {
+    const separator = entry.indexOf('=');
+    if (separator < 0) {
+      continue;
+    }
+    const msisdn = entry.slice(0, separator).trim();
+    const name = entry.slice(separator + 1).trim();
+    if (!/^07[2389]\d{7}$/.test(msisdn) || !name) {
+      throw new Error(
+        `HYBRID_TEST_PAYEES entry "${entry.trim()}" must look like 0788123456=Full Name`,
+      );
+    }
+    payees.set(msisdn, name);
+  }
+  return payees;
 }

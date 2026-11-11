@@ -64,7 +64,7 @@ const flipUp: Variants = {
 
 /**
  * Splits a headline into words. Words inside [brackets] are muted (grey), for two-tone
- * headlines: "[Paying into Rwanda] shouldn’t be a hustle."
+ * headlines: "[Paying in Rwanda] shouldn’t be a hustle."
  */
 function parseWords(text: string): { plain: string; words: { word: string; muted: boolean }[] } {
   let muted = false;

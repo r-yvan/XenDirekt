@@ -72,6 +72,8 @@ export const envSchema = z.object({
   XENTRIPAY_RESPONSE_TIMEOUT_MS: z.coerce.number().int().min(1000).max(60000).default(10000),
   /** `CAPABILITY=evidence-reference` pairs separated by `;`. Only meaningful for real providers. */
   PROVIDER_CAPABILITY_APPROVALS: z.string().default(''),
+  // Hybrid mode only: real registered names for testers' own numbers, "0788123456=Jane Doe;…".
+  HYBRID_TEST_PAYEES: z.string().default(''),
   MOCK_PROVIDER_LATENCY_MS: z.coerce.number().int().min(0).max(10000).default(150),
   MOCK_WEBHOOK_SECRET: z.string().optional(),
 

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +10,6 @@ import '../../../app/theme/app_colors.dart';
 import '../../../core/widgets/motion/auth_illustration.dart';
 import '../../../core/widgets/motion/fade_slide_in.dart';
 import '../../../core/widgets/primary_button.dart';
-import '../../../core/widgets/ui_kit.dart';
 import '../../../core/widgets/xd_logo.dart';
 import '../../authentication/application/session_controller.dart';
 
@@ -36,46 +37,42 @@ class WelcomeScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Spacer(),
-                    // The illustration stands in for the logo tile; very short screens keep the
-                    // compact tile so the sign-in buttons stay above the fold.
-                    if (constraints.maxHeight >= 680)
-                      FadeSlideIn(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: AuthIllustration(
-                            kind: AuthIllustrationKind.welcome,
-                            size: (constraints.maxHeight * 0.22).clamp(
-                              160,
-                              240,
-                            ),
-                          ),
-                        ),
-                      )
-                    else
-                      FadeSlideIn(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            width: 64,
-                            height: 64,
-                            decoration: BoxDecoration(
-                              color: context.xd.surface1,
-                              borderRadius: BorderRadius.circular(22),
-                              border: Border.all(color: context.xd.hairline),
-                            ),
-                            alignment: Alignment.center,
-                            child: const XdLogo(size: 36),
-                          ),
-                        ),
+                    // A large centred illustration tells the story (card → MoMo); very short
+                    // screens keep the compact logo so the sign-in button stays above the fold.
+                    FadeSlideIn(
+                      child: Center(
+                        child: constraints.maxHeight >= 600
+                            ? AuthIllustration(
+                                kind: AuthIllustrationKind.welcome,
+                                size: math.min(
+                                  constraints.maxWidth * 0.86,
+                                  constraints.maxHeight * 0.42,
+                                ),
+                              )
+                            : Container(
+                                width: 64,
+                                height: 64,
+                                decoration: BoxDecoration(
+                                  color: context.xd.surface1,
+                                  borderRadius: BorderRadius.circular(22),
+                                  border: Border.all(
+                                    color: context.xd.hairline,
+                                  ),
+                                ),
+                                alignment: Alignment.center,
+                                child: const XdLogo(size: 36),
+                              ),
                       ),
+                    ),
                     const SizedBox(height: 28),
                     FadeSlideIn(
                       delay: const Duration(milliseconds: 120),
                       child: Text(
                         l10n.welcomeTitle,
+                        textAlign: TextAlign.center,
                         style: theme.displaySmall?.copyWith(
-                          fontSize: 34,
-                          height: 1.08,
+                          fontSize: 32,
+                          height: 1.1,
                         ),
                       ),
                     ),
@@ -84,38 +81,14 @@ class WelcomeScreen extends ConsumerWidget {
                       delay: const Duration(milliseconds: 180),
                       child: Text(
                         l10n.tagline,
+                        textAlign: TextAlign.center,
                         style: theme.bodyLarge?.copyWith(
                           color: context.xd.textSecondary,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 22),
-                    for (final (index, (icon, text)) in [
-                      (Icons.storefront_rounded, l10n.featureMomo),
-                      (Icons.credit_card_rounded, l10n.featureCard),
-                      (Icons.verified_user_outlined, l10n.featureName),
-                    ].indexed)
-                      FadeSlideIn(
-                        delay: Duration(milliseconds: 240 + 60 * index),
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: Row(
-                            children: [
-                              IconBadge(icon, size: 32),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  text,
-                                  style: theme.bodyMedium?.copyWith(
-                                    color: context.xd.textPrimary,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    const SizedBox(height: 18),
+                    const Spacer(),
+                    const SizedBox(height: 24),
                     if (config == null || config.emailSignIn)
                       PrimaryButton(
                         label: l10n.continueWithEmail,

@@ -122,6 +122,13 @@ body {
   border-radius: 6px;
 }
 
+/* Text fields show focus with their own border instead: one ring, not two. */
+input:not([type='checkbox'], [type='radio']):focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
 @layer components {
   .display-xl {
     font-weight: 700;
@@ -193,7 +200,6 @@ body {
   .field:focus {
     outline: none;
     border-color: #ff640a;
-    box-shadow: 0 0 0 4px rgb(255 100 10 / 0.14);
   }
   .container-x {
     width: 100%;

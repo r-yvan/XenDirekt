@@ -39,6 +39,8 @@ export class HybridPaymentProvider implements PaymentProvider {
   constructor(
     readonly mock: MockPaymentProvider,
     private readonly xentripay: XentriPayPaymentProvider,
+    /** National MSISDN → real registered name, for testers' own numbers (HYBRID_TEST_PAYEES). */
+    private readonly testPayees: ReadonlyMap<string, string> = new Map(),
   ) {}
 
   isSimulatedCapability(capability: ProviderCapability): boolean {
@@ -57,7 +59,18 @@ export class HybridPaymentProvider implements PaymentProvider {
     return this.mock.getCardSetupResult(providerSetupId);
   }
 
+  /**
+   * Still simulated (XentriPay has no lookup), but a tester's own number returns its real
+   * registered name, because XentriPay's payout validates the name and rejects a made-up one.
+   */
   lookupPayee(payee: PayeeRef): Promise<PayeeLookupResult> {
+    if (payee.identifierType === 'PHONE') {
+      const national = `0${payee.identifier.replace(/\D/g, '').slice(-9)}`;
+      const registeredName = this.testPayees.get(national);
+      if (registeredName) {
+        return Promise.resolve({ status: 'FOUND', registeredName });
+      }
+    }
     return this.mock.lookupPayee(payee);
   }
 

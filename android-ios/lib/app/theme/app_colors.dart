@@ -71,15 +71,17 @@ class XdColors extends ThemeExtension<XdColors> {
   final Color statusInfo;
 
   static const XdColors dark = XdColors(
+    // Raised surfaces sit only a step above the canvas, and hairlines are faint,
+    // so fields and cards read as calm dark panels rather than grey boxes.
     canvas: Color(0xFF0A0A0B),
-    surface1: Color(0xFF141416),
-    surface2: Color(0xFF1C1C1F),
-    surface3: Color(0xFF26262A),
+    surface1: Color(0xFF111113),
+    surface2: Color(0xFF17171A),
+    surface3: Color(0xFF1F1F23),
     textPrimary: Color(0xFFF4F4F5),
     textSecondary: Color(0xFFA1A1AA),
     textTertiary: Color(0xFF8B8B94),
-    hairline: Color(0x14FFFFFF),
-    hairlineStrong: Color(0x24FFFFFF),
+    hairline: Color(0x0DFFFFFF),
+    hairlineStrong: Color(0x17FFFFFF),
     accentText: AppColors.brandOrange,
     statusSuccess: Color(0xFF22A559),
     statusSuccessText: Color(0xFF34C26E),

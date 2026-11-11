@@ -38,9 +38,8 @@ async function main(): Promise<void> {
   if (baseUrl !== TEST_BASE_URL && !process.argv.includes('--allow-live')) {
     fail(`Refusing ${baseUrl}: this tool targets ${TEST_BASE_URL}. Pass --allow-live to override.`);
   }
-  const provider = new XentriPayPaymentProvider(
-    new XentriPayHttpClient({ baseUrl, apiKey, responseTimeoutMs: 15_000 }),
-  );
+  const client = new XentriPayHttpClient({ baseUrl, apiKey, responseTimeoutMs: 45_000 });
+  const provider = new XentriPayPaymentProvider(client);
   console.log(`XentriPay at ${baseUrl}`);
 
   try {
@@ -78,6 +77,46 @@ async function main(): Promise<void> {
         await follow(provider, ref);
         return;
       }
+      case 'collect': {
+        // Funds the merchant wallet from a tester's own MoMo (XP §4.2). REAL MONEY: the payer
+        // gets an MTN prompt and must confirm with their PIN.
+        const msisdn = arg('msisdn');
+        const amount = Number(arg('amount') ?? '500');
+        const name = arg('name') ?? 'XenDirekt Sandbox Test';
+        const email = arg('email') ?? 'sandbox-tester@example.com';
+        if (!msisdn || !/^07[2389]\d{7}$/.test(msisdn)) {
+          fail('--msisdn must be a local Rwandan number, e.g. 0788123456.');
+        }
+        if (!Number.isInteger(amount) || amount < 100 || amount > 5000) {
+          fail('--amount must be a whole number of RWF between 100 and 5000 for tests.');
+        }
+        const ref = `XD-SBX-COL-${Date.now().toString(36).toUpperCase()}`;
+        console.log(`Requesting collection ${ref}: RWF ${amount} from ${msisdn}…`);
+        const { json } = await client.request('POST', '/api/collections/initiate', {
+          email,
+          cname: name,
+          amount,
+          cnumber: msisdn,
+          msisdn: `250${msisdn.slice(1)}`,
+          currency: 'RWF',
+          pmethod: 'momo',
+          customerRef: ref,
+          chargesIncluded: true,
+        });
+        const reply = json as { success?: number; retcode?: number; reply?: string } | null;
+        console.log(`  initiation → success=${reply?.success} retcode=${reply?.retcode}`);
+        if (reply?.success !== 1 || reply.retcode !== 0) {
+          fail(`Collection not accepted: ${reply?.reply ?? 'no reply'}`);
+        }
+        console.log('  Confirm the MTN prompt on the phone with your PIN now (or dial *182*7*1#).');
+        await followCollection(client, ref);
+        return;
+      }
+      case 'collection-status': {
+        const ref = arg('ref') ?? fail('--ref is required');
+        await followCollection(client, ref, 1);
+        return;
+      }
       case 'status': {
         const ref = arg('ref') ?? fail('--ref is required');
         await follow(provider, ref, 1);
@@ -85,7 +124,7 @@ async function main(): Promise<void> {
       }
       default:
         fail(
-          'Usage: xentripay:sandbox -- check | payout --msisdn 07XXXXXXXX [--amount 100] [--name ""] | status --ref XD-SBX-…',
+          'Usage: xentripay:sandbox -- check | collect --msisdn 07XXXXXXXX [--amount 500] [--name ""] | collection-status --ref … | payout --msisdn 07XXXXXXXX [--amount 100] [--name ""] | status --ref XD-SBX-…',
         );
     }
   } catch (error) {
@@ -117,6 +156,36 @@ async function follow(provider: XentriPayPaymentProvider, ref: string, rounds = 
   }
   console.log(
     '… still not final. Re-check later with: npm run xentripay:sandbox -- status --ref ' + ref,
+  );
+}
+
+/** Polls collection status (XP §4.5) every 5 s until SUCCESS / FAILED or `rounds` checks. */
+async function followCollection(
+  client: XentriPayHttpClient,
+  ref: string,
+  rounds = 36,
+): Promise<void> {
+  for (let round = 1; round <= rounds; round++) {
+    const { status, json } = await client.request(
+      'GET',
+      `/api/collections/status/${encodeURIComponent(ref)}`,
+    );
+    const state = status === 404 ? 'NOT_FOUND' : String((json as { status?: unknown })?.status);
+    console.log(`  collection check ${round} → ${state}`);
+    if (state === 'SUCCESS') {
+      console.log('✓ Collection succeeded: the merchant wallet has been credited.');
+      return;
+    }
+    if (state === 'FAILED') {
+      console.log('✗ Collection failed (declined, cancelled or timed out).');
+      return;
+    }
+    if (round < rounds) {
+      await new Promise((resolve) => setTimeout(resolve, 5_000));
+    }
+  }
+  console.log(
+    '… still not final. Re-check with: npm run xentripay:sandbox -- collection-status --ref ' + ref,
   );
 }
 

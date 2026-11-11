@@ -84,7 +84,7 @@ export function WaitlistForm({ source, size = 'lg' }: { source: string; size?: '
           >
             <div
               className={clsx(
-                'flex w-full flex-col gap-2 rounded-[18px] border border-hairline-strong bg-surface-1/80 p-1.5 backdrop-blur-md transition-shadow focus-within:border-accent focus-within:shadow-[0_0_0_4px_rgb(255_100_10/0.14)] sm:flex-row',
+                'flex w-full flex-col gap-2 rounded-[18px] border border-hairline-strong bg-surface-1/80 p-1.5 backdrop-blur-md transition-colors focus-within:border-accent sm:flex-row',
               )}
             >
               <label htmlFor={`${id}-email`} className="sr-only">
@@ -218,7 +218,7 @@ export function JoinedCard({ status }: { status: WaitlistStatus }) {
   }
 
   const message = encodeURIComponent(
-    `Paying into Rwanda shouldn't be a hustle. I'm on the XenDirekt waitlist, join me: ${status.shareUrl}`,
+    `Paying in Rwanda shouldn't be a hustle. I'm on the XenDirekt waitlist, join me: ${status.shareUrl}`,
   );
 
   return (

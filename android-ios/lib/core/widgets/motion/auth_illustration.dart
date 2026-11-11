@@ -17,8 +17,9 @@ enum AuthIllustrationKind {
 }
 
 /// Animated line illustrations for sign-in and onboarding: flat, neutral strokes with brand
-/// orange as the only accent. They play a few calm cycles, then rest on their final frame
-/// (no endless animation, and widget tests can settle). Reduced motion shows the final frame.
+/// orange as the only accent. They loop calmly with a short rest on the final frame between
+/// cycles. Widget tests play a few cycles and stop, so `pumpAndSettle` can settle. Reduced
+/// motion shows the final frame.
 class AuthIllustration extends StatefulWidget {
   const AuthIllustration({
     required this.kind,
@@ -39,7 +40,12 @@ class AuthIllustration extends StatefulWidget {
 
 class _AuthIllustrationState extends State<AuthIllustration>
     with SingleTickerProviderStateMixin {
-  static const _cycles = 3;
+  /// Cycles to play under the widget-test binding; the app loops indefinitely.
+  static const _testCycles = 3;
+  static const _rest = Duration(milliseconds: 900);
+  static final bool _underTest = WidgetsBinding.instance.runtimeType
+      .toString()
+      .contains('TestWidgetsFlutterBinding');
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 2600),
@@ -53,9 +59,18 @@ class _AuthIllustrationState extends State<AuthIllustration>
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed && mounted) {
         _played++;
-        if (_played < _cycles) {
-          _controller.forward(from: 0);
+        if (_underTest) {
+          if (_played < _testCycles) {
+            _controller.forward(from: 0);
+          }
+          return;
         }
+        // A hidden route mutes this ticker, so the loop pauses by itself there.
+        Future<void>.delayed(_rest, () {
+          if (mounted) {
+            _controller.forward(from: 0);
+          }
+        });
       }
     });
   }
@@ -181,38 +196,160 @@ class _IllustrationPainter extends CustomPainter {
   RRect rr(double l, double tp, double w, double h, double r) =>
       RRect.fromRectAndRadius(Rect.fromLTWH(l, tp, w, h), Radius.circular(r));
 
-  /// A card on the left sends a dot along an arc to a phone (MoMo wallet) on the right.
+  /// An orange card taps a phone (contactless waves); the phone confirms the MoMo payment
+  /// with a check, an amount and a receipt, while a shop badge floats and sparkles pop.
   void _welcome(Canvas canvas) {
-    canvas.drawRRect(rr(28, 92, 112, 72, 10), fill(const Color(0xFF1A3A8F)));
-    canvas.drawRRect(rr(40, 104, 20, 14, 3), fill(Colors.white24));
+    // Soft accent disc behind the scene (flat tint, no gradient).
+    canvas.drawCircle(
+      const Offset(176, 128),
+      104,
+      fill(orange.withValues(alpha: 0.08)),
+    );
+    canvas.drawCircle(
+      const Offset(176, 128),
+      78,
+      fill(orange.withValues(alpha: 0.06)),
+    );
+
+    // Phone.
+    canvas.drawRRect(rr(150, 22, 104, 208, 22), fill(surface));
+    canvas.drawRRect(rr(150, 22, 104, 208, 22), stroke(line));
+    canvas.drawRRect(rr(188, 32, 28, 6, 3), fill(line.withValues(alpha: 0.4)));
+    // Success check pops, then the amount and receipt lines write in.
+    final pop = Curves.easeOutBack.transform(phase(0.42, 0.6));
+    canvas.save();
+    canvas.translate(202, 82);
+    canvas.scale(pop);
+    canvas.drawCircle(Offset.zero, 21, fill(orange));
+    canvas.restore();
+    if (pop > 0.6) {
+      final tick = Path()
+        ..moveTo(193, 82)
+        ..lineTo(199.5, 88.5)
+        ..lineTo(212, 76);
+      drawPartial(canvas, tick, phase(0.52, 0.66), stroke(Colors.black, 3.2));
+    }
+    _rings(canvas, const Offset(202, 82), 24, phase(0.55, 0.95));
+    final amount = phase(0.58, 0.72);
     _text(
       canvas,
-      'VISA',
-      const Offset(100, 144),
-      Colors.white,
-      13,
-      italic: true,
+      'RWF 5,000',
+      Offset(202, 132 + 6 * (1 - amount)),
+      ink.withValues(alpha: amount),
+      17,
     );
-    canvas.drawRRect(rr(214, 66, 76, 132, 14), fill(surface));
-    canvas.drawRRect(rr(214, 66, 76, 132, 14), stroke(line));
-    final arc = Path()
-      ..moveTo(140, 110)
-      ..quadraticBezierTo(178, 40, 216, 110);
-    canvas.drawPath(arc, stroke(line, 1.5)..strokeWidth = 1.5);
-    final metric = arc.computeMetrics().first;
-    final travel = phase(0.1, 0.6);
-    final position = metric
-        .getTangentForOffset(metric.length * travel)!
-        .position;
-    canvas.drawCircle(position, 7, fill(orange));
-    final arrived = phase(0.6, 0.75);
     canvas.drawRRect(
-      rr(226, 98, 52, 26 * arrived, 8),
-      fill(orange.withValues(alpha: 0.18)),
+      rr(170, 146, 64 * phase(0.62, 0.78), 6, 3),
+      fill(line.withValues(alpha: 0.35)),
     );
-    if (arrived > 0.5) {
-      _check(canvas, const Offset(252, 150), 14, phase(0.7, 0.9));
+    canvas.drawRRect(
+      rr(182, 160, 40 * phase(0.68, 0.84), 6, 3),
+      fill(line.withValues(alpha: 0.22)),
+    );
+    canvas.drawRRect(
+      rr(166, 190, 72, 22, 11),
+      fill(orange.withValues(alpha: 0.15 + 0.85 * phase(0.72, 0.86))),
+    );
+
+    // Contactless waves from the card towards the phone.
+    for (var i = 0; i < 3; i++) {
+      final w = phase(0.18 + i * 0.07, 0.36 + i * 0.07);
+      final fade = 1 - phase(0.5 + i * 0.05, 0.7 + i * 0.05);
+      if (w <= 0 || fade <= 0) {
+        continue;
+      }
+      final arc = Path()
+        ..addArc(
+          Rect.fromCircle(center: const Offset(118, 98), radius: 12.0 + i * 9),
+          -math.pi * 0.42,
+          math.pi * 0.42,
+        );
+      drawPartial(canvas, arc, w, stroke(orange.withValues(alpha: fade), 3));
     }
+
+    // The card: slides in on the first play, then taps towards the phone each cycle.
+    final slide = intro ? 1 - phase(0.0, 0.28) : 0.0;
+    final tap = math.sin(math.pi * phase(0.12, 0.34)) * 8;
+    canvas.save();
+    canvas.translate(92 - 70 * slide + tap, 156 - tap * 0.4);
+    canvas.rotate(-0.2 + 0.12 * slide);
+    final cardPaint = fill(orange.withValues(alpha: 1 - slide));
+    canvas.drawRRect(rr(-64, -40, 128, 80, 12), cardPaint);
+    canvas.drawRRect(
+      rr(-50, -24, 22, 16, 4),
+      fill(Colors.white.withValues(alpha: 0.85 * (1 - slide))),
+    );
+    for (var g = 0; g < 4; g++) {
+      canvas.drawRRect(
+        rr(-50 + g * 26.0, 8, 20, 5, 2.5),
+        fill(Colors.white.withValues(alpha: 0.6 * (1 - slide))),
+      );
+    }
+    for (var i = 0; i < 3; i++) {
+      canvas.drawArc(
+        Rect.fromCircle(center: const Offset(36, -16), radius: 4.0 + i * 4),
+        -math.pi * 0.3,
+        math.pi * 0.6,
+        false,
+        stroke(Colors.white.withValues(alpha: 0.8 * (1 - slide)), 1.8),
+      );
+    }
+    canvas.drawCircle(
+      const Offset(-42, 26),
+      7,
+      fill(Colors.white.withValues(alpha: 0.35 * (1 - slide))),
+    );
+    canvas.drawCircle(
+      const Offset(-32, 26),
+      7,
+      fill(Colors.white.withValues(alpha: 0.55 * (1 - slide))),
+    );
+    canvas.restore();
+
+    // Floating shop badge (the MoMo merchant).
+    final bob = wave * 5;
+    final badge = Offset(280, 60 - bob);
+    canvas.drawCircle(badge, 22, fill(surface));
+    canvas.drawCircle(badge, 22, stroke(orange, 2));
+    final shop = Path()
+      ..moveTo(badge.dx - 11, badge.dy - 3)
+      ..lineTo(badge.dx - 9, badge.dy - 10)
+      ..lineTo(badge.dx + 9, badge.dy - 10)
+      ..lineTo(badge.dx + 11, badge.dy - 3)
+      ..moveTo(badge.dx - 9, badge.dy - 3)
+      ..lineTo(badge.dx - 9, badge.dy + 10)
+      ..lineTo(badge.dx + 9, badge.dy + 10)
+      ..lineTo(badge.dx + 9, badge.dy - 3)
+      ..moveTo(badge.dx - 3, badge.dy + 10)
+      ..lineTo(badge.dx - 3, badge.dy + 3)
+      ..lineTo(badge.dx + 3, badge.dy + 3)
+      ..lineTo(badge.dx + 3, badge.dy + 10);
+    canvas.drawPath(shop, stroke(orange, 2));
+    canvas.drawRRect(rr(badge.dx - 11, badge.dy - 4, 22, 4, 2), fill(orange));
+
+    // Sparkles once the payment lands.
+    final sparkle = math.sin(math.pi * phase(0.66, 1.0));
+    for (final (at, r) in const [
+      (Offset(132, 44), 7.0),
+      (Offset(296, 152), 6.0),
+      (Offset(48, 84), 5.0),
+    ]) {
+      _sparkle(canvas, at, r * sparkle);
+    }
+  }
+
+  void _sparkle(Canvas canvas, Offset at, double r) {
+    if (r <= 0.2) {
+      return;
+    }
+    final star = Path()
+      ..moveTo(at.dx, at.dy - r)
+      ..quadraticBezierTo(at.dx, at.dy, at.dx + r, at.dy)
+      ..quadraticBezierTo(at.dx, at.dy, at.dx, at.dy + r)
+      ..quadraticBezierTo(at.dx, at.dy, at.dx - r, at.dy)
+      ..quadraticBezierTo(at.dx, at.dy, at.dx, at.dy - r)
+      ..close();
+    canvas.drawPath(star, fill(orange));
   }
 
   /// An envelope; a letter carrying six orange code blocks rises out of it.
@@ -431,15 +568,6 @@ class _IllustrationPainter extends CustomPainter {
     );
   }
 
-  void _check(Canvas canvas, Offset at, double r, double amount) {
-    canvas.drawCircle(at, r, fill(orange));
-    final tick = Path()
-      ..moveTo(at.dx - r * 0.45, at.dy)
-      ..lineTo(at.dx - r * 0.1, at.dy + r * 0.35)
-      ..lineTo(at.dx + r * 0.5, at.dy - r * 0.35);
-    drawPartial(canvas, tick, amount, stroke(Colors.black, 2.6));
-  }
-
   void _rings(Canvas canvas, Offset center, double radius, double amount) {
     if (amount <= 0 || amount >= 1) {
       return;
@@ -480,7 +608,8 @@ class _IllustrationPainter extends CustomPainter {
         style: TextStyle(
           color: color,
           fontSize: size,
-          fontWeight: FontWeight.w900,
+          fontFamily: 'Satoshi',
+          fontWeight: FontWeight.w700,
           fontStyle: italic ? FontStyle.italic : FontStyle.normal,
           letterSpacing: 0,
         ),

@@ -88,3 +88,24 @@ See `provider-capability-matrix.md`.
 - **Charge setting:** with the correct name, payout initiation returns 400 `Approved charge setting not found.`.
   The merchant account needs an approved payout charge/fee setting, which only XentriPay can configure.
 - **Not reached yet:** no payout has been created. OTP approval and status transitions are still untested.
+
+## Findings from the funded sandbox run (2026-11-10)
+
+XentriPay confirmed that its sandbox moves **real money** on MoMo, and that the wallet is funded through
+collections. Test only with authorised testers' own numbers and small amounts.
+
+- **New key after account approval:** the earlier key started returning 401 once Merchant 284 was approved. A key
+  generated afterwards in Developers → API Keys & Webhooks works.
+- **Empty wallet:** a payout returns 400 `Insufficient wallet balance.`.
+- **Funding (`collect`, XP §4.2):** `POST /api/collections/initiate` with `pmethod: momo` returned `success=1`,
+  `retcode=0` and sent an MTN prompt to the payer.
+  - The status (`GET /api/collections/status/{customerRef}`) stayed `PENDING` until the payer confirmed, then
+    turned `SUCCESS` after about 50 s.
+  - A rejected prompt ended as `FAILED`.
+- **Payout:** 100 RWF to the tester's own number went `PENDING` → `COMPLETED` within about 10 s.
+  - The adapter mapped it to `SUCCEEDED`.
+  - **No OTP approval was asked for** on this sandbox payout, although the docs (XP §5.1) and XentriPay's email say
+    payouts need one. Confirm with XentriPay whether this also holds in production (open question: payout approval).
+- **Cards:** XentriPay says it supports Visa/Mastercard collections, including international cards and 3-D Secure,
+  once the card channel is activated. Activation has been requested. Card collections charge immediately (no
+  authorisation hold, no token), so they don't map to the authorise/capture model.

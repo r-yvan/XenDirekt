@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'XenDirekt: paying into Rwanda shouldn’t be a hustle',
+    default: 'XenDirekt: paying in Rwanda shouldn’t be a hustle',
     template: '%s · XenDirekt',
   },
   description:

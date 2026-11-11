@@ -61,7 +61,7 @@ void main() {
 
   test('the PRD error red fails on raised dark surfaces, so text uses statusErrorText', () {
     expect(
-      contrastRatio(XdColors.dark.statusError, XdColors.dark.surface2),
+      contrastRatio(XdColors.dark.statusError, XdColors.dark.surface3),
       lessThan(4.5),
     );
   });

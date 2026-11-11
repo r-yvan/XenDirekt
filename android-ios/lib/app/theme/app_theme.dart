@@ -247,8 +247,8 @@ abstract final class AppTheme {
               : c.textTertiary,
         ),
         suffixIconColor: c.textTertiary,
-        border: border(c.hairlineStrong),
-        enabledBorder: border(c.hairlineStrong),
+        border: border(c.hairline),
+        enabledBorder: border(c.hairline),
         disabledBorder: border(c.hairline),
         focusedBorder: border(AppColors.brandOrange, 1.5),
         errorBorder: border(c.statusErrorText),
@@ -379,7 +379,7 @@ abstract final class AppTheme {
 /// gap in the outline.
 class RoundedFieldBorder extends InputBorder {
   const RoundedFieldBorder({
-    super.borderSide = const BorderSide(color: Color(0x14FFFFFF)),
+    super.borderSide = const BorderSide(color: Color(0x0DFFFFFF)),
     this.radius = 14,
   });
 

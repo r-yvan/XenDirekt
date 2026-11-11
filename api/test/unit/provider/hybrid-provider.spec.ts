@@ -1,4 +1,4 @@
-import { AppConfig } from '../../../src/config/app-config';
+import { AppConfig, parseHybridTestPayees } from '../../../src/config/app-config';
 import { parseEnv } from '../../../src/config/env.schema';
 import { MetricsService } from '../../../src/modules/health/metrics.service';
 import { HybridPaymentProvider } from '../../../src/modules/provider/hybrid/hybrid-payment.provider';
@@ -8,7 +8,7 @@ import { XentriPayHttpClient } from '../../../src/modules/provider/xentripay/xen
 import { XentriPayPaymentProvider } from '../../../src/modules/provider/xentripay/xentripay-payment.provider';
 import { testEnv } from '../../support/test-env';
 
-function hybrid() {
+function hybrid(testPayees: ReadonlyMap<string, string> = new Map()) {
   const http = new XentriPayHttpClient({
     baseUrl: 'https://merchant.test.xentripay.com',
     apiKey: 'test-key',
@@ -16,7 +16,11 @@ function hybrid() {
   });
   const xentripay = new XentriPayPaymentProvider(http);
   return {
-    provider: new HybridPaymentProvider(new MockPaymentProvider('http://localhost'), xentripay),
+    provider: new HybridPaymentProvider(
+      new MockPaymentProvider('http://localhost'),
+      xentripay,
+      testPayees,
+    ),
     xentripay,
   };
 }
@@ -63,5 +67,28 @@ describe('hybrid provider (simulated cards, XentriPay payouts)', () => {
 
   it('marks everything it produces as simulated (no real card money moves)', () => {
     expect(hybrid().provider.simulated).toBe(true);
+  });
+
+  it("returns a tester's real registered name so XentriPay's name check passes", async () => {
+    const { provider } = hybrid(parseHybridTestPayees('0788000111=Jane Tester'));
+    await expect(
+      provider.lookupPayee({
+        network: 'MTN',
+        identifierType: 'PHONE',
+        identifier: '+250788000111',
+      }),
+    ).resolves.toEqual({ status: 'FOUND', registeredName: 'Jane Tester' });
+    const other = await provider.lookupPayee({
+      network: 'MTN',
+      identifierType: 'PHONE',
+      identifier: '+250788000222',
+    });
+    expect(other).toMatchObject({ status: 'FOUND' });
+    expect(other).not.toEqual({ status: 'FOUND', registeredName: 'Jane Tester' });
+  });
+
+  it('rejects malformed HYBRID_TEST_PAYEES entries', () => {
+    expect(parseHybridTestPayees('')).toEqual(new Map());
+    expect(() => parseHybridTestPayees('12345=Jane')).toThrow(/HYBRID_TEST_PAYEES/);
   });
 });
